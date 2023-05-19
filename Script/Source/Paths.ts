@@ -2,11 +2,11 @@ namespace Script {
   import ƒ = FudgeCore;
   ƒ.Project.registerScriptNamespace(Script);  // Register the namespace to FUDGE for serialization
 
-  export class CustomComponentScript extends ƒ.ComponentScript {
+  export class Paths extends ƒ.ComponentScript {
     // Register the script as component for use in the editor via drag&drop
-    public static readonly iSubclass: number = ƒ.Component.registerSubclass(CustomComponentScript);
+    public static readonly iSubclass: number = ƒ.Component.registerSubclass(Paths);
     // Properties may be mutated by users in the editor via the automatically created user interface
-    public message: string = "CustomComponentScript added to ";
+    public paths: ƒ.MutableArray<Path> = new ƒ.MutableArray<Path>(new Path());;
 
 
     constructor() {
@@ -26,7 +26,7 @@ namespace Script {
     public hndEvent = (_event: Event): void => {
       switch (_event.type) {
         case ƒ.EVENT.COMPONENT_ADD:
-          ƒ.Debug.log(this.message, this.node);
+          // ƒ.Debug.log(this.message, this.node);
           break;
         case ƒ.EVENT.COMPONENT_REMOVE:
           this.removeEventListener(ƒ.EVENT.COMPONENT_ADD, this.hndEvent);
@@ -34,13 +34,26 @@ namespace Script {
           break;
         case ƒ.EVENT.NODE_DESERIALIZED:
           // if deserialized the node is now fully reconstructed and access to all its components and children is possible
+          this.node.addEventListener("renderWaypoints", this.hndEvent, true);
           break;
+        case "renderWaypoints":
+          console.log(this.node.name);
+          for (let path of this.paths) {
+            console.log(path);
+            let posStart: ƒ.Vector2 = viewport.pointWorldToClient(
+              nodePaths.getChildrenByName(path.start)[0].mtxWorld.translation
+            );
+            let posEnd: ƒ.Vector2 = viewport.pointWorldToClient(
+              nodePaths.getChildrenByName(path.end)[0].mtxWorld.translation
+            );
+            crc2.beginPath();
+            crc2.strokeStyle = "red";
+            crc2.moveTo(posStart.x, posStart.y);
+            crc2.lineTo(posEnd.x, posEnd.y);
+            crc2.stroke();
+            break;
+          }
       }
     }
-
-    // protected reduceMutator(_mutator: ƒ.Mutator): void {
-    //   // delete properties that should not be mutated
-    //   // undefined properties and private fields (#) will not be included by default
-    // }
   }
 }
