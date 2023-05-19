@@ -1,0 +1,45 @@
+//Room Right
+
+"paths": [
+                      {
+                        "start": "Bookshelf",
+                        "end": "Board"
+                      }, 
+                      {
+                        "start": "Bookshelf",
+                        "end": "Dresser"
+                      }, 
+                      {
+                        "start": "Bookshelf",
+                        "end": "Door"
+                      }, 
+                      {
+                        "start": "Dresser",
+                        "end": "Door"
+                      }, 
+                      {
+                        "start": "Dresser",
+                        "end": "Board"
+                      },
+                      {
+                        "start": "Door",
+                        "end": "Board"
+                      }                      
+                    ]
+
+
+//Room Left
+"paths": [
+                      {
+                        "start": "NPC",
+                        "end": "Door"
+                      }, 
+                      {
+                        "start": "NPC",
+                        "end": "Bookshelf"
+                      }, 
+                      {
+                        "start": "Bookshelf",
+                        "end": "Door"
+                      }
+                    ]
