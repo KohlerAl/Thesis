@@ -25,6 +25,11 @@ var Script;
     class Path extends ƒ.Mutable {
         start = "A";
         end = "B";
+        constructor(_start, _end) {
+            super();
+            this.start = _start;
+            this.end = _end;
+        }
         reduceMutator(_mutator) {
             // delete properties that should not be mutated
             // undefined properties and private fields (#) will not be included by default
@@ -40,10 +45,10 @@ var Script;
         // Register the script as component for use in the editor via drag&drop
         static iSubclass = ƒ.Component.registerSubclass(Paths);
         // Properties may be mutated by users in the editor via the automatically created user interface
-        paths = new ƒ.MutableArray(new Script.Path());
-        ;
+        paths = new ƒ.MutableArray(Script.Path, new Script.Path());
         constructor() {
             super();
+            this.constructor;
             // Don't start when running in editor
             if (ƒ.Project.mode == ƒ.MODE.EDITOR)
                 return;
@@ -81,6 +86,14 @@ var Script;
                     }
             }
         };
+        async deserialize(_serialization) {
+            let paths = [];
+            for (let path of _serialization["paths"])
+                paths.push(new Script.Path(path.start, path.end));
+            this.paths = new ƒ.MutableArray(Script.Path, ...paths);
+            await super.deserialize(_serialization);
+            return this;
+        }
     }
     Script.Paths = Paths;
 })(Script || (Script = {}));

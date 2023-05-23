@@ -6,12 +6,12 @@ namespace Script {
     // Register the script as component for use in the editor via drag&drop
     public static readonly iSubclass: number = ƒ.Component.registerSubclass(Paths);
     // Properties may be mutated by users in the editor via the automatically created user interface
-    public paths: ƒ.MutableArray<Path> = new ƒ.MutableArray<Path>(new Path());;
+    public paths: ƒ.MutableArray<Path> = new ƒ.MutableArray<Path>(Path, new Path());
 
 
     constructor() {
       super();
-
+      this.constructor;
       // Don't start when running in editor
       if (ƒ.Project.mode == ƒ.MODE.EDITOR)
         return;
@@ -54,6 +54,15 @@ namespace Script {
             break;
           }
       }
+    }
+
+    public async deserialize(_serialization: ƒ.Serialization): Promise<ƒ.Serializable> {
+      let paths: Path[] = [];
+      for (let path of _serialization["paths"])
+        paths.push(new Path(path.start, path.end))
+       this.paths = new ƒ.MutableArray<Path>(Path, ...paths);
+      await super.deserialize(_serialization);
+      return this;
     }
   }
 }

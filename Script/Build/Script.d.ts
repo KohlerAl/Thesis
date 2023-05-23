@@ -9,6 +9,7 @@ declare namespace Script {
     class Path extends ƒ.Mutable {
         start: string;
         end: string;
+        constructor(_start?: string, _end?: string);
         protected reduceMutator(_mutator: ƒ.Mutator): void;
     }
 }
@@ -19,6 +20,7 @@ declare namespace Script {
         paths: ƒ.MutableArray<Path>;
         constructor();
         hndEvent: (_event: Event) => void;
+        deserialize(_serialization: ƒ.Serialization): Promise<ƒ.Serializable>;
     }
 }
 declare namespace Script {
