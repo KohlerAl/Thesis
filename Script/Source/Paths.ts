@@ -37,7 +37,7 @@ namespace Script {
           this.node.addEventListener("renderWaypoints", this.hndEvent, true);
           break;
         case "renderWaypoints":
-          console.log(this.node.name);
+          //console.log(this.node.name);
           for (let path of this.paths) {
             console.log(path);
             let posStart: ƒ.Vector2 = viewport.pointWorldToClient(

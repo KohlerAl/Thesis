@@ -10,6 +10,7 @@ var Script;
         dialogue = new Script.Text();
         constructor() {
             super();
+            this.constructor;
             // Don't start when running in editor
             if (ƒ.Project.mode == ƒ.MODE.EDITOR)
                 return;
@@ -32,41 +33,25 @@ var Script;
                     // if deserialized the node is now fully reconstructed and access to all its components and children is possible
                     break;
             }
-            console.log(_event);
         };
-        handleClick() {
-            console.log("hello click");
-        }
     }
     Script.Interactable = Interactable;
 })(Script || (Script = {}));
 var Script;
 (function (Script) {
     var ƒ = FudgeCore;
-    class Text extends ƒ.Mutable {
-        text = "A";
-        constructor(_englishText) {
-            super();
-            this.text = _englishText;
-        }
-        reduceMutator(_mutator) {
-            // delete properties that should not be mutated
-            // undefined properties and private fields (#) will not be included by default
-        }
-    }
-    Script.Text = Text;
-})(Script || (Script = {}));
-var Script;
-(function (Script) {
-    var ƒ = FudgeCore;
     ƒ.Debug.info("Main Program Template running!");
+    let branch;
     document.addEventListener("interactiveViewportStarted", start);
     function start(_event) {
         Script.viewport = _event.detail;
+        branch = Script.viewport.getBranch();
         Script.nodePaths = Script.viewport.getBranch().getChildrenByName("Paths")[0];
         Script.crc2 = Script.viewport.canvas.getContext("2d");
-        //viewport.canvas.addEventListener("pointerdown", handleClick);
         setUpCam();
+        console.log(branch);
+        Script.viewport.canvas.addEventListener("pointerdown", testClick);
+        branch.addEventListener("pointerdown", handleClick);
         ƒ.Loop.addEventListener("loopFrame" /* LOOP_FRAME */, update);
         update(null);
         // ƒ.Loop.start();  // start the game loop to continously draw the viewport, update the audiosystem and drive the physics i/a
@@ -78,12 +63,12 @@ var Script;
         //ƒ.AudioManager.default.update();
     }
     function setUpCam() {
-        Script.camNode = new ƒ.Node("camNode");
-        Script.camNode.addComponent(createCamera());
-        Script.camNode.addComponent(new ƒ.ComponentTransform());
-        Script.camNode.mtxLocal.scale(new ƒ.Vector3(1, 2, 1));
+        let camNode;
+        camNode = new ƒ.Node("camNode");
+        camNode.addComponent(createCamera());
+        camNode.addComponent(new ƒ.ComponentTransform());
+        camNode.mtxLocal.scale(new ƒ.Vector3(1, 2, 1));
     }
-    Script.setUpCam = setUpCam;
     function createCamera() {
         let newCam = new ƒ.ComponentCamera();
         //newCam.projectOrthographic(); 
@@ -95,15 +80,21 @@ var Script;
         //viewport.camera.mtxPivot.scale(new ƒ.Vector3(2, 1, 2));
         return newCam;
     }
-    function handleClick() {
-        let branch = Script.viewport.getBranch();
-        let children = branch.getChildren();
-        for (let child of children) {
-            let childNodes = child.getChildren();
-            for (let kid of childNodes) {
-                console.log(kid.getComponent(Script.Interactable));
-            }
+    function handleClick(_event) {
+        console.log("hello pointerdown");
+        if (_event.button == 0) {
+            console.log("lksdjf");
         }
+        /*
+        let interact: ƒ.Node = branch.getChildrenByName("Interactables")[0];
+        let childNodes: ƒ.Node[] = interact.getChildren();
+        for (let kid of childNodes) {
+          let interactable: Interactable = kid.getComponent(Interactable);
+          interactable.checkPosition(_event.clientX, _event.clientY);
+        } */
+    }
+    function testClick() {
+        console.log("hello test click");
     }
 })(Script || (Script = {}));
 var Script;
@@ -159,7 +150,7 @@ var Script;
                     this.node.addEventListener("renderWaypoints", this.hndEvent, true);
                     break;
                 case "renderWaypoints":
-                    console.log(this.node.name);
+                    //console.log(this.node.name);
                     for (let path of this.paths) {
                         console.log(path);
                         let posStart = Script.viewport.pointWorldToClient(Script.nodePaths.getChildrenByName(path.start)[0].mtxWorld.translation);
@@ -220,6 +211,22 @@ var Script;
             detail: viewport
         }));
     }
+})(Script || (Script = {}));
+var Script;
+(function (Script) {
+    var ƒ = FudgeCore;
+    class Text extends ƒ.Mutable {
+        text = "A";
+        constructor(_englishText) {
+            super();
+            this.text = _englishText;
+        }
+        reduceMutator(_mutator) {
+            // delete properties that should not be mutated
+            // undefined properties and private fields (#) will not be included by default
+        }
+    }
+    Script.Text = Text;
 })(Script || (Script = {}));
 var Script;
 (function (Script) {

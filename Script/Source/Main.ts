@@ -5,15 +5,19 @@ namespace Script {
   export let viewport: ƒ.Viewport;
   export let nodePaths: ƒ.Node;
   export let crc2: CanvasRenderingContext2D;
-  export let camNode: ƒ.Node;
+  let branch: ƒ.Node;
   document.addEventListener("interactiveViewportStarted", <EventListener>start);
 
   function start(_event: CustomEvent): void {
     viewport = _event.detail;
+    branch = viewport.getBranch();
     nodePaths = viewport.getBranch().getChildrenByName("Paths")[0];
     crc2 = viewport.canvas.getContext("2d");
-    //viewport.canvas.addEventListener("pointerdown", handleClick);
     setUpCam();
+    console.log(branch)
+    viewport.canvas.addEventListener("pointerdown", testClick); 
+    branch.addEventListener("pointerdown", <ƒ.EventListenerUnified> handleClick);
+
 
     ƒ.Loop.addEventListener(ƒ.EVENT.LOOP_FRAME, update);
     update(null);
@@ -27,7 +31,8 @@ namespace Script {
     //ƒ.AudioManager.default.update();
   }
 
-  export function setUpCam(): void {
+  function setUpCam(): void {
+    let camNode: ƒ.Node;
     camNode = new ƒ.Node("camNode");
     camNode.addComponent(createCamera());
     camNode.addComponent(new ƒ.ComponentTransform());
@@ -48,15 +53,22 @@ namespace Script {
     return newCam;
   }
 
-  function handleClick(): void {
-    let branch: ƒ.Node = viewport.getBranch(); 
-    let children = branch.getChildren(); 
-    for (let child of children) {
-      let childNodes = child.getChildren(); 
-      for (let kid of childNodes) {
-        console.log(kid.getComponent(Interactable)); 
-      }
-      
+  function handleClick(_event: PointerEvent): void {
+    console.log("hello pointerdown");
+    if(_event.button == 0) {
+      console.log("lksdjf"); 
     }
+    /* 
+    let interact: ƒ.Node = branch.getChildrenByName("Interactables")[0];
+    let childNodes: ƒ.Node[] = interact.getChildren();
+    for (let kid of childNodes) {
+      let interactable: Interactable = kid.getComponent(Interactable);
+      interactable.checkPosition(_event.clientX, _event.clientY);
+    } */
+  } 
+  function testClick(): void {
+    console.log("hello test click"); 
   }
+
+
 }

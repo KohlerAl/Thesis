@@ -616,7 +616,7 @@
         },
         {
           "ƒ.Node": {
-            "name": "Dresser",
+            "name": "Interactables",
             "active": true,
             "components": {},
             "children": [
@@ -688,21 +688,20 @@
                           "active": true
                         }
                       }
+                    ],
+                    "ComponentPick": [
+                      {
+                        "ƒ.ComponentPick": {
+                          "active": true,
+                          "pick": "radius"
+                        }
+                      }
                     ]
                   },
                   "children": [],
                   "idSource": "Graph|2023-05-24T08:41:38.987Z|27527"
                 }
-              }
-            ]
-          }
-        },
-        {
-          "ƒ.Node": {
-            "name": "Bookshelf",
-            "active": true,
-            "components": {},
-            "children": [
+              },
               {
                 "ƒ.GraphInstance": {
                   "name": "Interactable",
@@ -745,9 +744,9 @@
                       {
                         "ƒ.ComponentTransform": {
                           "local": {
-                            "translation": "[0.539999783039093, -0.1459999680519104, 0]",
+                            "translation": "[0.5369998216629028, -0.14600001275539398, 0.0010000000474974513]",
                             "rotation": "[0, 0, 0]",
-                            "scaling": "[0.2900000214576721, 0.44999992847442627, 1]"
+                            "scaling": "[0.28000009059906006, 0.43999993801116943, 1]"
                           },
                           "Component": {
                             "active": true
@@ -769,6 +768,14 @@
                       {
                         "ƒ.ComponentGraphFilter": {
                           "active": true
+                        }
+                      }
+                    ],
+                    "ComponentPick": [
+                      {
+                        "ƒ.ComponentPick": {
+                          "active": true,
+                          "pick": "radius"
                         }
                       }
                     ]
@@ -1315,18 +1322,19 @@
             }
           }
         ],
-        "Interactable": [
-          {
-            "Script.Interactable": {
-              "active": true,
-              "dialogue": {}
-            }
-          }
-        ],
+        "Interactable": [],
         "ComponentGraphFilter": [
           {
             "ƒ.ComponentGraphFilter": {
               "active": true
+            }
+          }
+        ],
+        "ComponentPick": [
+          {
+            "ƒ.ComponentPick": {
+              "active": true,
+              "pick": "radius"
             }
           }
         ]

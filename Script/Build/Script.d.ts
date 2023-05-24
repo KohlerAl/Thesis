@@ -5,15 +5,6 @@ declare namespace Script {
         dialogue: ƒ.Mutable;
         constructor();
         hndEvent: (_event: Event) => void;
-        handleClick(): void;
-    }
-}
-declare namespace Script {
-    import ƒ = FudgeCore;
-    class Text extends ƒ.Mutable {
-        text: string;
-        constructor(_englishText?: string);
-        protected reduceMutator(_mutator: ƒ.Mutator): void;
     }
 }
 declare namespace Script {
@@ -21,8 +12,6 @@ declare namespace Script {
     let viewport: ƒ.Viewport;
     let nodePaths: ƒ.Node;
     let crc2: CanvasRenderingContext2D;
-    let camNode: ƒ.Node;
-    function setUpCam(): void;
 }
 declare namespace Script {
     import ƒ = FudgeCore;
@@ -45,6 +34,14 @@ declare namespace Script {
 }
 declare namespace Script {
     let canvas: HTMLCanvasElement;
+}
+declare namespace Script {
+    import ƒ = FudgeCore;
+    class Text extends ƒ.Mutable {
+        text: string;
+        constructor(_englishText?: string);
+        protected reduceMutator(_mutator: ƒ.Mutator): void;
+    }
 }
 declare namespace Script {
     import ƒ = FudgeCore;

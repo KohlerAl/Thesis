@@ -7,9 +7,10 @@ namespace Script {
         public static readonly iSubclass: number = ƒ.Component.registerSubclass(Interactable);
         // Properties may be mutated by users in the editor via the automatically created user interface
         public dialogue: ƒ.Mutable = new Text();
+
         constructor() {
             super();
-
+            this.constructor;
             // Don't start when running in editor
             if (ƒ.Project.mode == ƒ.MODE.EDITOR)
                 return;
@@ -34,11 +35,6 @@ namespace Script {
                     // if deserialized the node is now fully reconstructed and access to all its components and children is possible
                     break;
             }
-            console.log(_event)
-        }
-
-        public handleClick(): void {
-            console.log("hello click")
         }
     }
 }
