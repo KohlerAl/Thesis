@@ -613,6 +613,172 @@
             },
             "children": []
           }
+        },
+        {
+          "ƒ.Node": {
+            "name": "Dresser",
+            "active": true,
+            "components": {},
+            "children": [
+              {
+                "ƒ.GraphInstance": {
+                  "name": "Interactable",
+                  "active": true,
+                  "components": {
+                    "ComponentMesh": [
+                      {
+                        "ƒ.ComponentMesh": {
+                          "idMesh": "MeshQuad|2023-05-18T10:15:33.499Z|93331",
+                          "pivot": {
+                            "translation": "[0, 0, 0.0010000000474974513]",
+                            "rotation": "[0, 0, 0]",
+                            "scaling": "[1, 0.9999999403953552, 1]"
+                          },
+                          "Component": {
+                            "active": true
+                          }
+                        }
+                      }
+                    ],
+                    "ComponentMaterial": [
+                      {
+                        "ƒ.ComponentMaterial": {
+                          "sortForAlpha": false,
+                          "clrPrimary": "[0.8627450980392157, 0.2196078431372549, 0.2196078431372549, 0.45]",
+                          "clrSecondary": "[1, 1, 1, 1]",
+                          "pivot": {
+                            "translation": "[0, 0]",
+                            "rotation": 0,
+                            "scaling": "[1, 1]"
+                          },
+                          "Component": {
+                            "active": true
+                          },
+                          "idMaterial": "Material|2023-05-19T08:32:52.641Z|95351"
+                        }
+                      }
+                    ],
+                    "ComponentTransform": [
+                      {
+                        "ƒ.ComponentTransform": {
+                          "local": {
+                            "translation": "[0.1399998515844345, -0.2459999918937683, 0]",
+                            "rotation": "[0, 0, 0]",
+                            "scaling": "[0.5100000500679016, 0.29999998211860657, 1]"
+                          },
+                          "Component": {
+                            "active": true
+                          }
+                        }
+                      }
+                    ],
+                    "Interactable": [
+                      {
+                        "Script.Interactable": {
+                          "active": true,
+                          "dialogue": {
+                            "text": "Unfortunately, no flower here. But looks like here is the secret candy stash. "
+                          }
+                        }
+                      }
+                    ],
+                    "ComponentGraphFilter": [
+                      {
+                        "ƒ.ComponentGraphFilter": {
+                          "active": true
+                        }
+                      }
+                    ]
+                  },
+                  "children": [],
+                  "idSource": "Graph|2023-05-24T08:41:38.987Z|27527"
+                }
+              }
+            ]
+          }
+        },
+        {
+          "ƒ.Node": {
+            "name": "Bookshelf",
+            "active": true,
+            "components": {},
+            "children": [
+              {
+                "ƒ.GraphInstance": {
+                  "name": "Interactable",
+                  "active": true,
+                  "components": {
+                    "ComponentMesh": [
+                      {
+                        "ƒ.ComponentMesh": {
+                          "idMesh": "MeshQuad|2023-05-18T10:15:33.499Z|93331",
+                          "pivot": {
+                            "translation": "[0, 0, 0.0010000000474974513]",
+                            "rotation": "[0, 0, 0]",
+                            "scaling": "[1, 0.9999999403953552, 1]"
+                          },
+                          "Component": {
+                            "active": true
+                          }
+                        }
+                      }
+                    ],
+                    "ComponentMaterial": [
+                      {
+                        "ƒ.ComponentMaterial": {
+                          "sortForAlpha": false,
+                          "clrPrimary": "[0.8627450980392157, 0.2196078431372549, 0.2196078431372549, 0.45]",
+                          "clrSecondary": "[1, 1, 1, 1]",
+                          "pivot": {
+                            "translation": "[0, 0]",
+                            "rotation": 0,
+                            "scaling": "[1, 1]"
+                          },
+                          "Component": {
+                            "active": true
+                          },
+                          "idMaterial": "Material|2023-05-19T08:32:52.641Z|95351"
+                        }
+                      }
+                    ],
+                    "ComponentTransform": [
+                      {
+                        "ƒ.ComponentTransform": {
+                          "local": {
+                            "translation": "[0.539999783039093, -0.1459999680519104, 0]",
+                            "rotation": "[0, 0, 0]",
+                            "scaling": "[0.2900000214576721, 0.44999992847442627, 1]"
+                          },
+                          "Component": {
+                            "active": true
+                          }
+                        }
+                      }
+                    ],
+                    "Interactable": [
+                      {
+                        "Script.Interactable": {
+                          "active": true,
+                          "dialogue": {
+                            "text": "Many interesting books. But, unfortunately, nothing about flowers."
+                          }
+                        }
+                      }
+                    ],
+                    "ComponentGraphFilter": [
+                      {
+                        "ƒ.ComponentGraphFilter": {
+                          "active": true
+                        }
+                      }
+                    ]
+                  },
+                  "children": [],
+                  "idSource": "Graph|2023-05-24T08:41:38.987Z|27527"
+                }
+              }
+            ]
+          }
         }
       ],
       "idResource": "Graph|2023-05-18T10:13:48.300Z|18467",
@@ -1095,6 +1261,79 @@
         ]
       },
       "fitTexture": true
+    }
+  },
+  "Graph|2023-05-24T08:41:38.987Z|27527": {
+    "ƒ.Graph": {
+      "name": "Interactable",
+      "active": true,
+      "components": {
+        "ComponentMesh": [
+          {
+            "ƒ.ComponentMesh": {
+              "idMesh": "MeshQuad|2023-05-18T10:15:33.499Z|93331",
+              "pivot": {
+                "translation": "[0, 0, 0.0010000000474974513]",
+                "rotation": "[0, 0, 0]",
+                "scaling": "[1, 0.9999999403953552, 1]"
+              },
+              "Component": {
+                "active": true
+              }
+            }
+          }
+        ],
+        "ComponentMaterial": [
+          {
+            "ƒ.ComponentMaterial": {
+              "sortForAlpha": false,
+              "clrPrimary": "[0.8627450980392157, 0.2196078431372549, 0.2196078431372549, 0.45]",
+              "clrSecondary": "[1, 1, 1, 1]",
+              "pivot": {
+                "translation": "[0, 0]",
+                "rotation": 0,
+                "scaling": "[1, 1]"
+              },
+              "Component": {
+                "active": true
+              },
+              "idMaterial": "Material|2023-05-19T08:32:52.641Z|95351"
+            }
+          }
+        ],
+        "ComponentTransform": [
+          {
+            "ƒ.ComponentTransform": {
+              "local": {
+                "translation": "[0.1399998515844345, -0.2459999918937683, 0]",
+                "rotation": "[0, 0, 0]",
+                "scaling": "[0.5100000500679016, 0.29999998211860657, 1]"
+              },
+              "Component": {
+                "active": true
+              }
+            }
+          }
+        ],
+        "Interactable": [
+          {
+            "Script.Interactable": {
+              "active": true,
+              "dialogue": {}
+            }
+          }
+        ],
+        "ComponentGraphFilter": [
+          {
+            "ƒ.ComponentGraphFilter": {
+              "active": true
+            }
+          }
+        ]
+      },
+      "children": [],
+      "idResource": "Graph|2023-05-24T08:41:38.987Z|27527",
+      "type": "Graph"
     }
   }
 }
