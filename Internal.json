@@ -792,7 +792,7 @@
                     "ComponentMesh": [
                       {
                         "ƒ.ComponentMesh": {
-                          "idMesh": "MeshQuad|2023-05-18T10:15:33.499Z|93331",
+                          "idMesh": "MeshCube|2023-05-25T19:18:14.232Z|73235",
                           "pivot": {
                             "translation": "[0, 0, 0]",
                             "rotation": "[0, 0, 0]",
@@ -1421,6 +1421,13 @@
       "children": [],
       "idResource": "Graph|2023-05-24T08:41:38.987Z|27527",
       "type": "Graph"
+    }
+  },
+  "MeshCube|2023-05-25T19:18:14.232Z|73235": {
+    "ƒ.MeshCube": {
+      "idResource": "MeshCube|2023-05-25T19:18:14.232Z|73235",
+      "name": "MeshCube",
+      "type": "MeshCube"
     }
   }
 }
