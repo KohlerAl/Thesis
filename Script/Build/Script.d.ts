@@ -1,10 +1,28 @@
 declare namespace Script {
     import ƒ = FudgeCore;
-    class Interactable extends ƒ.ComponentScript {
+    class Board extends ƒ.ComponentScript {
         static readonly iSubclass: number;
-        dialogue: ƒ.Mutable;
+        pages: Page[];
+        currentPage: number;
+        letterBox: HTMLDivElement;
+        p: HTMLParagraphElement;
+        currentLanguage: string;
         constructor();
         hndEvent: (_event: Event) => void;
+        openPage(): void;
+        showTranslation(): void;
+    }
+}
+declare namespace Script {
+    import ƒ = FudgeCore;
+    class Interactable extends ƒ.ComponentScript {
+        static readonly iSubclass: number;
+        dialogue: Text;
+        private timeout;
+        constructor();
+        hndEvent: (_event: Event) => void;
+        showText(): void;
+        hideText(): void;
     }
 }
 declare namespace Script {
@@ -12,6 +30,14 @@ declare namespace Script {
     let viewport: ƒ.Viewport;
     let nodePaths: ƒ.Node;
     let crc2: CanvasRenderingContext2D;
+}
+declare namespace Script {
+    class Page {
+        textenglish: string;
+        textgerman: string;
+        shouldCollect: boolean;
+        constructor(_textgerman: string, _textenglish: string, _shouldCollect: boolean);
+    }
 }
 declare namespace Script {
     import ƒ = FudgeCore;

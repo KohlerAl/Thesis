@@ -3,11 +3,18 @@ var Script;
 (function (Script) {
     var ƒ = FudgeCore;
     ƒ.Project.registerScriptNamespace(Script); // Register the namespace to FUDGE for serialization
-    class Interactable extends ƒ.ComponentScript {
+    let classInstance;
+    class Board extends ƒ.ComponentScript {
         // Register the script as component for use in the editor via drag&drop
-        static iSubclass = ƒ.Component.registerSubclass(Interactable);
+        static iSubclass = ƒ.Component.registerSubclass(Board);
         // Properties may be mutated by users in the editor via the automatically created user interface
-        dialogue = new Script.Text();
+        pages = [
+            new Script.Page("Nianna Blume <br> -Die Blume riecht süß. <br>- Blasse, runde Blüten <br>- Die Blume blüht das ganze Jahr lang.", "Nianna flower <br>- The flower smells sweet. <br>- Pale, round flowers <br>- The flower blooms all year round", true)
+        ];
+        currentPage = 0;
+        letterBox;
+        p;
+        currentLanguage;
         constructor() {
             super();
             this.constructor;
@@ -34,12 +41,85 @@ var Script;
                     break;
             }
         };
+        openPage() {
+            this.letterBox = document.querySelector("#notes");
+            this.p = this.letterBox.querySelector("p");
+            this.letterBox.style.height = Script.viewport.canvas.height + "px";
+            this.letterBox.style.width = Script.viewport.canvas.width + "px";
+            this.letterBox.style.visibility = "visible";
+            this.p.innerHTML = this.pages[this.currentPage].textgerman;
+            this.currentLanguage = "german";
+            classInstance = this;
+            this.p.addEventListener("click", this.showTranslation);
+        }
+        showTranslation() {
+            if (classInstance.currentLanguage == "german") {
+                classInstance.p.innerHTML = classInstance.pages[classInstance.currentPage].textenglish;
+                classInstance.currentLanguage = "english";
+            }
+            else {
+                classInstance.p.innerHTML = classInstance.pages[classInstance.currentPage].textgerman;
+                classInstance.currentLanguage = "german";
+            }
+        }
+    }
+    Script.Board = Board;
+})(Script || (Script = {}));
+var Script;
+(function (Script) {
+    var ƒ = FudgeCore;
+    ƒ.Project.registerScriptNamespace(Script); // Register the namespace to FUDGE for serialization
+    class Interactable extends ƒ.ComponentScript {
+        // Register the script as component for use in the editor via drag&drop
+        static iSubclass = ƒ.Component.registerSubclass(Interactable);
+        // Properties may be mutated by users in the editor via the automatically created user interface
+        dialogue = new Script.Text();
+        timeout;
+        constructor() {
+            super();
+            this.constructor;
+            // Don't start when running in editor
+            if (ƒ.Project.mode == ƒ.MODE.EDITOR)
+                return;
+            // Listen to this component being added to or removed from a node
+            this.addEventListener("componentAdd" /* COMPONENT_ADD */, this.hndEvent);
+            this.addEventListener("componentRemove" /* COMPONENT_REMOVE */, this.hndEvent);
+            this.addEventListener("nodeDeserialized" /* NODE_DESERIALIZED */, this.hndEvent);
+        }
+        // Activate the functions of this component as response to events
+        hndEvent = (_event) => {
+            switch (_event.type) {
+                case "componentAdd" /* COMPONENT_ADD */:
+                    // ƒ.Debug.log(this.message, this.node);
+                    break;
+                case "componentRemove" /* COMPONENT_REMOVE */:
+                    this.removeEventListener("componentAdd" /* COMPONENT_ADD */, this.hndEvent);
+                    this.removeEventListener("componentRemove" /* COMPONENT_REMOVE */, this.hndEvent);
+                    break;
+                case "nodeDeserialized" /* NODE_DESERIALIZED */:
+                    // if deserialized the node is now fully reconstructed and access to all its components and children is possible
+                    break;
+            }
+        };
+        showText() {
+            let dialogueBox = document.querySelector("#dialogue");
+            let text = dialogueBox.querySelector("p");
+            dialogueBox.style.visibility = "visible";
+            text.innerHTML = this.dialogue.text;
+            this.timeout = window.setTimeout(this.hideText, 10000);
+        }
+        hideText() {
+            clearTimeout(this.timeout);
+            let dialogueBox = document.querySelector("#dialogue");
+            dialogueBox.style.visibility = "hidden";
+        }
     }
     Script.Interactable = Interactable;
 })(Script || (Script = {}));
 var Script;
 (function (Script) {
     var ƒ = FudgeCore;
+    //import ƒAid = FudgeAid;
     ƒ.Debug.info("Main Program Template running!");
     let branch;
     document.addEventListener("interactiveViewportStarted", start);
@@ -52,6 +132,26 @@ var Script;
         console.log(branch);
         Script.viewport.canvas.addEventListener("pointerdown", testClick);
         branch.addEventListener("pointerdown", handleClick);
+        let dialogueBox = document.querySelector("#dialogue");
+        dialogueBox.style.width = Script.viewport.canvas.width + "px";
+        console.log(dialogueBox);
+        /* let zoo: ƒ.Node = branch.getChildrenByName("Interactables")[0];
+    
+        let meshShpere: ƒ.MeshSphere = new ƒ.MeshSphere("BoundingSphere", 40, 40);
+        let material: ƒ.Material = new ƒ.Material("Transparent", ƒ.ShaderLit, new ƒ.CoatColored(ƒ.Color.CSS("white", 0.5)));
+        for (let child of zoo.getChildren()) {
+    
+          let sphere: ƒ.Node = new ƒAid.Node(
+            "BoundingSphere", ƒ.Matrix4x4.SCALING(ƒ.Vector3.ONE(2)), material, meshShpere
+          );
+          sphere.mtxLocal.scale(ƒ.Vector3.ONE(child.radius));
+          console.warn(child.radius)
+          let cmpMesh: ƒ.ComponentMesh = child.getComponent(ƒ.ComponentMesh);
+          sphere.mtxLocal.translation = cmpMesh.mtxWorld.translation;
+          sphere.getComponent(ƒ.ComponentMaterial).sortForAlpha = true;
+          branch.appendChild(sphere);
+    
+        } */
         ƒ.Loop.addEventListener("loopFrame" /* LOOP_FRAME */, update);
         update(null);
         // ƒ.Loop.start();  // start the game loop to continously draw the viewport, update the audiosystem and drive the physics i/a
@@ -81,9 +181,15 @@ var Script;
         return newCam;
     }
     function handleClick(_event) {
-        console.log("hello pointerdown");
-        if (_event.button == 0) {
-            console.log("lksdjf");
+        let node = _event.target;
+        if (node.getComponent(Script.Interactable)) {
+            let dialogue = node.getComponent(Script.Interactable);
+            dialogue.showText();
+            console.log(_event.target);
+        }
+        else if (node.getComponent(Script.Board)) {
+            let board = node.getComponent(Script.Board);
+            board.openPage();
         }
         /*
         let interact: ƒ.Node = branch.getChildrenByName("Interactables")[0];
@@ -93,9 +199,24 @@ var Script;
           interactable.checkPosition(_event.clientX, _event.clientY);
         } */
     }
-    function testClick() {
-        console.log("hello test click");
+    function testClick(_event) {
+        Script.viewport.draw();
+        Script.viewport.dispatchPointerEvent(_event);
     }
+})(Script || (Script = {}));
+var Script;
+(function (Script) {
+    class Page {
+        textenglish;
+        textgerman;
+        shouldCollect;
+        constructor(_textgerman, _textenglish, _shouldCollect) {
+            this.textenglish = _textenglish;
+            this.textgerman = _textgerman;
+            this.shouldCollect = _shouldCollect;
+        }
+    }
+    Script.Page = Page;
 })(Script || (Script = {}));
 var Script;
 (function (Script) {

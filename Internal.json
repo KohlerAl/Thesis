@@ -622,8 +622,8 @@
             "children": [
               {
                 "ƒ.GraphInstance": {
-                  "name": "Interactable",
-                  "active": true,
+                  "name": "Dresser",
+                  "active": false,
                   "components": {
                     "ComponentMesh": [
                       {
@@ -632,7 +632,7 @@
                           "pivot": {
                             "translation": "[0, 0, 0.0010000000474974513]",
                             "rotation": "[0, 0, 0]",
-                            "scaling": "[1, 0.9999999403953552, 1]"
+                            "scaling": "[0.020000196993350983, 0.019999999552965164, 1]"
                           },
                           "Component": {
                             "active": true
@@ -644,7 +644,7 @@
                       {
                         "ƒ.ComponentMaterial": {
                           "sortForAlpha": false,
-                          "clrPrimary": "[0.8627450980392157, 0.2196078431372549, 0.2196078431372549, 0.45]",
+                          "clrPrimary": "[0.8627450980392157, 0.2196078431372549, 0.2196078431372549, 0.5]",
                           "clrSecondary": "[1, 1, 1, 1]",
                           "pivot": {
                             "translation": "[0, 0]",
@@ -664,7 +664,7 @@
                           "local": {
                             "translation": "[0.1399998515844345, -0.2459999918937683, 0]",
                             "rotation": "[0, 0, 0]",
-                            "scaling": "[0.5100000500679016, 0.29999998211860657, 1]"
+                            "scaling": "[1, 1, 1]"
                           },
                           "Component": {
                             "active": true
@@ -692,7 +692,7 @@
                         "Script.Interactable": {
                           "active": true,
                           "dialogue": {
-                            "text": "Hello Test"
+                            "text": "Dresser"
                           }
                         }
                       }
@@ -700,6 +700,160 @@
                   },
                   "children": [],
                   "idSource": "Graph|2023-05-24T08:41:38.987Z|27527"
+                }
+              },
+              {
+                "ƒ.GraphInstance": {
+                  "name": "Interactable",
+                  "active": false,
+                  "components": {
+                    "ComponentMesh": [
+                      {
+                        "ƒ.ComponentMesh": {
+                          "idMesh": "MeshQuad|2023-05-18T10:15:33.499Z|93331",
+                          "pivot": {
+                            "translation": "[0, 0, 0.0010000000474974513]",
+                            "rotation": "[0, 0, 0]",
+                            "scaling": "[1, 0.9999999403953552, 1]"
+                          },
+                          "Component": {
+                            "active": true
+                          }
+                        }
+                      }
+                    ],
+                    "ComponentMaterial": [
+                      {
+                        "ƒ.ComponentMaterial": {
+                          "sortForAlpha": false,
+                          "clrPrimary": "[0.8627450980392157, 0.2196078431372549, 0.2196078431372549, 0.35]",
+                          "clrSecondary": "[1, 1, 1, 1]",
+                          "pivot": {
+                            "translation": "[0, 0]",
+                            "rotation": 0,
+                            "scaling": "[1, 1]"
+                          },
+                          "Component": {
+                            "active": true
+                          },
+                          "idMaterial": "Material|2023-05-19T08:32:52.641Z|95351"
+                        }
+                      }
+                    ],
+                    "ComponentTransform": [
+                      {
+                        "ƒ.ComponentTransform": {
+                          "local": {
+                            "translation": "[0.5299997925758362, -0.1459999680519104, 0]",
+                            "rotation": "[0, 0, 0]",
+                            "scaling": "[0.2900000512599945, 0.4399999678134918, 1]"
+                          },
+                          "Component": {
+                            "active": true
+                          }
+                        }
+                      }
+                    ],
+                    "ComponentGraphFilter": [
+                      {
+                        "ƒ.ComponentGraphFilter": {
+                          "active": true
+                        }
+                      }
+                    ],
+                    "ComponentPick": [
+                      {
+                        "ƒ.ComponentPick": {
+                          "active": true,
+                          "pick": "radius"
+                        }
+                      }
+                    ],
+                    "Interactable": [
+                      {
+                        "Script.Interactable": {
+                          "active": true,
+                          "dialogue": {
+                            "text": "Bookshelf"
+                          }
+                        }
+                      }
+                    ]
+                  },
+                  "children": [],
+                  "idSource": "Graph|2023-05-24T08:41:38.987Z|27527"
+                }
+              },
+              {
+                "ƒ.Node": {
+                  "name": "Board",
+                  "active": true,
+                  "components": {
+                    "ComponentMesh": [
+                      {
+                        "ƒ.ComponentMesh": {
+                          "idMesh": "MeshQuad|2023-05-18T10:15:33.499Z|93331",
+                          "pivot": {
+                            "translation": "[0, 0, 0]",
+                            "rotation": "[0, 0, 0]",
+                            "scaling": "[1, 1, 1]"
+                          },
+                          "Component": {
+                            "active": true
+                          }
+                        }
+                      }
+                    ],
+                    "ComponentMaterial": [
+                      {
+                        "ƒ.ComponentMaterial": {
+                          "sortForAlpha": false,
+                          "clrPrimary": "[0.796078431372549, 0.3215686274509804, 0.3215686274509804, 0.26]",
+                          "clrSecondary": "[1, 1, 1, 1]",
+                          "pivot": {
+                            "translation": "[0, 0]",
+                            "rotation": 0,
+                            "scaling": "[1, 1]"
+                          },
+                          "Component": {
+                            "active": true
+                          },
+                          "idMaterial": "Material|2023-05-19T08:32:52.641Z|95351"
+                        }
+                      }
+                    ],
+                    "ComponentTransform": [
+                      {
+                        "ƒ.ComponentTransform": {
+                          "local": {
+                            "translation": "[-0.41000011563301086, -0.03999999910593033, 0.0010000000474974513]",
+                            "rotation": "[0, 0, 0]",
+                            "scaling": "[0.10000019520521164, 0.10000000149011612, 1]"
+                          },
+                          "Component": {
+                            "active": true
+                          }
+                        }
+                      }
+                    ],
+                    "Interactable": [],
+                    "ComponentPick": [
+                      {
+                        "ƒ.ComponentPick": {
+                          "active": true,
+                          "pick": "radius"
+                        }
+                      }
+                    ],
+                    "Board": [
+                      {
+                        "Script.Board": {
+                          "active": true
+                        }
+                      }
+                    ]
+                  },
+                  "children": []
                 }
               }
             ]
@@ -1212,7 +1366,7 @@
           {
             "ƒ.ComponentMaterial": {
               "sortForAlpha": false,
-              "clrPrimary": "[0.8627450980392157, 0.2196078431372549, 0.2196078431372549, 0.45]",
+              "clrPrimary": "[0.8627450980392157, 0.2196078431372549, 0.2196078431372549, 0]",
               "clrSecondary": "[1, 1, 1, 1]",
               "pivot": {
                 "translation": "[0, 0]",

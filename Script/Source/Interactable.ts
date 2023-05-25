@@ -6,7 +6,8 @@ namespace Script {
         // Register the script as component for use in the editor via drag&drop
         public static readonly iSubclass: number = ƒ.Component.registerSubclass(Interactable);
         // Properties may be mutated by users in the editor via the automatically created user interface
-        public dialogue: ƒ.Mutable = new Text();
+        public dialogue: Text = new Text();
+        private timeout: any; 
 
         constructor() {
             super();
@@ -35,6 +36,21 @@ namespace Script {
                     // if deserialized the node is now fully reconstructed and access to all its components and children is possible
                     break;
             }
+        }
+
+        public showText(): void {
+            let dialogueBox: HTMLDivElement = document.querySelector("#dialogue"); 
+            let text: HTMLParagraphElement = dialogueBox.querySelector("p"); 
+            dialogueBox.style.visibility = "visible"; 
+            text.innerHTML = this.dialogue.text; 
+
+            this.timeout = window.setTimeout(this.hideText, 10000); 
+        }
+
+        public hideText(): void {
+            clearTimeout(this.timeout); 
+            let dialogueBox: HTMLDivElement = document.querySelector("#dialogue"); 
+            dialogueBox.style.visibility = "hidden"; 
         }
     }
 }
