@@ -119,7 +119,7 @@ var Script;
 var Script;
 (function (Script) {
     var ƒ = FudgeCore;
-    //import ƒAid = FudgeAid;
+    var ƒAid = FudgeAid;
     ƒ.Debug.info("Main Program Template running!");
     let branch;
     document.addEventListener("interactiveViewportStarted", start);
