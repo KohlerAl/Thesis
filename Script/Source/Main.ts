@@ -28,7 +28,7 @@ namespace Script {
 
 
 
-    /* let zoo: ƒ.Node = branch.getChildrenByName("Interactables")[0];
+    let zoo: ƒ.Node = branch.getChildrenByName("Interactables")[0];
 
     let meshShpere: ƒ.MeshSphere = new ƒ.MeshSphere("BoundingSphere", 40, 40);
     let material: ƒ.Material = new ƒ.Material("Transparent", ƒ.ShaderLit, new ƒ.CoatColored(ƒ.Color.CSS("white", 0.5)));
@@ -44,7 +44,7 @@ namespace Script {
       sphere.getComponent(ƒ.ComponentMaterial).sortForAlpha = true;
       branch.appendChild(sphere);
 
-    } */
+    }
 
 
     ƒ.Loop.addEventListener(ƒ.EVENT.LOOP_FRAME, update);

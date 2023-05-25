@@ -623,7 +623,7 @@
               {
                 "ƒ.GraphInstance": {
                   "name": "Dresser",
-                  "active": false,
+                  "active": true,
                   "components": {
                     "ComponentMesh": [
                       {
@@ -705,7 +705,7 @@
               {
                 "ƒ.GraphInstance": {
                   "name": "Interactable",
-                  "active": false,
+                  "active": true,
                   "components": {
                     "ComponentMesh": [
                       {
@@ -836,7 +836,6 @@
                         }
                       }
                     ],
-                    "Interactable": [],
                     "ComponentPick": [
                       {
                         "ƒ.ComponentPick": {
@@ -848,7 +847,8 @@
                     "Board": [
                       {
                         "Script.Board": {
-                          "active": true
+                          "active": true,
+                          "currentPage": 0
                         }
                       }
                     ]
