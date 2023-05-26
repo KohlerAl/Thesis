@@ -5,9 +5,10 @@ namespace Script {
   export let viewport: ƒ.Viewport;
   export let nodePaths: ƒ.Node;
   export let crc2: CanvasRenderingContext2D;
-  let branch: ƒ.Node;
+  export let branch: ƒ.Node;
   document.addEventListener("interactiveViewportStarted", <EventListener>start);
 
+  export let inventory: Page[] = []; 
 
   function start(_event: CustomEvent): void {
     viewport = _event.detail;
@@ -28,7 +29,7 @@ namespace Script {
     // ƒ.Loop.start();  // start the game loop to continously draw the viewport, update the audiosystem and drive the physics i/a
   }
 
-  function update(_event: Event): void {
+  export function update(_event: Event): void {
     // ƒ.Physics.simulate();  // if physics is included and used
     viewport.draw();
     nodePaths.broadcastEvent(new CustomEvent("renderWaypoints"));

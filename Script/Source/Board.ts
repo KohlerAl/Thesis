@@ -34,6 +34,15 @@ namespace Script {
                 return;
 
 
+            this.letterBox = document.querySelector("#notes");
+            this.p = this.letterBox.querySelector("#noteText");
+            this.p.addEventListener("click", this.showTranslation);
+
+            this.letterBox.querySelector("#right").addEventListener("pointerdown", this.changePage);
+            this.letterBox.querySelector("#left").addEventListener("pointerdown", this.changePage);
+            this.letterBox.querySelector("#Close").addEventListener("pointerdown", this.closePage);
+            this.letterBox.querySelector("#Collect").addEventListener("pointerdown", this.collectPage);
+
 
             // Listen to this component being added to or removed from a node
             this.addEventListener(ƒ.EVENT.COMPONENT_ADD, this.hndEvent);
@@ -58,8 +67,6 @@ namespace Script {
         }
 
         public openPage(): void {
-            this.letterBox = document.querySelector("#notes");
-            this.p = this.letterBox.querySelector("#noteText");
             this.letterBox.style.height = viewport.canvas.height + "px";
             this.letterBox.style.width = viewport.canvas.width + "px";
             this.letterBox.style.visibility = "visible";
@@ -67,15 +74,10 @@ namespace Script {
             this.p.innerHTML = this.pages[this.currentPage].textgerman;
             this.currentLanguage = "german";
             classInstance = this;
-            this.p.addEventListener("click", this.showTranslation);
-
-            this.letterBox.querySelector("#right").addEventListener("pointerdown", this.changePage);
-            this.letterBox.querySelector("#left").addEventListener("pointerdown", this.changePage);
-            this.letterBox.querySelector("#Close").addEventListener("pointerdown", this.closePage); 
         }
 
         public showTranslation(): void {
-            console.log("clicky"); 
+            console.log("clicky");
             if (classInstance.currentLanguage == "german") {
                 classInstance.p.innerHTML = classInstance.pages[classInstance.currentPage].textenglish;
                 classInstance.currentLanguage = "english";
@@ -108,16 +110,33 @@ namespace Script {
         }
 
         public flipPage(): void {
-            this.p.innerHTML = ""; 
-            this.p.innerHTML = this.pages[this.currentPage].textgerman; 
+            this.p.innerHTML = "";
+            this.p.innerHTML = this.pages[this.currentPage].textgerman;
             classInstance.currentLanguage = "german";
         }
 
         public closePage(): void {
-            classInstance.letterBox.style.visibility = "hidden"; 
-            classInstance.p.innerHTML = ""; 
-            classInstance.currentPage = 0; 
-            classInstance.currentLanguage = "german"; 
+            classInstance.letterBox.style.visibility = "hidden";
+            classInstance.p.innerHTML = "";
+            classInstance.currentPage = 0;
+            classInstance.currentLanguage = "german";
         }
+
+        public collectPage(): void {
+            if (classInstance.pages[classInstance.currentPage].shouldCollect == true) {
+                inventory.push(classInstance.pages[classInstance.currentPage]);
+                classInstance.pages.splice(classInstance.currentPage, 1);
+                console.log(inventory);
+                classInstance.flipPage();
+            }
+
+
+            if (inventory.length == 2) {
+                let letters: ƒ.Node = branch.getChildrenByName("Letters")[0]; 
+                letters.activate(false); 
+                update(null)
+            }
+        }
+
     }
 }

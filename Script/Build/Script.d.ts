@@ -14,6 +14,7 @@ declare namespace Script {
         changePage(_event: Event): void;
         flipPage(): void;
         closePage(): void;
+        collectPage(): void;
     }
 }
 declare namespace Script {
@@ -33,6 +34,9 @@ declare namespace Script {
     let viewport: ƒ.Viewport;
     let nodePaths: ƒ.Node;
     let crc2: CanvasRenderingContext2D;
+    let branch: ƒ.Node;
+    let inventory: Page[];
+    function update(_event: Event): void;
 }
 declare namespace Script {
     class Page {

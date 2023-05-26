@@ -26,6 +26,13 @@ var Script;
             // Don't start when running in editor
             if (ƒ.Project.mode == ƒ.MODE.EDITOR)
                 return;
+            this.letterBox = document.querySelector("#notes");
+            this.p = this.letterBox.querySelector("#noteText");
+            this.p.addEventListener("click", this.showTranslation);
+            this.letterBox.querySelector("#right").addEventListener("pointerdown", this.changePage);
+            this.letterBox.querySelector("#left").addEventListener("pointerdown", this.changePage);
+            this.letterBox.querySelector("#Close").addEventListener("pointerdown", this.closePage);
+            this.letterBox.querySelector("#Collect").addEventListener("pointerdown", this.collectPage);
             // Listen to this component being added to or removed from a node
             this.addEventListener("componentAdd" /* COMPONENT_ADD */, this.hndEvent);
             this.addEventListener("componentRemove" /* COMPONENT_REMOVE */, this.hndEvent);
@@ -47,18 +54,12 @@ var Script;
             }
         };
         openPage() {
-            this.letterBox = document.querySelector("#notes");
-            this.p = this.letterBox.querySelector("#noteText");
             this.letterBox.style.height = Script.viewport.canvas.height + "px";
             this.letterBox.style.width = Script.viewport.canvas.width + "px";
             this.letterBox.style.visibility = "visible";
             this.p.innerHTML = this.pages[this.currentPage].textgerman;
             this.currentLanguage = "german";
             classInstance = this;
-            this.p.addEventListener("click", this.showTranslation);
-            this.letterBox.querySelector("#right").addEventListener("pointerdown", this.changePage);
-            this.letterBox.querySelector("#left").addEventListener("pointerdown", this.changePage);
-            this.letterBox.querySelector("#Close").addEventListener("pointerdown", this.closePage);
         }
         showTranslation() {
             console.log("clicky");
@@ -98,6 +99,19 @@ var Script;
             classInstance.p.innerHTML = "";
             classInstance.currentPage = 0;
             classInstance.currentLanguage = "german";
+        }
+        collectPage() {
+            if (classInstance.pages[classInstance.currentPage].shouldCollect == true) {
+                Script.inventory.push(classInstance.pages[classInstance.currentPage]);
+                classInstance.pages.splice(classInstance.currentPage, 1);
+                console.log(Script.inventory);
+                classInstance.flipPage();
+            }
+            if (Script.inventory.length == 2) {
+                let letters = Script.branch.getChildrenByName("Letters")[0];
+                letters.activate(false);
+                Script.update(null);
+            }
         }
     }
     Script.Board = Board;
@@ -157,17 +171,17 @@ var Script;
 (function (Script) {
     var ƒ = FudgeCore;
     ƒ.Debug.info("Main Program Template running!");
-    let branch;
     document.addEventListener("interactiveViewportStarted", start);
+    Script.inventory = [];
     function start(_event) {
         Script.viewport = _event.detail;
-        branch = Script.viewport.getBranch();
+        Script.branch = Script.viewport.getBranch();
         Script.nodePaths = Script.viewport.getBranch().getChildrenByName("Paths")[0];
         Script.crc2 = Script.viewport.canvas.getContext("2d");
         setUpCam();
-        console.log(branch);
+        console.log(Script.branch);
         Script.viewport.canvas.addEventListener("pointerdown", testClick);
-        branch.addEventListener("pointerdown", handleClick);
+        Script.branch.addEventListener("pointerdown", handleClick);
         let dialogueBox = document.querySelector("#dialogue");
         dialogueBox.style.width = Script.viewport.canvas.width + "px";
         console.log(dialogueBox);
@@ -181,6 +195,7 @@ var Script;
         Script.nodePaths.broadcastEvent(new CustomEvent("renderWaypoints"));
         //ƒ.AudioManager.default.update();
     }
+    Script.update = update;
     function setUpCam() {
         let camNode;
         camNode = new ƒ.Node("camNode");
