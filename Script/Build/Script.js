@@ -9,7 +9,12 @@ var Script;
         static iSubclass = ƒ.Component.registerSubclass(Board);
         // Properties may be mutated by users in the editor via the automatically created user interface
         pages = [
-            new Script.Page("Nianna Blume <br> -Die Blume riecht süß. <br>- Blasse, runde Blüten <br>- Die Blume blüht das ganze Jahr lang.", "Nianna flower <br>- The flower smells sweet. <br>- Pale, round flowers <br>- The flower blooms all year round", true)
+            new Script.Page("Nianna Blume <br> -Die Blume riecht süß. <br>- Blasse, runde Blüten <br>- Die Blume blüht das ganze Jahr lang.", "Nianna flower <br>- The flower smells sweet. <br>- Pale, round flowers <br>- The flower blooms all year round", true),
+            new Script.Page("- Das Öl der Nianna Blume ist gelb und riecht sehr süß. <br>- Das Öl kann Änderungen im Verhalten und der Persönlichkeit hervorrufen", "- The oil of Nianna flower is yellow and smells very sweet. <br>- The oil can cause changes in behavior and personality", true),
+            new Script.Page("Die ersten Menschen kamen 1986 auf Nelara an. <br>Sie kamen von der Erde und sollten auf dem neuen <br>Planeten nach Rohstoffen suchen.", "The first humans arrived on Nelara in 1986. <br>They came from Earth and were supposed to search for<br> raw materials on the new planet.", false),
+            new Script.Page("Einkaufsliste: <br>Nudeln<br>Tomaten<br>Pilze<br>Äpfel", "Shopping list: <br>Pasta<br>Tomatoes<br>Mushrooms<br>Apples", false),
+            new Script.Page("Samstag, 15.00 Uhr: <br>Besuch bei Mama und Papa", "Saturday, 3:00 p.m.: <br>Visit with mom and dad", false),
+            new Script.Page("Nicht vergessen: <br>Elvas Geburtstag ist am 5. Juni 3798", "Don't forget: <br>Elva's birthday is June 5, 3798", false)
         ];
         currentPage = 0;
         letterBox;
@@ -43,7 +48,7 @@ var Script;
         };
         openPage() {
             this.letterBox = document.querySelector("#notes");
-            this.p = this.letterBox.querySelector("p");
+            this.p = this.letterBox.querySelector("#noteText");
             this.letterBox.style.height = Script.viewport.canvas.height + "px";
             this.letterBox.style.width = Script.viewport.canvas.width + "px";
             this.letterBox.style.visibility = "visible";
@@ -51,8 +56,12 @@ var Script;
             this.currentLanguage = "german";
             classInstance = this;
             this.p.addEventListener("click", this.showTranslation);
+            this.letterBox.querySelector("#right").addEventListener("pointerdown", this.changePage);
+            this.letterBox.querySelector("#left").addEventListener("pointerdown", this.changePage);
+            this.letterBox.querySelector("#Close").addEventListener("pointerdown", this.closePage);
         }
         showTranslation() {
+            console.log("clicky");
             if (classInstance.currentLanguage == "german") {
                 classInstance.p.innerHTML = classInstance.pages[classInstance.currentPage].textenglish;
                 classInstance.currentLanguage = "english";
@@ -61,6 +70,34 @@ var Script;
                 classInstance.p.innerHTML = classInstance.pages[classInstance.currentPage].textgerman;
                 classInstance.currentLanguage = "german";
             }
+        }
+        changePage(_event) {
+            let target = _event.target;
+            let id = target.id;
+            if (id == "right") {
+                if (classInstance.currentPage == classInstance.pages.length - 1)
+                    classInstance.currentPage = 0;
+                else
+                    classInstance.currentPage++;
+            }
+            else if (id == "left") {
+                if (classInstance.currentPage == 0)
+                    classInstance.currentPage = classInstance.pages.length - 1;
+                else
+                    classInstance.currentPage--;
+            }
+            classInstance.flipPage();
+        }
+        flipPage() {
+            this.p.innerHTML = "";
+            this.p.innerHTML = this.pages[this.currentPage].textgerman;
+            classInstance.currentLanguage = "german";
+        }
+        closePage() {
+            classInstance.letterBox.style.visibility = "hidden";
+            classInstance.p.innerHTML = "";
+            classInstance.currentPage = 0;
+            classInstance.currentLanguage = "german";
         }
     }
     Script.Board = Board;
@@ -119,7 +156,6 @@ var Script;
 var Script;
 (function (Script) {
     var ƒ = FudgeCore;
-    var ƒAid = FudgeAid;
     ƒ.Debug.info("Main Program Template running!");
     let branch;
     document.addEventListener("interactiveViewportStarted", start);
@@ -135,18 +171,6 @@ var Script;
         let dialogueBox = document.querySelector("#dialogue");
         dialogueBox.style.width = Script.viewport.canvas.width + "px";
         console.log(dialogueBox);
-        let zoo = branch.getChildrenByName("Interactables")[0];
-        let meshShpere = new ƒ.MeshSphere("BoundingSphere", 40, 40);
-        let material = new ƒ.Material("Transparent", ƒ.ShaderLit, new ƒ.CoatColored(ƒ.Color.CSS("white", 0.5)));
-        for (let child of zoo.getChildren()) {
-            let sphere = new ƒAid.Node("BoundingSphere", ƒ.Matrix4x4.SCALING(ƒ.Vector3.ONE(2)), material, meshShpere);
-            sphere.mtxLocal.scale(ƒ.Vector3.ONE(child.radius));
-            console.warn(child.radius);
-            let cmpMesh = child.getComponent(ƒ.ComponentMesh);
-            sphere.mtxLocal.translation = cmpMesh.mtxWorld.translation;
-            sphere.getComponent(ƒ.ComponentMaterial).sortForAlpha = true;
-            branch.appendChild(sphere);
-        }
         ƒ.Loop.addEventListener("loopFrame" /* LOOP_FRAME */, update);
         update(null);
         // ƒ.Loop.start();  // start the game loop to continously draw the viewport, update the audiosystem and drive the physics i/a
@@ -166,13 +190,10 @@ var Script;
     }
     function createCamera() {
         let newCam = new ƒ.ComponentCamera();
-        //newCam.projectOrthographic(); 
         Script.viewport.camera = newCam;
         Script.viewport.camera.projectCentral(Script.canvas.clientWidth / Script.canvas.clientHeight, 5);
-        //viewport.camera.mtxPivot.translate(new ƒ.Vector3(0, 0, 0));
         Script.viewport.camera.mtxPivot.rotateY(180);
         Script.viewport.camera.mtxPivot.translateZ(-18);
-        //viewport.camera.mtxPivot.scale(new ƒ.Vector3(2, 1, 2));
         return newCam;
     }
     function handleClick(_event) {
@@ -186,13 +207,6 @@ var Script;
             let board = node.getComponent(Script.Board);
             board.openPage();
         }
-        /*
-        let interact: ƒ.Node = branch.getChildrenByName("Interactables")[0];
-        let childNodes: ƒ.Node[] = interact.getChildren();
-        for (let kid of childNodes) {
-          let interactable: Interactable = kid.getComponent(Interactable);
-          interactable.checkPosition(_event.clientX, _event.clientY);
-        } */
     }
     function testClick(_event) {
         Script.viewport.draw();

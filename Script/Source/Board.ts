@@ -10,7 +10,14 @@ namespace Script {
         pages: Page[] =
             [
                 new Page("Nianna Blume <br> -Die Blume riecht süß. <br>- Blasse, runde Blüten <br>- Die Blume blüht das ganze Jahr lang.",
-                    "Nianna flower <br>- The flower smells sweet. <br>- Pale, round flowers <br>- The flower blooms all year round", true)
+                    "Nianna flower <br>- The flower smells sweet. <br>- Pale, round flowers <br>- The flower blooms all year round", true),
+                new Page("- Das Öl der Nianna Blume ist gelb und riecht sehr süß. <br>- Das Öl kann Änderungen im Verhalten und der Persönlichkeit hervorrufen",
+                    "- The oil of Nianna flower is yellow and smells very sweet. <br>- The oil can cause changes in behavior and personality", true),
+                new Page("Die ersten Menschen kamen 1986 auf Nelara an. <br>Sie kamen von der Erde und sollten auf dem neuen <br>Planeten nach Rohstoffen suchen.",
+                    "The first humans arrived on Nelara in 1986. <br>They came from Earth and were supposed to search for<br> raw materials on the new planet.", false),
+                new Page("Einkaufsliste: <br>Nudeln<br>Tomaten<br>Pilze<br>Äpfel", "Shopping list: <br>Pasta<br>Tomatoes<br>Mushrooms<br>Apples", false),
+                new Page("Samstag, 15.00 Uhr: <br>Besuch bei Mama und Papa", "Saturday, 3:00 p.m.: <br>Visit with mom and dad", false),
+                new Page("Nicht vergessen: <br>Elvas Geburtstag ist am 5. Juni 3798", "Don't forget: <br>Elva's birthday is June 5, 3798", false)
 
             ];
 
@@ -52,7 +59,7 @@ namespace Script {
 
         public openPage(): void {
             this.letterBox = document.querySelector("#notes");
-            this.p = this.letterBox.querySelector("p");
+            this.p = this.letterBox.querySelector("#noteText");
             this.letterBox.style.height = viewport.canvas.height + "px";
             this.letterBox.style.width = viewport.canvas.width + "px";
             this.letterBox.style.visibility = "visible";
@@ -61,17 +68,56 @@ namespace Script {
             this.currentLanguage = "german";
             classInstance = this;
             this.p.addEventListener("click", this.showTranslation);
+
+            this.letterBox.querySelector("#right").addEventListener("pointerdown", this.changePage);
+            this.letterBox.querySelector("#left").addEventListener("pointerdown", this.changePage);
+            this.letterBox.querySelector("#Close").addEventListener("pointerdown", this.closePage); 
         }
 
         public showTranslation(): void {
+            console.log("clicky"); 
             if (classInstance.currentLanguage == "german") {
                 classInstance.p.innerHTML = classInstance.pages[classInstance.currentPage].textenglish;
-                classInstance.currentLanguage = "english"; 
+                classInstance.currentLanguage = "english";
             }
             else {
                 classInstance.p.innerHTML = classInstance.pages[classInstance.currentPage].textgerman;
-                classInstance.currentLanguage = "german"; 
+                classInstance.currentLanguage = "german";
             }
+        }
+
+        public changePage(_event: Event): void {
+            let target: HTMLElement = <HTMLElement>_event.target;
+            let id: string = target.id;
+
+            if (id == "right") {
+                if (classInstance.currentPage == classInstance.pages.length - 1)
+                    classInstance.currentPage = 0;
+                else
+                    classInstance.currentPage++
+            }
+
+            else if (id == "left") {
+                if (classInstance.currentPage == 0)
+                    classInstance.currentPage = classInstance.pages.length - 1;
+                else
+                    classInstance.currentPage--;
+            }
+
+            classInstance.flipPage();
+        }
+
+        public flipPage(): void {
+            this.p.innerHTML = ""; 
+            this.p.innerHTML = this.pages[this.currentPage].textgerman; 
+            classInstance.currentLanguage = "german";
+        }
+
+        public closePage(): void {
+            classInstance.letterBox.style.visibility = "hidden"; 
+            classInstance.p.innerHTML = ""; 
+            classInstance.currentPage = 0; 
+            classInstance.currentLanguage = "german"; 
         }
     }
 }

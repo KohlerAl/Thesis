@@ -699,7 +699,7 @@
                         "Script.Interactable": {
                           "active": true,
                           "dialogue": {
-                            "text": "Dresser"
+                            "text": "Unfortunately, no flower here. But looks like here is the secret candy stash."
                           }
                         }
                       }
@@ -781,7 +781,7 @@
                         "Script.Interactable": {
                           "active": true,
                           "dialogue": {
-                            "text": "Bookshelf"
+                            "text": "Many interesting books. But, unfortunately, nothing about flowers"
                           }
                         }
                       }
@@ -815,7 +815,7 @@
                       {
                         "ƒ.ComponentMaterial": {
                           "sortForAlpha": false,
-                          "clrPrimary": "[0.45098039215686275, 0.796078431372549, 0.3215686274509804, 0.45]",
+                          "clrPrimary": "[0.45098039215686275, 0.796078431372549, 0.3215686274509804, 0]",
                           "clrSecondary": "[1, 1, 1, 1]",
                           "pivot": {
                             "translation": "[0, 0]",
@@ -1252,6 +1252,97 @@
                   },
                   "children": [],
                   "idSource": "Graph|2023-05-19T08:49:01.187Z|57181"
+                }
+              }
+            ]
+          }
+        },
+        {
+          "ƒ.Node": {
+            "name": "Interactables",
+            "active": true,
+            "components": {},
+            "children": [
+              {
+                "ƒ.GraphInstance": {
+                  "name": "Bookshelf",
+                  "active": true,
+                  "components": {
+                    "ComponentMesh": [
+                      {
+                        "ƒ.ComponentMesh": {
+                          "idMesh": "MeshQuad|2023-05-18T10:15:33.499Z|93331",
+                          "pivot": {
+                            "translation": "[0, 0, 0.0010000000474974513]",
+                            "rotation": "[0, 0, 0]",
+                            "scaling": "[1, 0.9999999403953552, 1]"
+                          },
+                          "Component": {
+                            "active": true
+                          }
+                        }
+                      }
+                    ],
+                    "ComponentMaterial": [
+                      {
+                        "ƒ.ComponentMaterial": {
+                          "sortForAlpha": false,
+                          "clrPrimary": "[0.8627450980392157, 0.2196078431372549, 0.2196078431372549, 0]",
+                          "clrSecondary": "[1, 1, 1, 1]",
+                          "pivot": {
+                            "translation": "[0, 0]",
+                            "rotation": 0,
+                            "scaling": "[1, 1]"
+                          },
+                          "Component": {
+                            "active": true
+                          },
+                          "idMaterial": "Material|2023-05-19T08:32:52.641Z|95351"
+                        }
+                      }
+                    ],
+                    "ComponentTransform": [
+                      {
+                        "ƒ.ComponentTransform": {
+                          "local": {
+                            "translation": "[0.5099998116493225, -0.16600000858306885, 0]",
+                            "rotation": "[0, 0, 0]",
+                            "scaling": "[0.09000006318092346, 0.29999998211860657, 0.0010000000474974513]"
+                          },
+                          "Component": {
+                            "active": true
+                          }
+                        }
+                      }
+                    ],
+                    "ComponentGraphFilter": [
+                      {
+                        "ƒ.ComponentGraphFilter": {
+                          "active": true
+                        }
+                      }
+                    ],
+                    "ComponentPick": [
+                      {
+                        "ƒ.ComponentPick": {
+                          "active": true,
+                          "pick": "radius"
+                        }
+                      }
+                    ],
+                    "Interactable": [
+                      {
+                        "Script.Interactable": {
+                          "active": true,
+                          "dialogue": {
+                            "text": "So many books. But unfortunately no clues."
+                          }
+                        }
+                      }
+                    ]
+                  },
+                  "children": [],
+                  "idSource": "Graph|2023-05-24T08:41:38.987Z|27527"
                 }
               }
             ]

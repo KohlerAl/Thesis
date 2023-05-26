@@ -11,6 +11,9 @@ declare namespace Script {
         hndEvent: (_event: Event) => void;
         openPage(): void;
         showTranslation(): void;
+        changePage(_event: Event): void;
+        flipPage(): void;
+        closePage(): void;
     }
 }
 declare namespace Script {

@@ -1,7 +1,5 @@
 namespace Script {
   import ƒ = FudgeCore;
-  
-  import ƒAid = FudgeAid;
   ƒ.Debug.info("Main Program Template running!");
 
   export let viewport: ƒ.Viewport;
@@ -25,28 +23,6 @@ namespace Script {
     dialogueBox.style.width = viewport.canvas.width + "px";
     console.log(dialogueBox)
 
-
-
-
-    let zoo: ƒ.Node = branch.getChildrenByName("Interactables")[0];
-
-    let meshShpere: ƒ.MeshSphere = new ƒ.MeshSphere("BoundingSphere", 40, 40);
-    let material: ƒ.Material = new ƒ.Material("Transparent", ƒ.ShaderLit, new ƒ.CoatColored(ƒ.Color.CSS("white", 0.5)));
-    for (let child of zoo.getChildren()) {
-
-      let sphere: ƒ.Node = new ƒAid.Node(
-        "BoundingSphere", ƒ.Matrix4x4.SCALING(ƒ.Vector3.ONE(2)), material, meshShpere
-      );
-      sphere.mtxLocal.scale(ƒ.Vector3.ONE(child.radius));
-      console.warn(child.radius)
-      let cmpMesh: ƒ.ComponentMesh = child.getComponent(ƒ.ComponentMesh);
-      sphere.mtxLocal.translation = cmpMesh.mtxWorld.translation;
-      sphere.getComponent(ƒ.ComponentMaterial).sortForAlpha = true;
-      branch.appendChild(sphere);
-
-    }
-
-
     ƒ.Loop.addEventListener(ƒ.EVENT.LOOP_FRAME, update);
     update(null);
     // ƒ.Loop.start();  // start the game loop to continously draw the viewport, update the audiosystem and drive the physics i/a
@@ -69,15 +45,10 @@ namespace Script {
 
   function createCamera(): ƒ.ComponentCamera {
     let newCam: ƒ.ComponentCamera = new ƒ.ComponentCamera();
-    //newCam.projectOrthographic(); 
     viewport.camera = newCam;
     viewport.camera.projectCentral(canvas.clientWidth / canvas.clientHeight, 5);
-    //viewport.camera.mtxPivot.translate(new ƒ.Vector3(0, 0, 0));
     viewport.camera.mtxPivot.rotateY(180);
     viewport.camera.mtxPivot.translateZ(-18);
-
-    //viewport.camera.mtxPivot.scale(new ƒ.Vector3(2, 1, 2));
-
     return newCam;
   }
 
@@ -91,16 +62,9 @@ namespace Script {
     }
 
     else if (node.getComponent(Board)) {
-      let board: Board = node.getComponent(Board); 
-      board.openPage(); 
+      let board: Board = node.getComponent(Board);
+      board.openPage();
     }
-    /* 
-    let interact: ƒ.Node = branch.getChildrenByName("Interactables")[0];
-    let childNodes: ƒ.Node[] = interact.getChildren();
-    for (let kid of childNodes) {
-      let interactable: Interactable = kid.getComponent(Interactable);
-      interactable.checkPosition(_event.clientX, _event.clientY);
-    } */
   }
   function testClick(_event: PointerEvent): void {
     viewport.draw();

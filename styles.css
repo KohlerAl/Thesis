@@ -60,9 +60,6 @@ canvas.fullscreen {
   padding: 15px;
   color: whitesmoke;
   visibility: hidden;
-  /* background-image: url("images/Letter.png");
-  background-size: contain;
-  background-repeat: no-repeat; */
   font-size: 25px;
   padding: 0px;
   top: 0;
@@ -70,6 +67,29 @@ canvas.fullscreen {
 
 #notes img {
   max-width: 100%;
+  max-height: 95%;
+}
+
+#right, #left {
+  position: relative;
+  top: -50px;
+  left: -20%;
+}
+
+#notes .interface {
+  color: #fff;
+  font-family: pixel;
+  position: relative;
+  top: -22%;
+  font-size: 30px;
+}
+
+#notes .interface p {
+  font-family: pixel;
+}
+
+#Collect {
+  left: 8%;
 }
 
 #notes p {
