@@ -19,6 +19,16 @@ declare namespace Script {
 }
 declare namespace Script {
     import ƒ = FudgeCore;
+    class Door extends ƒ.ComponentScript {
+        static readonly iSubclass: number;
+        switchToGraph: string;
+        constructor();
+        hndEvent: (_event: Event) => void;
+        switchGraph(): void;
+    }
+}
+declare namespace Script {
+    import ƒ = FudgeCore;
     class Interactable extends ƒ.ComponentScript {
         static readonly iSubclass: number;
         dialogue: Text;
@@ -66,7 +76,9 @@ declare namespace Script {
     }
 }
 declare namespace Script {
+    import ƒ = FudgeCore;
     let canvas: HTMLCanvasElement;
+    let cmpCamera: ƒ.ComponentCamera;
 }
 declare namespace Script {
     import ƒ = FudgeCore;

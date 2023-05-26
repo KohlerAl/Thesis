@@ -1,5 +1,6 @@
 namespace Script {
   import ƒ = FudgeCore;
+  import ƒAid = FudgeAid;
   ƒ.Debug.info("Main Program Template running!");
 
   export let viewport: ƒ.Viewport;
@@ -8,7 +9,7 @@ namespace Script {
   export let branch: ƒ.Node;
   document.addEventListener("interactiveViewportStarted", <EventListener>start);
 
-  export let inventory: Page[] = []; 
+  export let inventory: Page[] = [];
 
   function start(_event: CustomEvent): void {
     viewport = _event.detail;
@@ -16,19 +17,35 @@ namespace Script {
     nodePaths = viewport.getBranch().getChildrenByName("Paths")[0];
     crc2 = viewport.canvas.getContext("2d");
     setUpCam();
-    console.log(branch)
     viewport.canvas.addEventListener("pointerdown", testClick);
     branch.addEventListener("pointerdown", <ƒ.EventListenerUnified>handleClick);
 
     let dialogueBox: HTMLDivElement = document.querySelector("#dialogue");
     dialogueBox.style.width = viewport.canvas.width + "px";
-    console.log(dialogueBox)
+
+    /* let zoo: ƒ.Node = branch.getChildrenByName("Interactables")[0];
+
+    let meshShpere: ƒ.MeshSphere = new ƒ.MeshSphere("BoundingSphere", 40, 40);
+    let material: ƒ.Material = new ƒ.Material("Transparent", ƒ.ShaderLit, new ƒ.CoatColored(ƒ.Color.CSS("white", 0.5)));
+    for (let child of zoo.getChildren()) {
+
+      let sphere: ƒ.Node = new ƒAid.Node(
+        "BoundingSphere", ƒ.Matrix4x4.SCALING(ƒ.Vector3.ONE(2)), material, meshShpere
+      );
+      sphere.mtxLocal.scale(ƒ.Vector3.ONE(child.radius));
+      console.warn(child.radius)
+      let cmpMesh: ƒ.ComponentMesh = child.getComponent(ƒ.ComponentMesh);
+      sphere.mtxLocal.translation = cmpMesh.mtxWorld.translation;
+      sphere.getComponent(ƒ.ComponentMaterial).sortForAlpha = true;
+      branch.appendChild(sphere);
+
+
+      // ƒ.Loop.start();  // start the game loop to continously draw the viewport, update the audiosystem and drive the physics i/a
+    } */
 
     ƒ.Loop.addEventListener(ƒ.EVENT.LOOP_FRAME, update);
     update(null);
-    // ƒ.Loop.start();  // start the game loop to continously draw the viewport, update the audiosystem and drive the physics i/a
   }
-
   export function update(_event: Event): void {
     // ƒ.Physics.simulate();  // if physics is included and used
     viewport.draw();
@@ -66,6 +83,11 @@ namespace Script {
       let board: Board = node.getComponent(Board);
       board.openPage();
     }
+
+    else if (node.getComponent(Door)) {
+      let door: Door = node.getComponent(Door);
+      door.switchGraph();
+    }
   }
   function testClick(_event: PointerEvent): void {
     viewport.draw();
@@ -74,3 +96,4 @@ namespace Script {
 
 
 }
+

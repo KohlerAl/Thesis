@@ -120,6 +120,53 @@ var Script;
 (function (Script) {
     var ƒ = FudgeCore;
     ƒ.Project.registerScriptNamespace(Script); // Register the namespace to FUDGE for serialization
+    class Door extends ƒ.ComponentScript {
+        // Register the script as component for use in the editor via drag&drop
+        static iSubclass = ƒ.Component.registerSubclass(Door);
+        // Properties may be mutated by users in the editor via the automatically created user interface
+        switchToGraph;
+        constructor() {
+            super();
+            this.constructor;
+            // Don't start when running in editor
+            if (ƒ.Project.mode == ƒ.MODE.EDITOR)
+                return;
+            // Listen to this component being added to or removed from a node
+            this.addEventListener("componentAdd" /* COMPONENT_ADD */, this.hndEvent);
+            this.addEventListener("componentRemove" /* COMPONENT_REMOVE */, this.hndEvent);
+            this.addEventListener("nodeDeserialized" /* NODE_DESERIALIZED */, this.hndEvent);
+        }
+        // Activate the functions of this component as response to events
+        hndEvent = (_event) => {
+            switch (_event.type) {
+                case "componentAdd" /* COMPONENT_ADD */:
+                    // ƒ.Debug.log(this.message, this.node);
+                    break;
+                case "componentRemove" /* COMPONENT_REMOVE */:
+                    this.removeEventListener("componentAdd" /* COMPONENT_ADD */, this.hndEvent);
+                    this.removeEventListener("componentRemove" /* COMPONENT_REMOVE */, this.hndEvent);
+                    break;
+                case "nodeDeserialized" /* NODE_DESERIALIZED */:
+                    // if deserialized the node is now fully reconstructed and access to all its components and children is possible
+                    break;
+            }
+        };
+        switchGraph() {
+            //viewport.initialize("InteractiveViewport", this.switchToGraph, cmpCamera, canvas); 
+            let graph = ƒ.Project.resources[this.switchToGraph];
+            Script.viewport.setBranch(graph);
+            Script.canvas.dispatchEvent(new CustomEvent("interactiveViewportStarted", {
+                bubbles: true,
+                detail: Script.viewport
+            }));
+        }
+    }
+    Script.Door = Door;
+})(Script || (Script = {}));
+var Script;
+(function (Script) {
+    var ƒ = FudgeCore;
+    ƒ.Project.registerScriptNamespace(Script); // Register the namespace to FUDGE for serialization
     class Interactable extends ƒ.ComponentScript {
         // Register the script as component for use in the editor via drag&drop
         static iSubclass = ƒ.Component.registerSubclass(Interactable);
@@ -179,15 +226,31 @@ var Script;
         Script.nodePaths = Script.viewport.getBranch().getChildrenByName("Paths")[0];
         Script.crc2 = Script.viewport.canvas.getContext("2d");
         setUpCam();
-        console.log(Script.branch);
         Script.viewport.canvas.addEventListener("pointerdown", testClick);
         Script.branch.addEventListener("pointerdown", handleClick);
         let dialogueBox = document.querySelector("#dialogue");
         dialogueBox.style.width = Script.viewport.canvas.width + "px";
-        console.log(dialogueBox);
+        /* let zoo: ƒ.Node = branch.getChildrenByName("Interactables")[0];
+    
+        let meshShpere: ƒ.MeshSphere = new ƒ.MeshSphere("BoundingSphere", 40, 40);
+        let material: ƒ.Material = new ƒ.Material("Transparent", ƒ.ShaderLit, new ƒ.CoatColored(ƒ.Color.CSS("white", 0.5)));
+        for (let child of zoo.getChildren()) {
+    
+          let sphere: ƒ.Node = new ƒAid.Node(
+            "BoundingSphere", ƒ.Matrix4x4.SCALING(ƒ.Vector3.ONE(2)), material, meshShpere
+          );
+          sphere.mtxLocal.scale(ƒ.Vector3.ONE(child.radius));
+          console.warn(child.radius)
+          let cmpMesh: ƒ.ComponentMesh = child.getComponent(ƒ.ComponentMesh);
+          sphere.mtxLocal.translation = cmpMesh.mtxWorld.translation;
+          sphere.getComponent(ƒ.ComponentMaterial).sortForAlpha = true;
+          branch.appendChild(sphere);
+    
+    
+          // ƒ.Loop.start();  // start the game loop to continously draw the viewport, update the audiosystem and drive the physics i/a
+        } */
         ƒ.Loop.addEventListener("loopFrame" /* LOOP_FRAME */, update);
         update(null);
-        // ƒ.Loop.start();  // start the game loop to continously draw the viewport, update the audiosystem and drive the physics i/a
     }
     function update(_event) {
         // ƒ.Physics.simulate();  // if physics is included and used
@@ -221,6 +284,10 @@ var Script;
         else if (node.getComponent(Script.Board)) {
             let board = node.getComponent(Script.Board);
             board.openPage();
+        }
+        else if (node.getComponent(Script.Door)) {
+            let door = node.getComponent(Script.Door);
+            door.switchGraph();
         }
     }
     function testClick(_event) {
@@ -345,10 +412,10 @@ var Script;
             alert("Nothing to render. Create a graph with at least a mesh, material and probably some light");
             return;
         }
-        let cmpCamera = new ƒ.ComponentCamera();
+        Script.cmpCamera = new ƒ.ComponentCamera();
         Script.canvas = document.querySelector("canvas");
         let viewport = new ƒ.Viewport();
-        viewport.initialize("InteractiveViewport", graph, cmpCamera, Script.canvas);
+        viewport.initialize("InteractiveViewport", graph, Script.cmpCamera, Script.canvas);
         ƒ.Debug.log("Viewport:", viewport);
         viewport.draw();
         Script.canvas.dispatchEvent(new CustomEvent("interactiveViewportStarted", {

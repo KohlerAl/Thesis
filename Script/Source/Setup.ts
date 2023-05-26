@@ -2,6 +2,7 @@ namespace Script {
     import ƒ = FudgeCore;
     window.addEventListener("load", init);
     export let canvas: HTMLCanvasElement;
+    export let cmpCamera: ƒ.ComponentCamera; 
 
     let dialog: HTMLDialogElement;
     function init(_event: Event): void {
@@ -28,7 +29,7 @@ namespace Script {
             );
             return;
         }
-        let cmpCamera: ƒ.ComponentCamera = new ƒ.ComponentCamera();
+        cmpCamera = new ƒ.ComponentCamera();
         canvas = document.querySelector("canvas");
         let viewport: ƒ.Viewport = new ƒ.Viewport();
         viewport.initialize("InteractiveViewport", graph, cmpCamera, canvas);
