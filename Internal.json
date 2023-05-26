@@ -113,6 +113,13 @@
       }
     }
   },
+  "MeshCube|2023-05-25T19:18:14.232Z|73235": {
+    "ƒ.MeshCube": {
+      "idResource": "MeshCube|2023-05-25T19:18:14.232Z|73235",
+      "name": "MeshCube",
+      "type": "MeshCube"
+    }
+  },
   "Graph|2023-05-18T10:13:48.300Z|18467": {
     "ƒ.Graph": {
       "name": "Room_Right",
@@ -632,7 +639,7 @@
                           "pivot": {
                             "translation": "[0, 0, 0.0010000000474974513]",
                             "rotation": "[0, 0, 0]",
-                            "scaling": "[0.020000196993350983, 0.019999999552965164, 1]"
+                            "scaling": "[1.000000238418579, 1, 1]"
                           },
                           "Component": {
                             "active": true
@@ -644,7 +651,7 @@
                       {
                         "ƒ.ComponentMaterial": {
                           "sortForAlpha": false,
-                          "clrPrimary": "[0.8627450980392157, 0.2196078431372549, 0.2196078431372549, 0.5]",
+                          "clrPrimary": "[0.8627450980392157, 0.2196078431372549, 0.2196078431372549, 0]",
                           "clrSecondary": "[1, 1, 1, 1]",
                           "pivot": {
                             "translation": "[0, 0]",
@@ -664,7 +671,7 @@
                           "local": {
                             "translation": "[0.1399998515844345, -0.2459999918937683, 0]",
                             "rotation": "[0, 0, 0]",
-                            "scaling": "[1, 1, 1]"
+                            "scaling": "[0.3100000023841858, 0.09999999403953552, 0.009999999776482582]"
                           },
                           "Component": {
                             "active": true
@@ -704,7 +711,7 @@
               },
               {
                 "ƒ.GraphInstance": {
-                  "name": "Interactable",
+                  "name": "Bookshelf",
                   "active": true,
                   "components": {
                     "ComponentMesh": [
@@ -726,7 +733,7 @@
                       {
                         "ƒ.ComponentMaterial": {
                           "sortForAlpha": false,
-                          "clrPrimary": "[0.8627450980392157, 0.2196078431372549, 0.2196078431372549, 0.35]",
+                          "clrPrimary": "[0.8627450980392157, 0.2196078431372549, 0.2196078431372549, 0]",
                           "clrSecondary": "[1, 1, 1, 1]",
                           "pivot": {
                             "translation": "[0, 0]",
@@ -746,7 +753,7 @@
                           "local": {
                             "translation": "[0.5299997925758362, -0.1459999680519104, 0]",
                             "rotation": "[0, 0, 0]",
-                            "scaling": "[0.2900000512599945, 0.4399999678134918, 1]"
+                            "scaling": "[0.05000000819563866, 0.25999999046325684, 0.006900000385940075]"
                           },
                           "Component": {
                             "active": true
@@ -792,7 +799,7 @@
                     "ComponentMesh": [
                       {
                         "ƒ.ComponentMesh": {
-                          "idMesh": "MeshCube|2023-05-25T19:18:14.232Z|73235",
+                          "idMesh": "MeshQuad|2023-05-18T10:15:33.499Z|93331",
                           "pivot": {
                             "translation": "[0, 0, 0]",
                             "rotation": "[0, 0, 0]",
@@ -808,7 +815,7 @@
                       {
                         "ƒ.ComponentMaterial": {
                           "sortForAlpha": false,
-                          "clrPrimary": "[0.796078431372549, 0.3215686274509804, 0.3215686274509804, 0.26]",
+                          "clrPrimary": "[0.45098039215686275, 0.796078431372549, 0.3215686274509804, 0.45]",
                           "clrSecondary": "[1, 1, 1, 1]",
                           "pivot": {
                             "translation": "[0, 0]",
@@ -828,7 +835,7 @@
                           "local": {
                             "translation": "[-0.41000011563301086, -0.03999999910593033, 0.0010000000474974513]",
                             "rotation": "[0, 0, 0]",
-                            "scaling": "[0.10000019520521164, 0.10000000149011612, 1]"
+                            "scaling": "[0.34000009298324585, 0.18000002205371857, 0.009999999776482582]"
                           },
                           "Component": {
                             "active": true
@@ -1421,13 +1428,6 @@
       "children": [],
       "idResource": "Graph|2023-05-24T08:41:38.987Z|27527",
       "type": "Graph"
-    }
-  },
-  "MeshCube|2023-05-25T19:18:14.232Z|73235": {
-    "ƒ.MeshCube": {
-      "idResource": "MeshCube|2023-05-25T19:18:14.232Z|73235",
-      "name": "MeshCube",
-      "type": "MeshCube"
     }
   }
 }
