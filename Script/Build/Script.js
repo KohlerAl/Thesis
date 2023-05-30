@@ -1,6 +1,22 @@
 "use strict";
 var Script;
 (function (Script) {
+    class Answer {
+        choiceAGerman;
+        choiceAEnglish;
+        choiceBGerman;
+        choiceBEnglish;
+        constructor(_choiceAGerman, _choiceAEnglish, _choiceBGerman, _choiceBEnglish) {
+            this.choiceAGerman = _choiceAGerman;
+            this.choiceAEnglish = _choiceAEnglish;
+            this.choiceBGerman = _choiceBGerman;
+            this.choiceBEnglish = _choiceBEnglish;
+        }
+    }
+    Script.Answer = Answer;
+})(Script || (Script = {}));
+var Script;
+(function (Script) {
     var ƒ = FudgeCore;
     ƒ.Project.registerScriptNamespace(Script); // Register the namespace to FUDGE for serialization
     let classInstance;
@@ -118,6 +134,18 @@ var Script;
 })(Script || (Script = {}));
 var Script;
 (function (Script) {
+    class Dialogue {
+        textGerman;
+        textEnglish;
+        constructor(_textGerman, _textEnglish) {
+            this.textGerman = _textGerman;
+            this.textEnglish = _textEnglish;
+        }
+    }
+    Script.Dialogue = Dialogue;
+})(Script || (Script = {}));
+var Script;
+(function (Script) {
     var ƒ = FudgeCore;
     ƒ.Project.registerScriptNamespace(Script); // Register the namespace to FUDGE for serialization
     class Door extends ƒ.ComponentScript {
@@ -155,6 +183,8 @@ var Script;
             //viewport.initialize("InteractiveViewport", this.switchToGraph, cmpCamera, canvas); 
             let graph = ƒ.Project.resources[this.switchToGraph];
             Script.viewport.setBranch(graph);
+            Script.viewport.canvas.removeEventListener("pointerdown", Script.viewportClick);
+            Script.branch.removeEventListener("pointerdown", Script.handleClick);
             Script.canvas.dispatchEvent(new CustomEvent("interactiveViewportStarted", {
                 bubbles: true,
                 detail: Script.viewport
@@ -226,29 +256,28 @@ var Script;
         Script.nodePaths = Script.viewport.getBranch().getChildrenByName("Paths")[0];
         Script.crc2 = Script.viewport.canvas.getContext("2d");
         setUpCam();
-        Script.viewport.canvas.addEventListener("pointerdown", testClick);
+        Script.viewport.canvas.addEventListener("pointerdown", viewportClick);
         Script.branch.addEventListener("pointerdown", handleClick);
         let dialogueBox = document.querySelector("#dialogue");
         dialogueBox.style.width = Script.viewport.canvas.width + "px";
-        /* let zoo: ƒ.Node = branch.getChildrenByName("Interactables")[0];
+        let npcBox = document.querySelector("#npcTalk");
+        npcBox.style.width = Script.viewport.canvas.width + "px";
+        /* let zoo: ƒ.Node = branch.getChildrenByName("NPC")[0];
     
         let meshShpere: ƒ.MeshSphere = new ƒ.MeshSphere("BoundingSphere", 40, 40);
         let material: ƒ.Material = new ƒ.Material("Transparent", ƒ.ShaderLit, new ƒ.CoatColored(ƒ.Color.CSS("white", 0.5)));
-        for (let child of zoo.getChildren()) {
-    
-          let sphere: ƒ.Node = new ƒAid.Node(
-            "BoundingSphere", ƒ.Matrix4x4.SCALING(ƒ.Vector3.ONE(2)), material, meshShpere
-          );
-          sphere.mtxLocal.scale(ƒ.Vector3.ONE(child.radius));
-          console.warn(child.radius)
-          let cmpMesh: ƒ.ComponentMesh = child.getComponent(ƒ.ComponentMesh);
-          sphere.mtxLocal.translation = cmpMesh.mtxWorld.translation;
-          sphere.getComponent(ƒ.ComponentMaterial).sortForAlpha = true;
-          branch.appendChild(sphere);
     
     
-          // ƒ.Loop.start();  // start the game loop to continously draw the viewport, update the audiosystem and drive the physics i/a
-        } */
+        let sphere: ƒ.Node = new ƒAid.Node(
+          "BoundingSphere", ƒ.Matrix4x4.SCALING(ƒ.Vector3.ONE(2)), material, meshShpere
+        );
+        sphere.mtxLocal.scale(ƒ.Vector3.ONE(zoo.radius));
+        console.warn(zoo.radius)
+        let cmpMesh: ƒ.ComponentMesh = zoo.getComponent(ƒ.ComponentMesh);
+        sphere.mtxLocal.translation = cmpMesh.mtxWorld.translation;
+        sphere.getComponent(ƒ.ComponentMaterial).sortForAlpha = true;
+        branch.appendChild(sphere); */
+        // ƒ.Loop.start();  // start the game loop to continously draw the viewport, update the audiosystem and drive the physics i/a
         ƒ.Loop.addEventListener("loopFrame" /* LOOP_FRAME */, update);
         update(null);
     }
@@ -279,7 +308,6 @@ var Script;
         if (node.getComponent(Script.Interactable)) {
             let dialogue = node.getComponent(Script.Interactable);
             dialogue.showText();
-            console.log(_event.target);
         }
         else if (node.getComponent(Script.Board)) {
             let board = node.getComponent(Script.Board);
@@ -289,11 +317,122 @@ var Script;
             let door = node.getComponent(Script.Door);
             door.switchGraph();
         }
+        else if (node.getComponent(Script.NPC)) {
+            let npc = node.getComponent(Script.NPC);
+            npc.showDialogue();
+        }
     }
-    function testClick(_event) {
+    Script.handleClick = handleClick;
+    function viewportClick(_event) {
         Script.viewport.draw();
         Script.viewport.dispatchPointerEvent(_event);
     }
+    Script.viewportClick = viewportClick;
+})(Script || (Script = {}));
+var Script;
+(function (Script) {
+    var ƒ = FudgeCore;
+    let instance;
+    class NPC extends ƒ.ComponentScript {
+        // Register the script as component for use in the editor via drag&drop
+        static iSubclass = ƒ.Component.registerSubclass(NPC);
+        // Properties may be mutated by users in the editor via the automatically created user interface
+        currentDialogue = 0;
+        dialogues = [
+            new Script.Dialogue("Hallo Player. Schön, dich zu sehen. <br> Und danke, dass du uns hilfst.", "Hello Player. It’s good to see you. <br>And thank you for supporting us."),
+            new Script.Dialogue("Hallo Mykah.", "Hello Mykah"),
+            new Script.Answer("Kann ich dir bei etwas helfen?", "Can I help you with something?", "Wie kann ich dir helfen?", "How can I support you?")
+        ];
+        dialogueBox;
+        textBox;
+        nextButton;
+        currentlanguage = "german";
+        constructor() {
+            super();
+            this.constructor;
+            // Don't start when running in editor
+            if (ƒ.Project.mode == ƒ.MODE.EDITOR)
+                return;
+            // Listen to this component being added to or removed from a node
+            this.addEventListener("componentAdd" /* COMPONENT_ADD */, this.hndEvent);
+            this.addEventListener("componentRemove" /* COMPONENT_REMOVE */, this.hndEvent);
+            this.addEventListener("nodeDeserialized" /* NODE_DESERIALIZED */, this.hndEvent);
+            this.dialogueBox = document.querySelector("#npcTalk");
+            this.textBox = this.dialogueBox.querySelector("p");
+            this.textBox.addEventListener("pointerdown", this.switchLanguage);
+            this.nextButton = this.dialogueBox.querySelector("#Next");
+            this.nextButton.addEventListener("pointerdown", this.showNext);
+            instance = this;
+        }
+        // Activate the functions of this component as response to events
+        hndEvent = (_event) => {
+            switch (_event.type) {
+                case "componentAdd" /* COMPONENT_ADD */:
+                    // ƒ.Debug.log(this.message, this.node);
+                    break;
+                case "componentRemove" /* COMPONENT_REMOVE */:
+                    this.removeEventListener("componentAdd" /* COMPONENT_ADD */, this.hndEvent);
+                    this.removeEventListener("componentRemove" /* COMPONENT_REMOVE */, this.hndEvent);
+                    break;
+                case "nodeDeserialized" /* NODE_DESERIALIZED */:
+                    // if deserialized the node is now fully reconstructed and access to all its components and children is possible
+                    break;
+            }
+        };
+        showDialogue() {
+            this.dialogueBox.style.visibility = "visible";
+            this.nextButton.style.visibility = "visible";
+            this.textBox.innerHTML = "";
+            if (this.dialogues[this.currentDialogue] instanceof Script.Dialogue) {
+                let current = this.dialogues[this.currentDialogue];
+                if (this.currentlanguage == "german")
+                    this.textBox.innerHTML = current.textGerman;
+                else
+                    this.textBox.innerHTML = current.textEnglish;
+            }
+            else if (this.dialogues[this.currentDialogue] instanceof Script.Answer) {
+                let current = this.dialogues[this.currentDialogue];
+                if (this.currentlanguage == "german")
+                    this.textBox.innerHTML = "<p>" + current.choiceAGerman + "</p><div id='optionA'>choose</div> <br>" +
+                        "<p>" + current.choiceBGerman + "</p><div id='optionB'>choose</div>";
+                else
+                    this.textBox.innerHTML = "<p>" + current.choiceAEnglish + "</p><div id='optionA'>choose</div> <br>" +
+                        "<p>" + current.choiceBEnglish + "</p><div id='optionB'>choose</div>";
+                this.nextButton.style.visibility = "hidden";
+                this.dialogueBox.querySelector("#optionA").addEventListener("pointerdown", this.choose);
+                this.dialogueBox.querySelector("#optionB").addEventListener("pointerdown", this.choose);
+            }
+        }
+        showNext() {
+            instance.currentDialogue++;
+            instance.currentlanguage = "german";
+            if (instance.currentDialogue <= instance.dialogues.length - 1) {
+                instance.showDialogue();
+            }
+            else {
+                instance.hideDialouge();
+            }
+        }
+        hideDialouge() {
+            this.dialogueBox.style.visibility = "hidden";
+            this.nextButton.style.visibility = "hidden";
+        }
+        choose() {
+            instance.nextButton.style.visibility = "visible";
+            instance.showNext();
+        }
+        switchLanguage(_event) {
+            let target = _event.target;
+            if (target.id != "optionA" && target.id != "optionB") {
+                if (instance.currentlanguage == "german")
+                    instance.currentlanguage = "english";
+                else if (instance.currentlanguage == "english")
+                    instance.currentlanguage = "german";
+                instance.showDialogue();
+            }
+        }
+    }
+    Script.NPC = NPC;
 })(Script || (Script = {}));
 var Script;
 (function (Script) {
@@ -406,7 +545,7 @@ var Script;
     async function startInteractiveViewport() {
         await ƒ.Project.loadResourcesFromHTML();
         ƒ.Debug.log("Project:", ƒ.Project.resources);
-        let graph = ƒ.Project.resources["Graph|2023-05-18T10:13:48.300Z|18467"];
+        let graph = ƒ.Project.resources["Graph|2023-05-18T10:13:56.922Z|12376"];
         ƒ.Debug.log("Graph:", graph);
         if (!graph) {
             alert("Nothing to render. Create a graph with at least a mesh, material and probably some light");

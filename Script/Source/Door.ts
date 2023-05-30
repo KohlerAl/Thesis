@@ -41,6 +41,8 @@ namespace Script {
             //viewport.initialize("InteractiveViewport", this.switchToGraph, cmpCamera, canvas); 
             let graph: ƒ.Graph = <ƒ.Graph>ƒ.Project.resources[this.switchToGraph];
             viewport.setBranch(graph);
+            viewport.canvas.removeEventListener("pointerdown", viewportClick); 
+            branch.removeEventListener("pointerdown", <ƒ.EventListenerUnified>handleClick);
             canvas.dispatchEvent(
                 new CustomEvent("interactiveViewportStarted", {
                     bubbles: true,

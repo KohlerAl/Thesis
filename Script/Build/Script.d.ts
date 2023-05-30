@@ -1,4 +1,13 @@
 declare namespace Script {
+    class Answer {
+        choiceAGerman: string;
+        choiceAEnglish: string;
+        choiceBGerman: string;
+        choiceBEnglish: string;
+        constructor(_choiceAGerman: string, _choiceAEnglish: string, _choiceBGerman: string, _choiceBEnglish: string);
+    }
+}
+declare namespace Script {
     import ƒ = FudgeCore;
     class Board extends ƒ.ComponentScript {
         static readonly iSubclass: number;
@@ -15,6 +24,13 @@ declare namespace Script {
         flipPage(): void;
         closePage(): void;
         collectPage(): void;
+    }
+}
+declare namespace Script {
+    class Dialogue {
+        textGerman: string;
+        textEnglish: string;
+        constructor(_textGerman: string, _textEnglish: string);
     }
 }
 declare namespace Script {
@@ -47,6 +63,27 @@ declare namespace Script {
     let branch: ƒ.Node;
     let inventory: Page[];
     function update(_event: Event): void;
+    function handleClick(_event: PointerEvent): void;
+    function viewportClick(_event: PointerEvent): void;
+}
+declare namespace Script {
+    import ƒ = FudgeCore;
+    class NPC extends ƒ.ComponentScript {
+        static readonly iSubclass: number;
+        currentDialogue: number;
+        dialogues: (Dialogue | Answer)[];
+        readonly dialogueBox: HTMLDivElement;
+        readonly textBox: HTMLParagraphElement;
+        readonly nextButton: HTMLDivElement;
+        currentlanguage: string;
+        constructor();
+        hndEvent: (_event: Event) => void;
+        showDialogue(): void;
+        showNext(): void;
+        hideDialouge(): void;
+        choose(): void;
+        switchLanguage(_event: Event): void;
+    }
 }
 declare namespace Script {
     class Page {

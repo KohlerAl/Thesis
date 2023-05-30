@@ -37,7 +37,8 @@ canvas.fullscreen {
   z-index: 2147483647;
 }
 
-#dialogue {
+#dialogue,
+#npcTalk {
   position: absolute;
   margin: auto;
   z-index: 1000;
@@ -51,6 +52,15 @@ canvas.fullscreen {
   height: 150px;
   font-size: 25px;
   padding: 0px;
+}
+
+#npcTalk {
+  padding-left: 35px;
+}
+
+#npcTalk #Next {
+  position: absolute;
+  top: 80px;
 }
 
 #notes {
@@ -70,18 +80,27 @@ canvas.fullscreen {
   max-height: 95%;
 }
 
-#right, #left {
+#right,
+#left {
   position: relative;
   top: -50px;
   left: -20%;
 }
 
-#notes .interface {
+#notes .interface,
+#npcTalk .interface {
   color: #fff;
   font-family: pixel;
   position: relative;
   top: -22%;
   font-size: 30px;
+}
+
+#npcTalk,
+#npcTalk .interface div,
+#npcTalk .interface p {
+  font-size: 25px;
+  font-family: pixel;
 }
 
 #notes .interface p {
@@ -103,4 +122,13 @@ canvas.fullscreen {
 #text {
   position: relative;
   left: 40px;
+}
+
+#optionA, #optionB {
+  display: inline;
+  padding: 20px;
+}
+
+#npcText p {
+  display: inline;
 }

@@ -21,7 +21,7 @@ namespace Script {
     async function startInteractiveViewport(): Promise<void> {
         await ƒ.Project.loadResourcesFromHTML();
         ƒ.Debug.log("Project:", ƒ.Project.resources);
-        let graph: ƒ.Graph = <ƒ.Graph>ƒ.Project.resources["Graph|2023-05-18T10:13:48.300Z|18467"];
+        let graph: ƒ.Graph = <ƒ.Graph>ƒ.Project.resources["Graph|2023-05-18T10:13:56.922Z|12376"];
         ƒ.Debug.log("Graph:", graph);
         if (!graph) {
             alert(

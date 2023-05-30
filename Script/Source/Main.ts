@@ -17,31 +17,34 @@ namespace Script {
     nodePaths = viewport.getBranch().getChildrenByName("Paths")[0];
     crc2 = viewport.canvas.getContext("2d");
     setUpCam();
-    viewport.canvas.addEventListener("pointerdown", testClick);
+    viewport.canvas.addEventListener("pointerdown", viewportClick);
     branch.addEventListener("pointerdown", <ƒ.EventListenerUnified>handleClick);
 
     let dialogueBox: HTMLDivElement = document.querySelector("#dialogue");
     dialogueBox.style.width = viewport.canvas.width + "px";
 
-    /* let zoo: ƒ.Node = branch.getChildrenByName("Interactables")[0];
+    let npcBox: HTMLDivElement = document.querySelector("#npcTalk");
+    npcBox.style.width = viewport.canvas.width + "px";
+
+    /* let zoo: ƒ.Node = branch.getChildrenByName("NPC")[0];
 
     let meshShpere: ƒ.MeshSphere = new ƒ.MeshSphere("BoundingSphere", 40, 40);
     let material: ƒ.Material = new ƒ.Material("Transparent", ƒ.ShaderLit, new ƒ.CoatColored(ƒ.Color.CSS("white", 0.5)));
-    for (let child of zoo.getChildren()) {
-
-      let sphere: ƒ.Node = new ƒAid.Node(
-        "BoundingSphere", ƒ.Matrix4x4.SCALING(ƒ.Vector3.ONE(2)), material, meshShpere
-      );
-      sphere.mtxLocal.scale(ƒ.Vector3.ONE(child.radius));
-      console.warn(child.radius)
-      let cmpMesh: ƒ.ComponentMesh = child.getComponent(ƒ.ComponentMesh);
-      sphere.mtxLocal.translation = cmpMesh.mtxWorld.translation;
-      sphere.getComponent(ƒ.ComponentMaterial).sortForAlpha = true;
-      branch.appendChild(sphere);
 
 
-      // ƒ.Loop.start();  // start the game loop to continously draw the viewport, update the audiosystem and drive the physics i/a
-    } */
+    let sphere: ƒ.Node = new ƒAid.Node(
+      "BoundingSphere", ƒ.Matrix4x4.SCALING(ƒ.Vector3.ONE(2)), material, meshShpere
+    );
+    sphere.mtxLocal.scale(ƒ.Vector3.ONE(zoo.radius));
+    console.warn(zoo.radius)
+    let cmpMesh: ƒ.ComponentMesh = zoo.getComponent(ƒ.ComponentMesh);
+    sphere.mtxLocal.translation = cmpMesh.mtxWorld.translation;
+    sphere.getComponent(ƒ.ComponentMaterial).sortForAlpha = true;
+    branch.appendChild(sphere); */
+
+
+    // ƒ.Loop.start();  // start the game loop to continously draw the viewport, update the audiosystem and drive the physics i/a
+
 
     ƒ.Loop.addEventListener(ƒ.EVENT.LOOP_FRAME, update);
     update(null);
@@ -71,12 +74,11 @@ namespace Script {
   }
 
 
-  function handleClick(_event: PointerEvent): void {
+  export function handleClick(_event: PointerEvent): void {
     let node: ƒ.Node = (<ƒ.Node>_event.target);
     if (node.getComponent(Interactable)) {
       let dialogue: Interactable = node.getComponent(Interactable);
       dialogue.showText();
-      console.log(_event.target);
     }
 
     else if (node.getComponent(Board)) {
@@ -88,8 +90,13 @@ namespace Script {
       let door: Door = node.getComponent(Door);
       door.switchGraph();
     }
+
+    else if (node.getComponent(NPC)) {
+      let npc: NPC = node.getComponent(NPC); 
+      npc.showDialogue(); 
+    }
   }
-  function testClick(_event: PointerEvent): void {
+  export function viewportClick(_event: PointerEvent): void {
     viewport.draw();
     viewport.dispatchPointerEvent(_event);
   }
