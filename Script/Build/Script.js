@@ -247,6 +247,7 @@ var Script;
 var Script;
 (function (Script) {
     var ƒ = FudgeCore;
+    // import ƒAid = FudgeAid;
     ƒ.Debug.info("Main Program Template running!");
     document.addEventListener("interactiveViewportStarted", start);
     Script.inventory = [];
@@ -262,24 +263,25 @@ var Script;
         dialogueBox.style.width = Script.viewport.canvas.width + "px";
         let npcBox = document.querySelector("#npcTalk");
         npcBox.style.width = Script.viewport.canvas.width + "px";
-        /* let zoo: ƒ.Node = branch.getChildrenByName("NPC")[0];
-    
-        let meshShpere: ƒ.MeshSphere = new ƒ.MeshSphere("BoundingSphere", 40, 40);
-        let material: ƒ.Material = new ƒ.Material("Transparent", ƒ.ShaderLit, new ƒ.CoatColored(ƒ.Color.CSS("white", 0.5)));
-    
-    
-        let sphere: ƒ.Node = new ƒAid.Node(
-          "BoundingSphere", ƒ.Matrix4x4.SCALING(ƒ.Vector3.ONE(2)), material, meshShpere
-        );
-        sphere.mtxLocal.scale(ƒ.Vector3.ONE(zoo.radius));
-        console.warn(zoo.radius)
-        let cmpMesh: ƒ.ComponentMesh = zoo.getComponent(ƒ.ComponentMesh);
-        sphere.mtxLocal.translation = cmpMesh.mtxWorld.translation;
-        sphere.getComponent(ƒ.ComponentMaterial).sortForAlpha = true;
-        branch.appendChild(sphere); */
-        // ƒ.Loop.start();  // start the game loop to continously draw the viewport, update the audiosystem and drive the physics i/a
+        //#region PathWalker demo
+        Script.walker = Script.branch.getChildrenByName("Walker")[0].getComponent(Script.PathWalker);
+        Script.walker.addEventListener("arrived", choosePath);
+        choosePath(null);
+        function choosePath(_event) {
+            let current = _event ? _event.detail : Script.nodePaths.getChildren()[0];
+            console.log("Arrived at", current.name);
+            let next;
+            do
+                next = ƒ.Random.default.getElement(Script.nodePaths.getChildren());
+            while (next == current);
+            let path = Script.nodePaths.getComponent(Script.Paths).findPath(current.name, next.name);
+            Script.walker.walk(path);
+            console.log("Path: ", ...path.map(_node => _node.name));
+        }
+        //#endregion
         ƒ.Loop.addEventListener("loopFrame" /* LOOP_FRAME */, update);
-        update(null);
+        ƒ.Loop.start();
+        // update(null);
     }
     function update(_event) {
         // ƒ.Physics.simulate();  // if physics is included and used
@@ -454,10 +456,17 @@ var Script;
     class Path extends ƒ.Mutable {
         start = "A";
         end = "B";
+        #cost = Infinity;
         constructor(_start, _end) {
             super();
             this.start = _start;
             this.end = _end;
+        }
+        set cost(_cost) {
+            this.#cost = _cost;
+        }
+        get cost() {
+            return this.#cost;
         }
         reduceMutator(_mutator) {
             // delete properties that should not be mutated
@@ -470,15 +479,69 @@ var Script;
 (function (Script) {
     var ƒ = FudgeCore;
     ƒ.Project.registerScriptNamespace(Script); // Register the namespace to FUDGE for serialization
+    class PathWalker extends ƒ.ComponentScript {
+        static iSubclass = ƒ.Component.registerSubclass(PathWalker);
+        speed = 1;
+        #waypoints = [];
+        #index = 0;
+        constructor() {
+            super();
+            this.singleton = true;
+            if (ƒ.Project.mode == ƒ.MODE.EDITOR)
+                return;
+            this.addEventListener("componentRemove" /* COMPONENT_REMOVE */, this.hndEvent);
+            this.addEventListener("componentAdd" /* COMPONENT_ADD */, this.hndEvent);
+        }
+        // Activate the functions of this component as response to events
+        hndEvent = (_event) => {
+            switch (_event.type) {
+                case "componentAdd" /* COMPONENT_ADD */:
+                    this.node.addEventListener("renderPrepare" /* RENDER_PREPARE */, this.move);
+                    break;
+                case "componentRemove" /* COMPONENT_REMOVE */:
+                    this.removeEventListener("componentRemove" /* COMPONENT_REMOVE */, this.hndEvent);
+                    this.removeEventListener("componentAdd" /* COMPONENT_ADD */, this.hndEvent);
+                    this.removeEventListener("renderPrepare" /* RENDER_PREPARE */, this.move);
+                    break;
+            }
+        };
+        walk(_waypoints) {
+            this.#waypoints = _waypoints.slice(); // copy
+            // place node on first waypoint
+            this.#index = 0;
+            this.node.mtxLocal.translation = this.#waypoints[this.#index].mtxLocal.translation;
+            this.#index++; // target next waypoint
+        }
+        move = () => {
+            if (this.#index == this.#waypoints.length)
+                return;
+            let step = ƒ.Vector3.DIFFERENCE(this.#waypoints[this.#index].mtxLocal.translation, this.node.mtxLocal.translation);
+            let length = this.speed * ƒ.Loop.timeFrameGame / 1000;
+            if (length < step.magnitude) { // next waypoint not yet reached
+                step.normalize(length);
+                this.node.mtxLocal.translate(step);
+                return;
+            }
+            this.node.mtxLocal.translation = this.#waypoints[this.#index].mtxLocal.translation;
+            this.#index++;
+            if (this.#index == this.#waypoints.length)
+                this.dispatchEvent(new CustomEvent("arrived", { detail: this.#waypoints[this.#index - 1] }));
+        };
+    }
+    Script.PathWalker = PathWalker;
+})(Script || (Script = {}));
+var Script;
+(function (Script) {
+    var ƒ = FudgeCore;
+    ƒ.Project.registerScriptNamespace(Script); // Register the namespace to FUDGE for serialization
     class Paths extends ƒ.ComponentScript {
         // Register the script as component for use in the editor via drag&drop
         static iSubclass = ƒ.Component.registerSubclass(Paths);
         // Properties may be mutated by users in the editor via the automatically created user interface
         paths = new ƒ.MutableArray(Script.Path, new Script.Path());
+        #matrix = {};
         constructor() {
             super();
-            this.constructor;
-            // Don't start when running in editor
             if (ƒ.Project.mode == ƒ.MODE.EDITOR)
                 return;
             // Listen to this component being added to or removed from a node
@@ -499,11 +562,12 @@ var Script;
                 case "nodeDeserialized" /* NODE_DESERIALIZED */:
                     // if deserialized the node is now fully reconstructed and access to all its components and children is possible
                     this.node.addEventListener("renderWaypoints", this.hndEvent, true);
+                    this.setupMatrix();
                     break;
                 case "renderWaypoints":
                     //console.log(this.node.name);
                     for (let path of this.paths) {
-                        console.log(path);
+                        // console.log(path);
                         let posStart = Script.viewport.pointWorldToClient(Script.nodePaths.getChildrenByName(path.start)[0].mtxWorld.translation);
                         let posEnd = Script.viewport.pointWorldToClient(Script.nodePaths.getChildrenByName(path.end)[0].mtxWorld.translation);
                         Script.crc2.beginPath();
@@ -522,6 +586,93 @@ var Script;
             this.paths = new ƒ.MutableArray(Script.Path, ...paths);
             await super.deserialize(_serialization);
             return this;
+        }
+        setupMatrix() {
+            for (let path of this.paths) {
+                let posStart = this.node.getChildrenByName(path.start)[0].mtxLocal.translation;
+                let posEnd = this.node.getChildrenByName(path.end)[0].mtxLocal.translation;
+                console.log(posStart.toString(), posEnd.toString());
+                path.cost = ƒ.Vector3.DIFFERENCE(posEnd, posStart).magnitude;
+                if (!this.#matrix[path.start])
+                    this.#matrix[path.start] = {};
+                if (!this.#matrix[path.end])
+                    this.#matrix[path.end] = {};
+                this.#matrix[path.start][path.end] = path.cost;
+                this.#matrix[path.end][path.start] = path.cost;
+            }
+            console.warn(this);
+            console.table(this.#matrix);
+        }
+        findPath(_start, _end) {
+            if (this.#matrix[_start][_end]) {
+                return this.getPath(_start, _end);
+            }
+            let search = [];
+            let found = [];
+            let visit = [];
+            for (let waypoint of this.node.getChildren()) {
+                search.push({ point: waypoint.name, distance: waypoint.name == _start ? 0 : Infinity, previous: null });
+                visit.push(waypoint.name);
+            }
+            while (visit.length) {
+                search.sort((_a, _b) => _a.distance - _b.distance);
+                let current = search.shift();
+                found.push(current);
+                visit.splice(visit.indexOf(current.point), 1);
+                if (!this.#matrix[_start][current.point] && _start != current.point) {
+                    this.#matrix[_start][current.point] = current.previous;
+                    this.#matrix[current.point][_start] = current.previous;
+                }
+                let distance = current.distance;
+                for (let neighbor in this.#matrix[current.point]) {
+                    if (neighbor == current.point || !this.#matrix[current.point][neighbor])
+                        continue;
+                    if (visit.indexOf(neighbor) > -1) {
+                        let next = search.find(_info => _info.point == neighbor);
+                        let sum = distance + this.#matrix[current.point][neighbor];
+                        if (sum < next.distance) {
+                            next.previous = current.point;
+                            next.distance = sum;
+                        }
+                    }
+                }
+            }
+            for (let path of found) {
+                if (path.point != _start && !this.#matrix[_start][path.point]) {
+                    this.#matrix[_start][path.point] = path.previous;
+                    this.#matrix[path.point][_start] = path.previous;
+                }
+                if (path.previous && path.point != _end && !this.#matrix[_end][path.previous]) {
+                    this.#matrix[path.previous][_end] = path.point;
+                    this.#matrix[_end][path.previous] = path.point;
+                }
+            }
+            // console.table(this.#matrix);
+            return this.getPath(_start, _end);
+        }
+        getPath(_start, _end) {
+            let entry = this.#matrix[_start][_end];
+            if (typeof (entry) == "string") {
+                let info = this.calculateDistance(_start, _end);
+                info.path.push(_end);
+                return info.path.map(_name => this.node.getChildrenByName(_name)[0]);
+            }
+            else
+                return [_start, _end].map(_name => this.node.getChildrenByName(_name)[0]);
+        }
+        calculateDistance(_start, _end, _path = [_start]) {
+            let result = 0;
+            if (_start == _end)
+                return { path: [], distance: 0 };
+            let value = this.#matrix[_start][_end];
+            if (!value)
+                return { path: _path, distance: Infinity };
+            if (typeof (value) == "number")
+                return { path: _path, distance: value };
+            result += this.calculateDistance(_start, value, _path).distance;
+            _path.push(value);
+            result += this.calculateDistance(value, _end, _path).distance;
+            return { path: _path, distance: result };
         }
     }
     Script.Paths = Paths;
@@ -612,7 +763,7 @@ var Script;
                     this.node.addEventListener("renderWaypoints", this.hndEvent, true);
                     break;
                 case "renderWaypoints":
-                    console.log(this.node.name);
+                    // console.log(this.node.name);
                     let posWorld = this.node.mtxWorld.translation;
                     let posClient = Script.viewport.pointWorldToClient(posWorld);
                     Script.crc2.fillStyle = "red";

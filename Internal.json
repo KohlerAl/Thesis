@@ -1090,6 +1090,21 @@
       }
     }
   },
+  "MeshPolygon|2023-05-20T11:41:49.895Z|26879": {
+    "ƒ.MeshPolygon": {
+      "idResource": "MeshPolygon|2023-05-20T11:41:49.895Z|26879",
+      "name": "MeshPolygon",
+      "type": "MeshPolygon",
+      "shape": {
+        "ƒ.Vector2": [
+          "[-1, -2]",
+          "[1, -2]",
+          "[0, 0]"
+        ]
+      },
+      "fitTexture": true
+    }
+  },
   "Graph|2023-05-18T10:13:56.922Z|12376": {
     "ƒ.Graph": {
       "name": "Room_Left",
@@ -1162,7 +1177,7 @@
                   "ƒ.ComponentMesh": {
                     "idMesh": "MeshQuad|2023-05-18T10:15:33.499Z|93331",
                     "pivot": {
-                      "translation": "[0, 0, 0.0010000000474974513]",
+                      "translation": "[0, 0, 0.010000002570450306]",
                       "rotation": "[0, 0, 0]",
                       "scaling": "[0.9999998807907104, 1, 1]"
                     },
@@ -1216,7 +1231,8 @@
                 {
                   "Script.NPC": {
                     "active": true,
-                    "currentDialogue": 0
+                    "currentDialogue": 0,
+                    "currentlanguage": "german"
                   }
                 }
               ]
@@ -1245,6 +1261,10 @@
                       {
                         "start": "Bookshelf",
                         "end": "NPC"
+                      },
+                      {
+                        "start": "NPC",
+                        "end": "WalkerTest"
                       }
                     ]
                   }
@@ -1366,6 +1386,77 @@
                         "ƒ.ComponentTransform": {
                           "local": {
                             "translation": "[0.354753315448761, -0.3837621212005615, 0.019999999552965164]",
+                            "rotation": "[0, 0, 0]",
+                            "scaling": "[1, 1, 1]"
+                          },
+                          "Component": {
+                            "active": true
+                          }
+                        }
+                      }
+                    ],
+                    "Waypoint": [
+                      {
+                        "Script.Waypoint": {
+                          "active": true
+                        }
+                      }
+                    ],
+                    "ComponentGraphFilter": [
+                      {
+                        "ƒ.ComponentGraphFilter": {
+                          "active": true
+                        }
+                      }
+                    ]
+                  },
+                  "children": [],
+                  "idSource": "Graph|2023-05-19T08:49:01.187Z|57181"
+                }
+              },
+              {
+                "ƒ.GraphInstance": {
+                  "name": "WalkerTest",
+                  "active": true,
+                  "components": {
+                    "ComponentMesh": [
+                      {
+                        "ƒ.ComponentMesh": {
+                          "idMesh": "MeshQuad|2023-05-18T10:15:33.499Z|93331",
+                          "pivot": {
+                            "translation": "[0, 0, 0]",
+                            "rotation": "[0, 0, 0]",
+                            "scaling": "[0.04999992996454239, 0.05000000447034836, 1]"
+                          },
+                          "Component": {
+                            "active": true
+                          }
+                        }
+                      }
+                    ],
+                    "ComponentMaterial": [
+                      {
+                        "ƒ.ComponentMaterial": {
+                          "sortForAlpha": false,
+                          "clrPrimary": "[1, 1, 1, 1]",
+                          "clrSecondary": "[1, 1, 1, 1]",
+                          "pivot": {
+                            "translation": "[0, 0]",
+                            "rotation": 0,
+                            "scaling": "[1, 1]"
+                          },
+                          "Component": {
+                            "active": true
+                          },
+                          "idMaterial": "Material|2023-05-19T08:32:52.641Z|95351"
+                        }
+                      }
+                    ],
+                    "ComponentTransform": [
+                      {
+                        "ƒ.ComponentTransform": {
+                          "local": {
+                            "translation": "[0.27431797981262207, -0.4748212397098541, 0.019999999552965164]",
                             "rotation": "[0, 0, 0]",
                             "scaling": "[1, 1, 1]"
                           },
@@ -1638,6 +1729,70 @@
               }
             ]
           }
+        },
+        {
+          "ƒ.Node": {
+            "name": "Walker",
+            "active": true,
+            "components": {
+              "ComponentMesh": [
+                {
+                  "ƒ.ComponentMesh": {
+                    "idMesh": "MeshPolygon|2023-05-20T11:41:49.895Z|26879",
+                    "pivot": {
+                      "translation": "[0, 0, 0]",
+                      "rotation": "[0, 0, 180]",
+                      "scaling": "[0.019999999552965164, 0.019999999552965164, 0.019999999552965164]"
+                    },
+                    "Component": {
+                      "active": true
+                    }
+                  }
+                }
+              ],
+              "ComponentMaterial": [
+                {
+                  "ƒ.ComponentMaterial": {
+                    "sortForAlpha": false,
+                    "clrPrimary": "[1, 0, 0.9176470588235294, 1]",
+                    "clrSecondary": "[1, 1, 1, 1]",
+                    "pivot": {
+                      "translation": "[0, 0]",
+                      "rotation": 0,
+                      "scaling": "[1, 1]"
+                    },
+                    "Component": {
+                      "active": true
+                    },
+                    "idMaterial": "Material|2023-05-19T08:32:52.641Z|95351"
+                  }
+                }
+              ],
+              "ComponentTransform": [
+                {
+                  "ƒ.ComponentTransform": {
+                    "local": {
+                      "translation": "[0, 0, 0.10000000149011612]",
+                      "rotation": "[0, 0, 0]",
+                      "scaling": "[1, 1, 1]"
+                    },
+                    "Component": {
+                      "active": true
+                    }
+                  }
+                }
+              ],
+              "PathWalker": [
+                {
+                  "Script.PathWalker": {
+                    "active": true,
+                    "speed": 1
+                  }
+                }
+              ]
+            },
+            "children": []
+          }
         }
       ],
       "idResource": "Graph|2023-05-18T10:13:56.922Z|12376",
@@ -1714,21 +1869,6 @@
       "children": [],
       "idResource": "Graph|2023-05-19T08:49:01.187Z|57181",
       "type": "Graph"
-    }
-  },
-  "MeshPolygon|2023-05-20T11:41:49.895Z|26879": {
-    "ƒ.MeshPolygon": {
-      "idResource": "MeshPolygon|2023-05-20T11:41:49.895Z|26879",
-      "name": "MeshPolygon",
-      "type": "MeshPolygon",
-      "shape": {
-        "ƒ.Vector2": [
-          "[-1, -1]",
-          "[1, -1]",
-          "[0, 1]"
-        ]
-      },
-      "fitTexture": true
     }
   },
   "Graph|2023-05-24T08:41:38.987Z|27527": {

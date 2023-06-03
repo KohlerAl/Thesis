@@ -61,6 +61,7 @@ declare namespace Script {
     let nodePaths: ƒ.Node;
     let crc2: CanvasRenderingContext2D;
     let branch: ƒ.Node;
+    let walker: PathWalker;
     let inventory: Page[];
     function update(_event: Event): void;
     function handleClick(_event: PointerEvent): void;
@@ -96,20 +97,40 @@ declare namespace Script {
 declare namespace Script {
     import ƒ = FudgeCore;
     class Path extends ƒ.Mutable {
+        #private;
         start: string;
         end: string;
         constructor(_start?: string, _end?: string);
+        set cost(_cost: number);
+        get cost(): number;
         protected reduceMutator(_mutator: ƒ.Mutator): void;
     }
 }
 declare namespace Script {
     import ƒ = FudgeCore;
+    class PathWalker extends ƒ.ComponentScript {
+        #private;
+        static readonly iSubclass: number;
+        speed: number;
+        constructor();
+        hndEvent: (_event: Event) => void;
+        walk(_waypoints: ƒ.Node[]): void;
+        private move;
+    }
+}
+declare namespace Script {
+    import ƒ = FudgeCore;
     class Paths extends ƒ.ComponentScript {
+        #private;
         static readonly iSubclass: number;
         paths: ƒ.MutableArray<Path>;
         constructor();
         hndEvent: (_event: Event) => void;
         deserialize(_serialization: ƒ.Serialization): Promise<ƒ.Serializable>;
+        private setupMatrix;
+        findPath(_start: string, _end: string): ƒ.Node[];
+        private getPath;
+        private calculateDistance;
     }
 }
 declare namespace Script {

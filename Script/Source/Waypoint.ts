@@ -36,7 +36,7 @@ namespace Script {
           this.node.addEventListener("renderWaypoints", this.hndEvent, true);
           break;
         case "renderWaypoints":
-          console.log(this.node.name);
+          // console.log(this.node.name);
           let posWorld: ƒ.Vector3 = this.node.mtxWorld.translation;
           let posClient: ƒ.Vector2 = viewport.pointWorldToClient(posWorld);
           crc2.fillStyle = "red";

@@ -1,12 +1,13 @@
 namespace Script {
   import ƒ = FudgeCore;
-  import ƒAid = FudgeAid;
+  // import ƒAid = FudgeAid;
   ƒ.Debug.info("Main Program Template running!");
 
   export let viewport: ƒ.Viewport;
   export let nodePaths: ƒ.Node;
   export let crc2: CanvasRenderingContext2D;
   export let branch: ƒ.Node;
+  export let walker: PathWalker;
   document.addEventListener("interactiveViewportStarted", <EventListener>start);
 
   export let inventory: Page[] = [];
@@ -26,28 +27,26 @@ namespace Script {
     let npcBox: HTMLDivElement = document.querySelector("#npcTalk");
     npcBox.style.width = viewport.canvas.width + "px";
 
-    /* let zoo: ƒ.Node = branch.getChildrenByName("NPC")[0];
-
-    let meshShpere: ƒ.MeshSphere = new ƒ.MeshSphere("BoundingSphere", 40, 40);
-    let material: ƒ.Material = new ƒ.Material("Transparent", ƒ.ShaderLit, new ƒ.CoatColored(ƒ.Color.CSS("white", 0.5)));
-
-
-    let sphere: ƒ.Node = new ƒAid.Node(
-      "BoundingSphere", ƒ.Matrix4x4.SCALING(ƒ.Vector3.ONE(2)), material, meshShpere
-    );
-    sphere.mtxLocal.scale(ƒ.Vector3.ONE(zoo.radius));
-    console.warn(zoo.radius)
-    let cmpMesh: ƒ.ComponentMesh = zoo.getComponent(ƒ.ComponentMesh);
-    sphere.mtxLocal.translation = cmpMesh.mtxWorld.translation;
-    sphere.getComponent(ƒ.ComponentMaterial).sortForAlpha = true;
-    branch.appendChild(sphere); */
-
-
-    // ƒ.Loop.start();  // start the game loop to continously draw the viewport, update the audiosystem and drive the physics i/a
-
+    //#region PathWalker demo
+    walker = branch.getChildrenByName("Walker")[0].getComponent(PathWalker);
+    walker.addEventListener("arrived", choosePath);
+    choosePath(null);
+    function choosePath(_event: CustomEvent) {
+      let current: ƒ.Node = _event ? _event.detail : nodePaths.getChildren()[0];
+      console.log("Arrived at", current.name);
+      let next: ƒ.Node;
+      do
+      next = ƒ.Random.default.getElement(nodePaths.getChildren());
+      while (next == current)
+      let path: ƒ.Node[] = nodePaths.getComponent(Paths).findPath(current.name, next.name);
+      walker.walk(path);
+      console.log("Path: ", ...path.map(_node => _node.name));
+    }
+    //#endregion
 
     ƒ.Loop.addEventListener(ƒ.EVENT.LOOP_FRAME, update);
-    update(null);
+    ƒ.Loop.start();
+    // update(null);
   }
   export function update(_event: Event): void {
     // ƒ.Physics.simulate();  // if physics is included and used
@@ -92,8 +91,8 @@ namespace Script {
     }
 
     else if (node.getComponent(NPC)) {
-      let npc: NPC = node.getComponent(NPC); 
-      npc.showDialogue(); 
+      let npc: NPC = node.getComponent(NPC);
+      npc.showDialogue();
     }
   }
   export function viewportClick(_event: PointerEvent): void {
