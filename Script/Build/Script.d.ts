@@ -169,6 +169,8 @@ declare namespace Script {
     import ƒ = FudgeCore;
     let canvas: HTMLCanvasElement;
     let cmpCamera: ƒ.ComponentCamera;
+    function setUpCam(): void;
+    function createCamera(): ƒ.ComponentCamera;
 }
 declare namespace Script {
     import ƒ = FudgeCore;

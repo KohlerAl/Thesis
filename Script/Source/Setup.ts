@@ -2,7 +2,7 @@ namespace Script {
     import ƒ = FudgeCore;
     window.addEventListener("load", init);
     export let canvas: HTMLCanvasElement;
-    export let cmpCamera: ƒ.ComponentCamera; 
+    export let cmpCamera: ƒ.ComponentCamera;
 
     let dialog: HTMLDialogElement;
     function init(_event: Event): void {
@@ -43,5 +43,22 @@ namespace Script {
                 detail: viewport
             })
         );
+    }
+
+    export function setUpCam(): void {
+        let camNode: ƒ.Node;
+        camNode = new ƒ.Node("camNode");
+        camNode.addComponent(createCamera());
+        camNode.addComponent(new ƒ.ComponentTransform());
+        camNode.mtxLocal.scale(new ƒ.Vector3(1, 2, 1));
+    }
+
+    export function createCamera(): ƒ.ComponentCamera {
+        let newCam: ƒ.ComponentCamera = new ƒ.ComponentCamera();
+        viewport.camera = newCam;
+        viewport.camera.projectCentral(canvas.clientWidth / canvas.clientHeight, 5);
+        viewport.camera.mtxPivot.rotateY(180);
+        viewport.camera.mtxPivot.translateZ(-18);
+        return newCam;
     }
 }

@@ -55,22 +55,6 @@ namespace Script {
     //ƒ.AudioManager.default.update();
   }
 
-  function setUpCam(): void {
-    let camNode: ƒ.Node;
-    camNode = new ƒ.Node("camNode");
-    camNode.addComponent(createCamera());
-    camNode.addComponent(new ƒ.ComponentTransform());
-    camNode.mtxLocal.scale(new ƒ.Vector3(1, 2, 1));
-  }
-
-  function createCamera(): ƒ.ComponentCamera {
-    let newCam: ƒ.ComponentCamera = new ƒ.ComponentCamera();
-    viewport.camera = newCam;
-    viewport.camera.projectCentral(canvas.clientWidth / canvas.clientHeight, 5);
-    viewport.camera.mtxPivot.rotateY(180);
-    viewport.camera.mtxPivot.translateZ(-18);
-    return newCam;
-  }
 
 
   export function handleClick(_event: PointerEvent): void {

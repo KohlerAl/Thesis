@@ -253,7 +253,7 @@ var Script;
         Script.branch = Script.viewport.getBranch();
         Script.nodePaths = Script.viewport.getBranch().getChildrenByName("Paths")[0];
         Script.crc2 = Script.viewport.canvas.getContext("2d");
-        setUpCam();
+        Script.setUpCam();
         Script.viewport.canvas.addEventListener("pointerdown", viewportClick);
         Script.branch.addEventListener("pointerdown", handleClick);
         let dialogueBox = document.querySelector("#dialogue");
@@ -287,21 +287,6 @@ var Script;
         //ƒ.AudioManager.default.update();
     }
     Script.update = update;
-    function setUpCam() {
-        let camNode;
-        camNode = new ƒ.Node("camNode");
-        camNode.addComponent(createCamera());
-        camNode.addComponent(new ƒ.ComponentTransform());
-        camNode.mtxLocal.scale(new ƒ.Vector3(1, 2, 1));
-    }
-    function createCamera() {
-        let newCam = new ƒ.ComponentCamera();
-        Script.viewport.camera = newCam;
-        Script.viewport.camera.projectCentral(Script.canvas.clientWidth / Script.canvas.clientHeight, 5);
-        Script.viewport.camera.mtxPivot.rotateY(180);
-        Script.viewport.camera.mtxPivot.translateZ(-18);
-        return newCam;
-    }
     function handleClick(_event) {
         let node = _event.target;
         if (node.getComponent(Script.Interactable)) {
@@ -807,6 +792,23 @@ var Script;
             detail: viewport
         }));
     }
+    function setUpCam() {
+        let camNode;
+        camNode = new ƒ.Node("camNode");
+        camNode.addComponent(createCamera());
+        camNode.addComponent(new ƒ.ComponentTransform());
+        camNode.mtxLocal.scale(new ƒ.Vector3(1, 2, 1));
+    }
+    Script.setUpCam = setUpCam;
+    function createCamera() {
+        let newCam = new ƒ.ComponentCamera();
+        Script.viewport.camera = newCam;
+        Script.viewport.camera.projectCentral(Script.canvas.clientWidth / Script.canvas.clientHeight, 5);
+        Script.viewport.camera.mtxPivot.rotateY(180);
+        Script.viewport.camera.mtxPivot.translateZ(-18);
+        return newCam;
+    }
+    Script.createCamera = createCamera;
 })(Script || (Script = {}));
 var Script;
 (function (Script) {
