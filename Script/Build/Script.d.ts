@@ -134,6 +134,38 @@ declare namespace Script {
     }
 }
 declare namespace Script {
+    abstract class Question {
+        question: string;
+        answer: string;
+        questionBox: HTMLElement;
+        commitedAnswer: string;
+        constructor(_question: string, _answer: string, _questionBox: HTMLElement);
+        displayQuestion(): void;
+        isAnswerRight(): boolean;
+    }
+    class TextfieldQuestion extends Question {
+        input: HTMLInputElement;
+        constructor(_question: string, _answer: string, _questionBox: HTMLElement);
+        displayQuestion(): void;
+        isAnswerRight(): boolean;
+    }
+    class ImageQuestion extends Question {
+        imageOne: string;
+        imageTwo: string;
+        imageThree: string;
+        constructor(_question: string, _answer: string, _imgOne: string, _imgTwo: string, _imgThree: string, _questionBox: HTMLElement);
+        displayQuestion(): void;
+        getAnswer(_event: Event): void;
+        isAnswerRight(): boolean;
+    }
+    class MultipleChoiceQuestion extends Question {
+        answerChoiceOne: string;
+        answerChoiceTwo: string;
+        answerChoiceThree: string;
+        constructor(_question: string, _answer: string, _answerChoiceOne: string, _answerChoiceTwo: string, _answerChoiceThree: string, _questionBox: HTMLElement);
+    }
+}
+declare namespace Script {
     import ƒ = FudgeCore;
     let canvas: HTMLCanvasElement;
     let cmpCamera: ƒ.ComponentCamera;

@@ -38,7 +38,6 @@ var Script;
         currentLanguage;
         constructor() {
             super();
-            this.constructor;
             // Don't start when running in editor
             if (ƒ.Project.mode == ƒ.MODE.EDITOR)
                 return;
@@ -155,7 +154,6 @@ var Script;
         switchToGraph;
         constructor() {
             super();
-            this.constructor;
             // Don't start when running in editor
             if (ƒ.Project.mode == ƒ.MODE.EDITOR)
                 return;
@@ -205,7 +203,6 @@ var Script;
         timeout;
         constructor() {
             super();
-            this.constructor;
             // Don't start when running in editor
             if (ƒ.Project.mode == ƒ.MODE.EDITOR)
                 return;
@@ -247,7 +244,6 @@ var Script;
 var Script;
 (function (Script) {
     var ƒ = FudgeCore;
-    // import ƒAid = FudgeAid;
     ƒ.Debug.info("Main Program Template running!");
     document.addEventListener("interactiveViewportStarted", start);
     Script.inventory = [];
@@ -351,7 +347,6 @@ var Script;
         currentlanguage = "german";
         constructor() {
             super();
-            this.constructor;
             // Don't start when running in editor
             if (ƒ.Project.mode == ƒ.MODE.EDITOR)
                 return;
@@ -676,6 +671,104 @@ var Script;
         }
     }
     Script.Paths = Paths;
+})(Script || (Script = {}));
+var Script;
+(function (Script) {
+    let instance;
+    class Question {
+        question;
+        answer;
+        questionBox;
+        commitedAnswer;
+        constructor(_question, _answer, _questionBox) {
+            this.question = _question;
+            this.answer = _answer;
+            this.questionBox = _questionBox;
+        }
+        displayQuestion() {
+            let newParagraph = document.createElement("p");
+            newParagraph.innerHTML = this.question;
+            this.questionBox.appendChild(newParagraph);
+        }
+        isAnswerRight() {
+            if (this.commitedAnswer == this.answer)
+                return true;
+            else
+                return false;
+        }
+    }
+    Script.Question = Question;
+    class TextfieldQuestion extends Question {
+        input;
+        constructor(_question, _answer, _questionBox) {
+            super(_question, _answer, _questionBox);
+            instance = this;
+        }
+        displayQuestion() {
+            super.displayQuestion();
+            this.input = document.createElement("input");
+            this.input.placeholder = "answer";
+            this.input.classList.add("answerInput");
+            this.questionBox.appendChild(this.input);
+            let check = document.createElement("div");
+            check.innerHTML = "check";
+            check.addEventListener("pointerdown", this.isAnswerRight);
+        }
+        isAnswerRight() {
+            this.commitedAnswer = this.input.value.toLowerCase();
+            this.answer = this.answer.toLowerCase();
+            return super.isAnswerRight();
+        }
+    }
+    Script.TextfieldQuestion = TextfieldQuestion;
+    class ImageQuestion extends Question {
+        imageOne;
+        imageTwo;
+        imageThree;
+        constructor(_question, _answer, _imgOne, _imgTwo, _imgThree, _questionBox) {
+            super(_question, _answer, _questionBox);
+            this.imageOne = _imgOne;
+            this.imageTwo = _imgTwo;
+            this.imageThree = _imgThree;
+            instance = this;
+        }
+        displayQuestion() {
+            super.displayQuestion();
+            let imageBox = document.createElement("div");
+            let imageEleOne = document.createElement("img");
+            imageEleOne.setAttribute("src", this.imageOne);
+            imageEleOne.classList.add("imageQuestion");
+            imageBox.appendChild(imageEleOne);
+            let imageEleTwo = document.createElement("img");
+            imageEleTwo.setAttribute("src", this.imageTwo);
+            imageEleTwo.classList.add("imageQuestion");
+            imageBox.appendChild(imageEleTwo);
+            let imageEleThree = document.createElement("img");
+            imageEleThree.setAttribute("src", this.imageThree);
+            imageEleThree.classList.add("imageQuestion");
+            imageBox.appendChild(imageEleThree);
+            imageBox.addEventListener("pointerdown", this.getAnswer);
+        }
+        getAnswer(_event) {
+        }
+        isAnswerRight() {
+            return super.isAnswerRight();
+        }
+    }
+    Script.ImageQuestion = ImageQuestion;
+    class MultipleChoiceQuestion extends Question {
+        answerChoiceOne;
+        answerChoiceTwo;
+        answerChoiceThree;
+        constructor(_question, _answer, _answerChoiceOne, _answerChoiceTwo, _answerChoiceThree, _questionBox) {
+            super(_question, _answer, _questionBox);
+            this.answerChoiceOne = _answerChoiceOne;
+            this.answerChoiceTwo = _answerChoiceTwo;
+            this.answerChoiceThree = _answerChoiceThree;
+            instance = this;
+        }
+    }
+    Script.MultipleChoiceQuestion = MultipleChoiceQuestion;
 })(Script || (Script = {}));
 var Script;
 (function (Script) {
