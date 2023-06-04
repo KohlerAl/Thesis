@@ -244,6 +244,7 @@ var Script;
 var Script;
 (function (Script) {
     var ƒ = FudgeCore;
+    // import ƒAid = FudgeAid;
     ƒ.Debug.info("Main Program Template running!");
     document.addEventListener("interactiveViewportStarted", start);
     Script.inventory = [];
