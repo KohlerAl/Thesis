@@ -10,7 +10,6 @@ namespace Script {
 
         constructor() {
             super();
-            this.constructor;
             // Don't start when running in editor
             if (ƒ.Project.mode == ƒ.MODE.EDITOR)
                 return;
