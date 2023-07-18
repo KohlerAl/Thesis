@@ -7,7 +7,6 @@ namespace Script {
     public static readonly iSubclass: number = ƒ.Component.registerSubclass(Waypoint);
     // Properties may be mutated by users in the editor via the automatically created user interface
 
-
     constructor() {
       super();
 

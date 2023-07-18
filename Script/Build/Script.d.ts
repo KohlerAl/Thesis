@@ -1,4 +1,21 @@
 declare namespace Script {
+    enum STATE {
+        LEFT = 0,
+        RIGHT = 1,
+        STAND = 2
+    }
+    export class Alien extends ƒ.Node {
+        alienNode: ƒ.Node;
+        animation: ƒ.ComponentAnimator;
+        currentTransform: ƒ.ComponentTransform;
+        nextTransform: ƒ.ComponentTransform;
+        state: STATE;
+        constructor();
+        changeAnimation(): void;
+    }
+    export {};
+}
+declare namespace Script {
     class Answer {
         choiceAGerman: string;
         choiceAEnglish: string;
@@ -57,15 +74,19 @@ declare namespace Script {
 }
 declare namespace Script {
     import ƒ = FudgeCore;
+    export import ƒAid = FudgeAid;
     let viewport: ƒ.Viewport;
     let nodePaths: ƒ.Node;
     let crc2: CanvasRenderingContext2D;
     let branch: ƒ.Node;
     let walker: PathWalker;
+    let current: ƒ.Node;
+    let next: ƒ.Node;
     let inventory: Page[];
     function update(_event: Event): void;
     function handleClick(_event: PointerEvent): void;
     function viewportClick(_event: PointerEvent): void;
+    function findWaypoint(_target: string): void;
 }
 declare namespace Script {
     import ƒ = FudgeCore;

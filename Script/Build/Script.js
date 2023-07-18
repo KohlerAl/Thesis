@@ -1,6 +1,47 @@
 "use strict";
 var Script;
 (function (Script) {
+    let animationData = {
+        standing: "AnimationSprite|2023-05-30T09:04:28.176Z|61590",
+        left: "AnimationSprite|2023-05-30T09:10:55.094Z|17281",
+        right: "AnimationSprite|2023-07-18T09:16:38.532Z|71512"
+    };
+    let STATE;
+    (function (STATE) {
+        STATE[STATE["LEFT"] = 0] = "LEFT";
+        STATE[STATE["RIGHT"] = 1] = "RIGHT";
+        STATE[STATE["STAND"] = 2] = "STAND";
+    })(STATE || (STATE = {}));
+    class Alien extends ƒ.Node {
+        alienNode;
+        animation;
+        currentTransform;
+        nextTransform;
+        state;
+        constructor() {
+            super("Avatar");
+            this.alienNode = Script.branch.getChildrenByName("Player")[0];
+            console.log(this.animation.animation);
+            this.state = STATE.STAND;
+        }
+        changeAnimation() {
+            switch (this.state) {
+                case STATE.LEFT:
+                    this.animation.animation.idResource = animationData.left;
+                    break;
+                case STATE.RIGHT:
+                    this.animation.animation.idResource = animationData.right;
+                    break;
+                case STATE.STAND:
+                    this.animation.animation.idResource = animationData.standing;
+                    break;
+            }
+        }
+    }
+    Script.Alien = Alien;
+})(Script || (Script = {}));
+var Script;
+(function (Script) {
     class Answer {
         choiceAGerman;
         choiceAEnglish;
@@ -244,8 +285,9 @@ var Script;
 var Script;
 (function (Script) {
     var ƒ = FudgeCore;
-    // import ƒAid = FudgeAid;
+    Script.ƒAid = FudgeAid;
     ƒ.Debug.info("Main Program Template running!");
+    let player;
     document.addEventListener("interactiveViewportStarted", start);
     Script.inventory = [];
     function start(_event) {
@@ -260,22 +302,26 @@ var Script;
         dialogueBox.style.width = Script.viewport.canvas.width + "px";
         let npcBox = document.querySelector("#npcTalk");
         npcBox.style.width = Script.viewport.canvas.width + "px";
+        Script.current = Script.branch.getChildrenByName("Paths")[0].getChildrenByName("Bookshelf")[0];
+        Script.walker = Script.branch.getChildrenByName("Player")[0].getComponent(Script.PathWalker);
+        Script.walker.addEventListener("arrived", changeAnimation);
         //#region PathWalker demo
-        Script.walker = Script.branch.getChildrenByName("Walker")[0].getComponent(Script.PathWalker);
-        Script.walker.addEventListener("arrived", choosePath);
-        choosePath(null);
-        function choosePath(_event) {
-            let current = _event ? _event.detail : Script.nodePaths.getChildren()[0];
-            console.log("Arrived at", current.name);
-            let next;
-            do
-                next = ƒ.Random.default.getElement(Script.nodePaths.getChildren());
-            while (next == current);
-            let path = Script.nodePaths.getComponent(Script.Paths).findPath(current.name, next.name);
-            Script.walker.walk(path);
-            console.log("Path: ", ...path.map(_node => _node.name));
-        }
+        /*
+       
+       choosePath(null);
+       function choosePath(_event: CustomEvent) {
+         current= _event ? _event.detail : nodePaths.getChildren()[0];
+         console.log("Arrived at", current.name);
+         
+         do
+         next = ƒ.Random.default.getElement(nodePaths.getChildren());
+         while (next == current)
+         let path: ƒ.Node[] = nodePaths.getComponent(Paths).findPath(current.name, next.name);
+         walker.walk(path);
+         console.log("Path: ", ...path.map(_node => _node.name));
+       } */
         //#endregion
+        player = new Script.Alien();
         ƒ.Loop.addEventListener("loopFrame" /* LOOP_FRAME */, update);
         ƒ.Loop.start();
         // update(null);
@@ -289,6 +335,7 @@ var Script;
     Script.update = update;
     function handleClick(_event) {
         let node = _event.target;
+        console.log(node.name);
         if (node.getComponent(Script.Interactable)) {
             let dialogue = node.getComponent(Script.Interactable);
             dialogue.showText();
@@ -298,13 +345,16 @@ var Script;
             board.openPage();
         }
         else if (node.getComponent(Script.Door)) {
-            let door = node.getComponent(Script.Door);
-            door.switchGraph();
+            window.setTimeout(function () {
+                let door = node.getComponent(Script.Door);
+                door.switchGraph();
+            }, 1500);
         }
         else if (node.getComponent(Script.NPC)) {
             let npc = node.getComponent(Script.NPC);
             npc.showDialogue();
         }
+        findWaypoint(node.name);
     }
     Script.handleClick = handleClick;
     function viewportClick(_event) {
@@ -312,6 +362,16 @@ var Script;
         Script.viewport.dispatchPointerEvent(_event);
     }
     Script.viewportClick = viewportClick;
+    function findWaypoint(_target) {
+        let pickedWP = Script.branch.getChildrenByName("Paths")[0].getChildrenByName(_target)[0];
+        let path = Script.nodePaths.getComponent(Script.Paths).findPath(Script.current.name, pickedWP.name);
+        Script.walker.walk(path);
+        Script.current = pickedWP;
+    }
+    Script.findWaypoint = findWaypoint;
+    function changeAnimation() {
+        player.changeAnimation();
+    }
 })(Script || (Script = {}));
 var Script;
 (function (Script) {

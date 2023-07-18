@@ -28,6 +28,7 @@ namespace Script {
           break;
         case ƒ.EVENT.COMPONENT_REMOVE:
           this.removeEventListener(ƒ.EVENT.COMPONENT_REMOVE, this.hndEvent);
+          
           this.removeEventListener(ƒ.EVENT.COMPONENT_ADD, this.hndEvent);
           this.removeEventListener(ƒ.EVENT.RENDER_PREPARE, this.move);
           break;
