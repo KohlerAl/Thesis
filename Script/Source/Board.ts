@@ -133,6 +133,7 @@ namespace Script {
             if (inventory.length == 2) {
                 let letters: ƒ.Node = branch.getChildrenByName("Letters")[0]; 
                 letters.activate(false); 
+                pagesCollected = true; 
                 update(null)
             }
         }

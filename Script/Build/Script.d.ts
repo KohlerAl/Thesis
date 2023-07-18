@@ -4,7 +4,8 @@ declare namespace Script {
         RIGHT = 1,
         STAND = 2
     }
-    export class Alien extends ƒ.Node {
+    export class Alien extends ƒ.ComponentScript {
+        static readonly iSubclass: number;
         alienNode: ƒ.Node;
         animation: ƒ.ComponentAnimator;
         currentTransform: ƒ.ComponentTransform;
@@ -12,6 +13,7 @@ declare namespace Script {
         state: STATE;
         constructor();
         changeAnimation(): void;
+        hndEvent: (_event: Event) => void;
     }
     export {};
 }
@@ -41,6 +43,13 @@ declare namespace Script {
         flipPage(): void;
         closePage(): void;
         collectPage(): void;
+    }
+}
+declare namespace Script {
+    class Break {
+        typeQuest: string;
+        fulfilled: boolean;
+        constructor(_type: string);
     }
 }
 declare namespace Script {
@@ -82,6 +91,7 @@ declare namespace Script {
     let walker: PathWalker;
     let current: ƒ.Node;
     let next: ƒ.Node;
+    let pagesCollected: boolean;
     let inventory: Page[];
     function update(_event: Event): void;
     function handleClick(_event: PointerEvent): void;
@@ -93,7 +103,7 @@ declare namespace Script {
     class NPC extends ƒ.ComponentScript {
         static readonly iSubclass: number;
         currentDialogue: number;
-        dialogues: (Dialogue | Answer)[];
+        dialogues: (Dialogue | Answer | Break)[];
         readonly dialogueBox: HTMLDivElement;
         readonly textBox: HTMLParagraphElement;
         readonly nextButton: HTMLDivElement;

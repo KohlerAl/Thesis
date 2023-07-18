@@ -8,9 +8,11 @@ namespace Script {
   export let crc2: CanvasRenderingContext2D;
   export let branch: ƒ.Node;
   export let walker: PathWalker;
-  let player: Alien; 
-  export let current: ƒ.Node; 
+  let player: ƒ.Node;
+  export let current: ƒ.Node;
   export let next: ƒ.Node;
+  let first: boolean = true;
+  export let pagesCollected: boolean = false; 
   document.addEventListener("interactiveViewportStarted", <EventListener>start);
 
   export let inventory: Page[] = [];
@@ -34,27 +36,27 @@ namespace Script {
     walker = branch.getChildrenByName("Player")[0].getComponent(PathWalker);
     walker.addEventListener("arrived", changeAnimation);
 
-   
     //#region PathWalker demo
-     /* 
-    
-    choosePath(null);
-    function choosePath(_event: CustomEvent) {
-      current= _event ? _event.detail : nodePaths.getChildren()[0];
-      console.log("Arrived at", current.name); 
-      
-      do
-      next = ƒ.Random.default.getElement(nodePaths.getChildren());
-      while (next == current)
-      let path: ƒ.Node[] = nodePaths.getComponent(Paths).findPath(current.name, next.name);
-      walker.walk(path);
-      console.log("Path: ", ...path.map(_node => _node.name));
-    } */
+    /* 
+   
+   choosePath(null);
+   function choosePath(_event: CustomEvent) {
+     current= _event ? _event.detail : nodePaths.getChildren()[0];
+     console.log("Arrived at", current.name); 
+     
+     do
+     next = ƒ.Random.default.getElement(nodePaths.getChildren());
+     while (next == current)
+     let path: ƒ.Node[] = nodePaths.getComponent(Paths).findPath(current.name, next.name);
+     walker.walk(path);
+     console.log("Path: ", ...path.map(_node => _node.name));
+   } */
     //#endregion
 
 
 
-    player = new Alien(); 
+    player = branch.getChildrenByName("Player")[0]; 
+    player.addComponent(new Alien); 
     ƒ.Loop.addEventListener(ƒ.EVENT.LOOP_FRAME, update);
     ƒ.Loop.start();
     // update(null);
@@ -70,7 +72,7 @@ namespace Script {
 
   export function handleClick(_event: PointerEvent): void {
     let node: ƒ.Node = (<ƒ.Node>_event.target);
-    console.log(node.name); 
+    console.log(node.name);
     if (node.getComponent(Interactable)) {
       let dialogue: Interactable = node.getComponent(Interactable);
       dialogue.showText();
@@ -82,10 +84,10 @@ namespace Script {
     }
 
     else if (node.getComponent(Door)) {
-      window.setTimeout(function () {     
-      let door: Door = node.getComponent(Door);
-      door.switchGraph();
-      }, 1500); 
+      window.setTimeout(function () {
+        let door: Door = node.getComponent(Door);
+        door.switchGraph();
+      }, 1500);
     }
 
     else if (node.getComponent(NPC)) {
@@ -93,7 +95,7 @@ namespace Script {
       npc.showDialogue();
     }
 
-    findWaypoint(node.name); 
+    findWaypoint(node.name);
   }
 
   export function viewportClick(_event: PointerEvent): void {
@@ -102,15 +104,19 @@ namespace Script {
   }
 
   export function findWaypoint(_target: string): void {
+    if (first == true) {
+      first = false; 
+      //player.alienNode.mtxLocal.translateY(360)
+    }
     let pickedWP: ƒ.Node = branch.getChildrenByName("Paths")[0].getChildrenByName(_target)[0];
     let path: ƒ.Node[] = nodePaths.getComponent(Paths).findPath(current.name, pickedWP.name);
     walker.walk(path);
 
-    current = pickedWP; 
+    current = pickedWP;
   }
 
   function changeAnimation(): void {
-    player.changeAnimation(); 
+    player.getComponent(Alien).changeAnimation();
   }
 }
 

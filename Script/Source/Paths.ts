@@ -48,11 +48,11 @@ namespace Script {
             let posEnd: ƒ.Vector2 = viewport.pointWorldToClient(
               nodePaths.getChildrenByName(path.end)[0].mtxWorld.translation
             );
-            crc2.beginPath();
+            /* crc2.beginPath();
             crc2.strokeStyle = "red";
             crc2.moveTo(posStart.x, posStart.y);
             crc2.lineTo(posEnd.x, posEnd.y);
-            crc2.stroke();
+            crc2.stroke(); */
             break;
           }
       }

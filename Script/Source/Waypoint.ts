@@ -38,8 +38,8 @@ namespace Script {
           // console.log(this.node.name);
           let posWorld: ƒ.Vector3 = this.node.mtxWorld.translation;
           let posClient: ƒ.Vector2 = viewport.pointWorldToClient(posWorld);
-          crc2.fillStyle = "red";
-          crc2.fillRect(posClient.x, posClient.y, 10, 10);
+          /* crc2.fillStyle = "red";
+          crc2.fillRect(posClient.x, posClient.y, 10, 10); */
           break;
       }
     }

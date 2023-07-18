@@ -7,11 +7,20 @@ namespace Script {
         public static readonly iSubclass: number = ƒ.Component.registerSubclass(NPC);
         // Properties may be mutated by users in the editor via the automatically created user interface
         public currentDialogue: number = 0;
-        public dialogues: (Dialogue | Answer)[] = [
+        public dialogues: (Dialogue | Answer | Break)[] = [
             new Dialogue("Hallo Player. Schön, dich zu sehen. <br> Und danke, dass du uns hilfst.",
                 "Hello Player. It’s good to see you. <br>And thank you for supporting us."),
             new Dialogue("Hallo Mykah.", "Hello Mykah"),
-            new Answer("Kann ich dir bei etwas helfen?", "Can I help you with something?", "Wie kann ich dir helfen?", "How can I support you?")];
+            new Answer("Kann ich dir bei etwas helfen?", "Can I help you with something?", "Wie kann ich dir helfen?", "How can I support you?"),
+            new Dialogue("Ich suche Hinweise über eine Blume. <br>Kannst du mir helfen, sie zu finden?", "I am looking for some clues about a flower. <br> Can you help me to find them?"),
+            new Answer("Natürlich. Ich helfe dir gerne.", "Of course. I will be happy to help you.", "Ja, ich kann dir helfen. Wo soll ich suchen?", "Yes, I can help you. Where should I look?"),
+            new Dialogue("Danke. Du solltest als erstes im Büro suchen. <br> Dazu musst du durch die linke Tür.", "Thank you. You should check the office first. <br> You have to go through the left door."),
+            new Break("Pages"),
+            new Dialogue ("Danke! Kannst du mir ein paar Fragen beantworten?", "Thank you! Can you answer a few questions?"), 
+            new Dialogue("1. Wo wächst die Nianna Blume? <br> 2. Wie sieht die Nianna Blume aus? <br> 3. Wie wird die Nianna Blume verwendet?", "1. Where does the nianna flower grow? <br>2. What does the nianna flower look like? <br>3. How is the nianna flower used?"),
+            new Break("Noot"),
+            new Dialogue("Hast du alles nachgeschaut? <br> Dann kannst du deine Ergebnisse hier Eintragen", "Did you look everything up? You can put in your results here")
+        ];
         public readonly dialogueBox: HTMLDivElement;
         public readonly textBox: HTMLParagraphElement;
         public readonly nextButton: HTMLDivElement;
@@ -80,6 +89,16 @@ namespace Script {
                 this.dialogueBox.querySelector("#optionA").addEventListener("pointerdown", this.choose);
                 this.dialogueBox.querySelector("#optionB").addEventListener("pointerdown", this.choose);
             }
+            else if (this.dialogues[this.currentDialogue] instanceof Break) {
+                let current: Break = <Break>this.dialogues[this.currentDialogue];
+                this.hideDialouge();
+
+                if (current.typeQuest == "Pages" && pagesCollected == true) {
+                    this.currentDialogue++; 
+                    this.showDialogue(); 
+                }
+            }
+
         }
 
         public showNext(): void {

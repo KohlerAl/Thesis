@@ -1270,7 +1270,7 @@
                       {
                         "ƒ.ComponentMaterial": {
                           "sortForAlpha": false,
-                          "clrPrimary": "[1, 1, 1, 1]",
+                          "clrPrimary": "[1, 1, 1, 0]",
                           "clrSecondary": "[1, 1, 1, 1]",
                           "pivot": {
                             "translation": "[0, 0]",
@@ -1341,7 +1341,7 @@
                       {
                         "ƒ.ComponentMaterial": {
                           "sortForAlpha": false,
-                          "clrPrimary": "[1, 1, 1, 1]",
+                          "clrPrimary": "[1, 1, 1, 0]",
                           "clrSecondary": "[1, 1, 1, 1]",
                           "pivot": {
                             "translation": "[0, 0]",
@@ -1483,7 +1483,7 @@
                       {
                         "ƒ.ComponentMaterial": {
                           "sortForAlpha": false,
-                          "clrPrimary": "[1, 1, 1, 1]",
+                          "clrPrimary": "[1, 1, 1, 0]",
                           "clrSecondary": "[1, 1, 1, 1]",
                           "pivot": {
                             "translation": "[0, 0]",
@@ -2038,7 +2038,7 @@
             "ƒ.ComponentMesh": {
               "idMesh": "MeshSprite|2023-06-20T08:34:09.625Z|25983",
               "pivot": {
-                "translation": "[0, 0.17999999225139618, 0.10000000149011612]",
+                "translation": "[0, -0.17999999225139618, 0.10000000149011612]",
                 "rotation": "[0, 0, 0]",
                 "scaling": "[0.40000003576278687, 0.4000000059604645, 1]"
               },
@@ -2055,7 +2055,7 @@
               "clrPrimary": "[1, 1, 1, 1]",
               "clrSecondary": "[1, 1, 1, 1]",
               "pivot": {
-                "translation": "[0.5714285969734192, 0]",
+                "translation": "[0.7142857313156128, 0]",
                 "rotation": 0,
                 "scaling": "[0.1428571492433548, 1]"
               },
@@ -2121,7 +2121,7 @@
       "wrap": "[0, 80]",
       "Animation": {
         "idResource": "AnimationSprite|2023-07-18T09:16:38.532Z|71512",
-        "name": "AnimationSprite",
+        "name": "Right",
         "labels": {},
         "events": {},
         "framesPerSecond": 25,

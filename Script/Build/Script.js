@@ -12,17 +12,21 @@ var Script;
         STATE[STATE["RIGHT"] = 1] = "RIGHT";
         STATE[STATE["STAND"] = 2] = "STAND";
     })(STATE || (STATE = {}));
-    class Alien extends ƒ.Node {
+    class Alien extends ƒ.ComponentScript {
+        static iSubclass = ƒ.Component.registerSubclass(Alien);
         alienNode;
         animation;
         currentTransform;
         nextTransform;
         state;
         constructor() {
-            super("Avatar");
+            super();
             this.alienNode = Script.branch.getChildrenByName("Player")[0];
-            console.log(this.animation.animation);
+            this.animation = this.alienNode.getComponent(ƒ.ComponentAnimator);
             this.state = STATE.STAND;
+            this.addEventListener("componentAdd" /* COMPONENT_ADD */, this.hndEvent);
+            this.addEventListener("componentRemove" /* COMPONENT_REMOVE */, this.hndEvent);
+            this.addEventListener("nodeDeserialized" /* NODE_DESERIALIZED */, this.hndEvent);
         }
         changeAnimation() {
             switch (this.state) {
@@ -34,9 +38,24 @@ var Script;
                     break;
                 case STATE.STAND:
                     this.animation.animation.idResource = animationData.standing;
+                    this.animation.animation.clearCache();
                     break;
             }
         }
+        hndEvent = (_event) => {
+            switch (_event.type) {
+                case "componentAdd" /* COMPONENT_ADD */:
+                    // ƒ.Debug.log(this.message, this.node);
+                    break;
+                case "componentRemove" /* COMPONENT_REMOVE */:
+                    this.removeEventListener("componentAdd" /* COMPONENT_ADD */, this.hndEvent);
+                    this.removeEventListener("componentRemove" /* COMPONENT_REMOVE */, this.hndEvent);
+                    break;
+                case "nodeDeserialized" /* NODE_DESERIALIZED */:
+                    // if deserialized the node is now fully reconstructed and access to all its components and children is possible
+                    break;
+            }
+        };
     }
     Script.Alien = Alien;
 })(Script || (Script = {}));
@@ -166,11 +185,23 @@ var Script;
             if (Script.inventory.length == 2) {
                 let letters = Script.branch.getChildrenByName("Letters")[0];
                 letters.activate(false);
+                Script.pagesCollected = true;
                 Script.update(null);
             }
         }
     }
     Script.Board = Board;
+})(Script || (Script = {}));
+var Script;
+(function (Script) {
+    class Break {
+        typeQuest;
+        fulfilled;
+        constructor(_type) {
+            this.typeQuest = _type;
+        }
+    }
+    Script.Break = Break;
 })(Script || (Script = {}));
 var Script;
 (function (Script) {
@@ -288,6 +319,8 @@ var Script;
     Script.ƒAid = FudgeAid;
     ƒ.Debug.info("Main Program Template running!");
     let player;
+    let first = true;
+    Script.pagesCollected = false;
     document.addEventListener("interactiveViewportStarted", start);
     Script.inventory = [];
     function start(_event) {
@@ -321,7 +354,8 @@ var Script;
          console.log("Path: ", ...path.map(_node => _node.name));
        } */
         //#endregion
-        player = new Script.Alien();
+        player = Script.branch.getChildrenByName("Player")[0];
+        player.addComponent(new Script.Alien);
         ƒ.Loop.addEventListener("loopFrame" /* LOOP_FRAME */, update);
         ƒ.Loop.start();
         // update(null);
@@ -363,6 +397,10 @@ var Script;
     }
     Script.viewportClick = viewportClick;
     function findWaypoint(_target) {
+        if (first == true) {
+            first = false;
+            //player.alienNode.mtxLocal.translateY(360)
+        }
         let pickedWP = Script.branch.getChildrenByName("Paths")[0].getChildrenByName(_target)[0];
         let path = Script.nodePaths.getComponent(Script.Paths).findPath(Script.current.name, pickedWP.name);
         Script.walker.walk(path);
@@ -370,7 +408,7 @@ var Script;
     }
     Script.findWaypoint = findWaypoint;
     function changeAnimation() {
-        player.changeAnimation();
+        player.getComponent(Script.Alien).changeAnimation();
     }
 })(Script || (Script = {}));
 var Script;
@@ -385,7 +423,15 @@ var Script;
         dialogues = [
             new Script.Dialogue("Hallo Player. Schön, dich zu sehen. <br> Und danke, dass du uns hilfst.", "Hello Player. It’s good to see you. <br>And thank you for supporting us."),
             new Script.Dialogue("Hallo Mykah.", "Hello Mykah"),
-            new Script.Answer("Kann ich dir bei etwas helfen?", "Can I help you with something?", "Wie kann ich dir helfen?", "How can I support you?")
+            new Script.Answer("Kann ich dir bei etwas helfen?", "Can I help you with something?", "Wie kann ich dir helfen?", "How can I support you?"),
+            new Script.Dialogue("Ich suche Hinweise über eine Blume. <br>Kannst du mir helfen, sie zu finden?", "I am looking for some clues about a flower. <br> Can you help me to find them?"),
+            new Script.Answer("Natürlich. Ich helfe dir gerne.", "Of course. I will be happy to help you.", "Ja, ich kann dir helfen. Wo soll ich suchen?", "Yes, I can help you. Where should I look?"),
+            new Script.Dialogue("Danke. Du solltest als erstes im Büro suchen. <br> Dazu musst du durch die linke Tür.", "Thank you. You should check the office first. <br> You have to go through the left door."),
+            new Script.Break("Pages"),
+            new Script.Dialogue("Danke! Kannst du mir ein paar Fragen beantworten?", "Thank you! Can you answer a few questions?"),
+            new Script.Dialogue("1. Wo wächst die Nianna Blume? <br> 2. Wie sieht die Nianna Blume aus? <br> 3. Wie wird die Nianna Blume verwendet?", "1. Where does the nianna flower grow? <br>2. What does the nianna flower look like? <br>3. How is the nianna flower used?"),
+            new Script.Break("Noot"),
+            new Script.Dialogue("Hast du alles nachgeschaut? <br> Dann kannst du deine Ergebnisse hier Eintragen", "Did you look everything up? You can put in your results here")
         ];
         dialogueBox;
         textBox;
@@ -444,6 +490,14 @@ var Script;
                 this.nextButton.style.visibility = "hidden";
                 this.dialogueBox.querySelector("#optionA").addEventListener("pointerdown", this.choose);
                 this.dialogueBox.querySelector("#optionB").addEventListener("pointerdown", this.choose);
+            }
+            else if (this.dialogues[this.currentDialogue] instanceof Script.Break) {
+                let current = this.dialogues[this.currentDialogue];
+                this.hideDialouge();
+                if (current.typeQuest == "Pages" && Script.pagesCollected == true) {
+                    this.currentDialogue++;
+                    this.showDialogue();
+                }
             }
         }
         showNext() {
@@ -611,11 +665,11 @@ var Script;
                         // console.log(path);
                         let posStart = Script.viewport.pointWorldToClient(Script.nodePaths.getChildrenByName(path.start)[0].mtxWorld.translation);
                         let posEnd = Script.viewport.pointWorldToClient(Script.nodePaths.getChildrenByName(path.end)[0].mtxWorld.translation);
-                        Script.crc2.beginPath();
-                        Script.crc2.strokeStyle = "red";
-                        Script.crc2.moveTo(posStart.x, posStart.y);
-                        Script.crc2.lineTo(posEnd.x, posEnd.y);
-                        Script.crc2.stroke();
+                        /* crc2.beginPath();
+                        crc2.strokeStyle = "red";
+                        crc2.moveTo(posStart.x, posStart.y);
+                        crc2.lineTo(posEnd.x, posEnd.y);
+                        crc2.stroke(); */
                         break;
                     }
             }
@@ -922,8 +976,8 @@ var Script;
                     // console.log(this.node.name);
                     let posWorld = this.node.mtxWorld.translation;
                     let posClient = Script.viewport.pointWorldToClient(posWorld);
-                    Script.crc2.fillStyle = "red";
-                    Script.crc2.fillRect(posClient.x, posClient.y, 10, 10);
+                    /* crc2.fillStyle = "red";
+                    crc2.fillRect(posClient.x, posClient.y, 10, 10); */
                     break;
             }
         };
