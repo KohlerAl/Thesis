@@ -1,17 +1,12 @@
 "use strict";
 var Script;
 (function (Script) {
-    let animationData = {
-        standing: "AnimationSprite|2023-05-30T09:04:28.176Z|61590",
-        left: "AnimationSprite|2023-05-30T09:10:55.094Z|17281",
-        right: "AnimationSprite|2023-07-18T09:16:38.532Z|71512"
-    };
     let STATE;
     (function (STATE) {
         STATE[STATE["LEFT"] = 0] = "LEFT";
         STATE[STATE["RIGHT"] = 1] = "RIGHT";
         STATE[STATE["STAND"] = 2] = "STAND";
-    })(STATE || (STATE = {}));
+    })(STATE = Script.STATE || (Script.STATE = {}));
     class Alien extends ƒ.ComponentScript {
         static iSubclass = ƒ.Component.registerSubclass(Alien);
         alienNode;
@@ -19,6 +14,9 @@ var Script;
         currentTransform;
         nextTransform;
         state;
+        animationLeft;
+        animationRight;
+        animationStand;
         constructor() {
             super();
             this.alienNode = Script.branch.getChildrenByName("Player")[0];
@@ -27,18 +25,26 @@ var Script;
             this.addEventListener("componentAdd" /* COMPONENT_ADD */, this.hndEvent);
             this.addEventListener("componentRemove" /* COMPONENT_REMOVE */, this.hndEvent);
             this.addEventListener("nodeDeserialized" /* NODE_DESERIALIZED */, this.hndEvent);
+            this.setup();
+            this.changeAnimation();
+        }
+        changeState(_new, _current) {
+            if (_new.mtxLocal.translation.x < _current.mtxLocal.translation.x)
+                this.state = STATE.LEFT;
+            else if (_new.mtxLocal.translation.x > _current.mtxLocal.translation.x)
+                this.state = STATE.RIGHT;
+            this.changeAnimation();
         }
         changeAnimation() {
             switch (this.state) {
                 case STATE.LEFT:
-                    this.animation.animation.idResource = animationData.left;
+                    this.animation.animation = this.animationLeft.animation;
                     break;
                 case STATE.RIGHT:
-                    this.animation.animation.idResource = animationData.right;
+                    this.animation.animation = this.animationRight.animation;
                     break;
                 case STATE.STAND:
-                    this.animation.animation.idResource = animationData.standing;
-                    this.animation.animation.clearCache();
+                    this.animation.animation = this.animationStand.animation;
                     break;
             }
         }
@@ -56,6 +62,18 @@ var Script;
                     break;
             }
         };
+        async setup() {
+            this.animationLeft = Script.branch.getChildrenByName("Animations")[0].getChildrenByName("AnimationLeft")[0].getComponent(ƒ.ComponentAnimator);
+            console.log(this.animationLeft.animation);
+            this.animationRight = Script.branch.getChildrenByName("Animations")[0].getChildrenByName("AnimationRight")[0].getComponent(ƒ.ComponentAnimator);
+            console.log(this.animationRight.animation);
+            this.animationStand = Script.branch.getChildrenByName("Animations")[0].getChildrenByName("AnimationStand")[0].getComponent(ƒ.ComponentAnimator);
+            console.log(this.animationStand.animation);
+        }
+        setToGround() {
+            Script.player.mtxLocal.translateY(500);
+            console.log("HAAAAAAAAAAAAAALLLLLLOOOOOOOO");
+        }
     }
     Script.Alien = Alien;
 })(Script || (Script = {}));
@@ -318,7 +336,6 @@ var Script;
     var ƒ = FudgeCore;
     Script.ƒAid = FudgeAid;
     ƒ.Debug.info("Main Program Template running!");
-    let player;
     let first = true;
     Script.pagesCollected = false;
     document.addEventListener("interactiveViewportStarted", start);
@@ -334,7 +351,11 @@ var Script;
         let dialogueBox = document.querySelector("#dialogue");
         dialogueBox.style.width = Script.viewport.canvas.width + "px";
         let npcBox = document.querySelector("#npcTalk");
-        npcBox.style.width = Script.viewport.canvas.width + "px";
+        npcBox.style.width = Script.viewport.canvas.width - 300 + "px";
+        let nootnoot = document.querySelector("#NOOT");
+        nootnoot.style.left = Script.viewport.canvas.width - 200 + "px";
+        nootnoot.style.top = Script.viewport.canvas.height - 200 + "px";
+        nootnoot.style.visibility = "visible";
         Script.current = Script.branch.getChildrenByName("Paths")[0].getChildrenByName("Bookshelf")[0];
         Script.walker = Script.branch.getChildrenByName("Player")[0].getComponent(Script.PathWalker);
         Script.walker.addEventListener("arrived", changeAnimation);
@@ -354,8 +375,8 @@ var Script;
          console.log("Path: ", ...path.map(_node => _node.name));
        } */
         //#endregion
-        player = Script.branch.getChildrenByName("Player")[0];
-        player.addComponent(new Script.Alien);
+        Script.player = Script.branch.getChildrenByName("Player")[0];
+        Script.player.addComponent(new Script.Alien);
         ƒ.Loop.addEventListener("loopFrame" /* LOOP_FRAME */, update);
         ƒ.Loop.start();
         // update(null);
@@ -399,16 +420,18 @@ var Script;
     function findWaypoint(_target) {
         if (first == true) {
             first = false;
-            //player.alienNode.mtxLocal.translateY(360)
+            Script.player.getComponent(Script.Alien).setToGround();
         }
         let pickedWP = Script.branch.getChildrenByName("Paths")[0].getChildrenByName(_target)[0];
         let path = Script.nodePaths.getComponent(Script.Paths).findPath(Script.current.name, pickedWP.name);
         Script.walker.walk(path);
+        Script.player.getComponent(Script.Alien).changeState(pickedWP, Script.current);
         Script.current = pickedWP;
     }
     Script.findWaypoint = findWaypoint;
     function changeAnimation() {
-        player.getComponent(Script.Alien).changeAnimation();
+        Script.player.getComponent(Script.Alien).state = Script.STATE.STAND;
+        Script.player.getComponent(Script.Alien).changeAnimation();
     }
 })(Script || (Script = {}));
 var Script;

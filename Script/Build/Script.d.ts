@@ -4,18 +4,23 @@ declare namespace Script {
         RIGHT = 1,
         STAND = 2
     }
-    export class Alien extends ƒ.ComponentScript {
+    class Alien extends ƒ.ComponentScript {
         static readonly iSubclass: number;
         alienNode: ƒ.Node;
         animation: ƒ.ComponentAnimator;
         currentTransform: ƒ.ComponentTransform;
         nextTransform: ƒ.ComponentTransform;
         state: STATE;
+        animationLeft: ƒ.ComponentAnimator;
+        animationRight: ƒ.ComponentAnimator;
+        animationStand: ƒ.ComponentAnimator;
         constructor();
+        changeState(_new: ƒ.Node, _current: ƒ.Node): void;
         changeAnimation(): void;
         hndEvent: (_event: Event) => void;
+        setup(): Promise<void>;
+        setToGround(): void;
     }
-    export {};
 }
 declare namespace Script {
     class Answer {
@@ -89,6 +94,7 @@ declare namespace Script {
     let crc2: CanvasRenderingContext2D;
     let branch: ƒ.Node;
     let walker: PathWalker;
+    let player: ƒ.Node;
     let current: ƒ.Node;
     let next: ƒ.Node;
     let pagesCollected: boolean;

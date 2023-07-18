@@ -36,11 +36,18 @@ canvas.fullscreen {
   height: 100vh;
   z-index: 2147483647;
 }
-
+#NOOT {
+  z-index: 999;
+  position: absolute;
+  left: 85%;
+  width: 200px;
+  height: 200px;
+  visibility: hidden;
+}
 #dialogue,
 #npcTalk {
   position: absolute;
-  margin: auto;
+  width: 80%;
   z-index: 1000;
   padding: 15px;
   bottom: 10px;
@@ -99,7 +106,7 @@ canvas.fullscreen {
 #npcTalk,
 #npcTalk .interface div,
 #npcTalk .interface p {
-  font-size: 25px;
+  font-size: 20px;
   font-family: pixel;
 }
 

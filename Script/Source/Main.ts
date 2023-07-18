@@ -8,7 +8,7 @@ namespace Script {
   export let crc2: CanvasRenderingContext2D;
   export let branch: ƒ.Node;
   export let walker: PathWalker;
-  let player: ƒ.Node;
+  export let player: ƒ.Node;
   export let current: ƒ.Node;
   export let next: ƒ.Node;
   let first: boolean = true;
@@ -30,7 +30,12 @@ namespace Script {
     dialogueBox.style.width = viewport.canvas.width + "px";
 
     let npcBox: HTMLDivElement = document.querySelector("#npcTalk");
-    npcBox.style.width = viewport.canvas.width + "px";
+    npcBox.style.width = viewport.canvas.width - 300 + "px";
+
+    let nootnoot: HTMLDivElement = document.querySelector("#NOOT");
+    nootnoot.style.left = viewport.canvas.width - 200 + "px"; 
+    nootnoot.style.top = viewport.canvas.height - 200 + "px"; 
+    nootnoot.style.visibility = "visible"; 
 
     current = branch.getChildrenByName("Paths")[0].getChildrenByName("Bookshelf")[0]
     walker = branch.getChildrenByName("Player")[0].getComponent(PathWalker);
@@ -106,17 +111,19 @@ namespace Script {
   export function findWaypoint(_target: string): void {
     if (first == true) {
       first = false; 
-      //player.alienNode.mtxLocal.translateY(360)
+      player.getComponent(Alien).setToGround()
     }
     let pickedWP: ƒ.Node = branch.getChildrenByName("Paths")[0].getChildrenByName(_target)[0];
     let path: ƒ.Node[] = nodePaths.getComponent(Paths).findPath(current.name, pickedWP.name);
     walker.walk(path);
 
+    player.getComponent(Alien).changeState(pickedWP, current);
     current = pickedWP;
   }
 
   function changeAnimation(): void {
-    player.getComponent(Alien).changeAnimation();
+    player.getComponent(Alien).state = STATE.STAND; 
+    player.getComponent(Alien).changeAnimation(); 
   }
 }
 

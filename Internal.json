@@ -473,7 +473,7 @@
                       {
                         "ƒ.ComponentTransform": {
                           "local": {
-                            "translation": "[-0.8734982013702393, -0.4192168712615967, 0.019999999552965164]",
+                            "translation": "[-0.4534982144832611, -0.3592168688774109, 0.019999999552965164]",
                             "rotation": "[0, 0, 0]",
                             "scaling": "[1, 1, 1]"
                           },
@@ -615,7 +615,7 @@
                       {
                         "ƒ.ComponentTransform": {
                           "local": {
-                            "translation": "[-0.4557492434978485, -0.3670206367969513, 0.019999999552965164]",
+                            "translation": "[-0.8457491993904114, -0.41702064871788025, 0.019999999552965164]",
                             "rotation": "[0, 0, 0]",
                             "scaling": "[1, 1, 1]"
                           },
@@ -1030,9 +1030,96 @@
         },
         {
           "ƒ.GraphInstance": {
-            "deserializeFromSource": true,
             "name": "Player",
+            "active": true,
+            "components": {
+              "ComponentMesh": [
+                {
+                  "ƒ.ComponentMesh": {
+                    "idMesh": "MeshSprite|2023-06-20T08:34:09.625Z|25983",
+                    "pivot": {
+                      "translation": "[0, -0.1799999624490738, 0.10000000149011612]",
+                      "rotation": "[0, 0, 0]",
+                      "scaling": "[0.40000003576278687, 0.4000000059604645, 1]"
+                    },
+                    "Component": {
+                      "active": true
+                    }
+                  }
+                }
+              ],
+              "ComponentMaterial": [
+                {
+                  "ƒ.ComponentMaterial": {
+                    "sortForAlpha": false,
+                    "clrPrimary": "[1, 1, 1, 1]",
+                    "clrSecondary": "[1, 1, 1, 1]",
+                    "pivot": {
+                      "translation": "[0.5714285969734192, 0]",
+                      "rotation": 0,
+                      "scaling": "[0.1428571492433548, 1]"
+                    },
+                    "Component": {
+                      "active": true
+                    },
+                    "idMaterial": "Material|2023-05-30T07:49:58.019Z|95971"
+                  }
+                }
+              ],
+              "ComponentTransform": [
+                {
+                  "ƒ.ComponentTransform": {
+                    "local": {
+                      "translation": "[-0.7799999713897705, 0, 0]",
+                      "rotation": "[0, 0, 0]",
+                      "scaling": "[1, 1, 1]"
+                    },
+                    "Component": {
+                      "active": true
+                    }
+                  }
+                }
+              ],
+              "ComponentAnimator": [
+                {
+                  "ƒ.ComponentAnimator": {
+                    "Component": {
+                      "active": true
+                    },
+                    "idAnimation": "AnimationSprite|2023-05-30T09:10:55.094Z|17281",
+                    "playmode": "loop",
+                    "quantization": "discrete",
+                    "scale": 1,
+                    "scaleWithGameTime": true,
+                    "animateInEditor": true
+                  }
+                }
+              ],
+              "PathWalker": [
+                {
+                  "Script.PathWalker": {
+                    "active": true,
+                    "speed": 1
+                  }
+                }
+              ],
+              "ComponentGraphFilter": [
+                {
+                  "ƒ.ComponentGraphFilter": {
+                    "active": true
+                  }
+                }
+              ]
+            },
+            "children": [],
             "idSource": "Graph|2023-07-14T11:35:50.141Z|34842"
+          }
+        },
+        {
+          "ƒ.GraphInstance": {
+            "deserializeFromSource": true,
+            "name": "Animations",
+            "idSource": "Graph|2023-07-18T14:55:12.358Z|50781"
           }
         }
       ],
@@ -1077,6 +1164,30 @@
         ]
       },
       "fitTexture": true
+    }
+  },
+  "Material|2023-07-18T11:46:50.602Z|74549": {
+    "ƒ.Material": {
+      "name": "Noot",
+      "idResource": "Material|2023-07-18T11:46:50.602Z|74549",
+      "shader": "ShaderLitTextured",
+      "coat": {
+        "ƒ.CoatTextured": {
+          "color": "[1, 1, 1, 1]",
+          "idTexture": "TextureImage|2023-07-18T11:46:05.526Z|61880"
+        }
+      }
+    }
+  },
+  "TextureImage|2023-07-18T11:46:05.526Z|61880": {
+    "ƒ.TextureImage": {
+      "url": "images\\Noot.png",
+      "type": "TextureImage",
+      "Texture": {
+        "idResource": "TextureImage|2023-07-18T11:46:05.526Z|61880",
+        "name": "images\\Noot.png",
+        "mipmap": "CRISP"
+      }
     }
   },
   "Graph|2023-05-18T10:13:56.922Z|12376": {
@@ -1785,9 +1896,96 @@
         },
         {
           "ƒ.GraphInstance": {
-            "deserializeFromSource": true,
             "name": "Player",
+            "active": true,
+            "components": {
+              "ComponentMesh": [
+                {
+                  "ƒ.ComponentMesh": {
+                    "idMesh": "MeshSprite|2023-06-20T08:34:09.625Z|25983",
+                    "pivot": {
+                      "translation": "[0, -0.17999997735023499, 0.10000000149011612]",
+                      "rotation": "[0, 0, 0]",
+                      "scaling": "[0.40000003576278687, 0.4000000059604645, 1]"
+                    },
+                    "Component": {
+                      "active": true
+                    }
+                  }
+                }
+              ],
+              "ComponentMaterial": [
+                {
+                  "ƒ.ComponentMaterial": {
+                    "sortForAlpha": false,
+                    "clrPrimary": "[1, 1, 1, 1]",
+                    "clrSecondary": "[1, 1, 1, 1]",
+                    "pivot": {
+                      "translation": "[0.8571428656578064, 0]",
+                      "rotation": 0,
+                      "scaling": "[0.1428571492433548, 1]"
+                    },
+                    "Component": {
+                      "active": true
+                    },
+                    "idMaterial": "Material|2023-05-30T07:49:58.019Z|95971"
+                  }
+                }
+              ],
+              "ComponentTransform": [
+                {
+                  "ƒ.ComponentTransform": {
+                    "local": {
+                      "translation": "[0.4899999797344208, 0, 0]",
+                      "rotation": "[0, 0, 0]",
+                      "scaling": "[1, 1, 1]"
+                    },
+                    "Component": {
+                      "active": true
+                    }
+                  }
+                }
+              ],
+              "ComponentAnimator": [
+                {
+                  "ƒ.ComponentAnimator": {
+                    "Component": {
+                      "active": true
+                    },
+                    "idAnimation": "AnimationSprite|2023-05-30T09:10:55.094Z|17281",
+                    "playmode": "loop",
+                    "quantization": "discrete",
+                    "scale": 1,
+                    "scaleWithGameTime": true,
+                    "animateInEditor": true
+                  }
+                }
+              ],
+              "PathWalker": [
+                {
+                  "Script.PathWalker": {
+                    "active": true,
+                    "speed": 1
+                  }
+                }
+              ],
+              "ComponentGraphFilter": [
+                {
+                  "ƒ.ComponentGraphFilter": {
+                    "active": true
+                  }
+                }
+              ]
+            },
+            "children": [],
             "idSource": "Graph|2023-07-14T11:35:50.141Z|34842"
+          }
+        },
+        {
+          "ƒ.GraphInstance": {
+            "deserializeFromSource": true,
+            "name": "Animations",
+            "idSource": "Graph|2023-07-18T14:55:12.358Z|50781"
           }
         }
       ],
@@ -2038,7 +2236,7 @@
             "ƒ.ComponentMesh": {
               "idMesh": "MeshSprite|2023-06-20T08:34:09.625Z|25983",
               "pivot": {
-                "translation": "[0, -0.17999999225139618, 0.10000000149011612]",
+                "translation": "[0, 0.18000002205371857, 0.10000000149011612]",
                 "rotation": "[0, 0, 0]",
                 "scaling": "[0.40000003576278687, 0.4000000059604645, 1]"
               },
@@ -2070,7 +2268,7 @@
           {
             "ƒ.ComponentTransform": {
               "local": {
-                "translation": "[0.3400000035762787, 0, 0]",
+                "translation": "[0.4899999797344208, 0, 0]",
                 "rotation": "[0, 0, 0]",
                 "scaling": "[1, 1, 1]"
               },
@@ -2102,6 +2300,13 @@
               "speed": 1
             }
           }
+        ],
+        "ComponentGraphFilter": [
+          {
+            "ƒ.ComponentGraphFilter": {
+              "active": true
+            }
+          }
         ]
       },
       "children": [],
@@ -2124,9 +2329,92 @@
         "name": "Right",
         "labels": {},
         "events": {},
-        "framesPerSecond": 25,
+        "framesPerSecond": 5,
         "animationStructure": {}
       }
+    }
+  },
+  "Graph|2023-07-18T14:55:12.358Z|50781": {
+    "ƒ.Graph": {
+      "name": "Animations",
+      "active": true,
+      "components": {},
+      "children": [
+        {
+          "ƒ.Node": {
+            "name": "AnimationLeft",
+            "active": true,
+            "components": {
+              "ComponentAnimator": [
+                {
+                  "ƒ.ComponentAnimator": {
+                    "Component": {
+                      "active": true
+                    },
+                    "idAnimation": "AnimationSprite|2023-05-30T09:10:55.094Z|17281",
+                    "playmode": "loop",
+                    "quantization": "continous",
+                    "scale": 1,
+                    "scaleWithGameTime": true,
+                    "animateInEditor": false
+                  }
+                }
+              ]
+            },
+            "children": []
+          }
+        },
+        {
+          "ƒ.Node": {
+            "name": "AnimationRight",
+            "active": true,
+            "components": {
+              "ComponentAnimator": [
+                {
+                  "ƒ.ComponentAnimator": {
+                    "Component": {
+                      "active": true
+                    },
+                    "idAnimation": "AnimationSprite|2023-07-18T09:16:38.532Z|71512",
+                    "playmode": "loop",
+                    "quantization": "continous",
+                    "scale": 1,
+                    "scaleWithGameTime": true,
+                    "animateInEditor": false
+                  }
+                }
+              ]
+            },
+            "children": []
+          }
+        },
+        {
+          "ƒ.Node": {
+            "name": "AnimationStand",
+            "active": true,
+            "components": {
+              "ComponentAnimator": [
+                {
+                  "ƒ.ComponentAnimator": {
+                    "Component": {
+                      "active": true
+                    },
+                    "idAnimation": "AnimationSprite|2023-05-30T09:04:28.176Z|61590",
+                    "playmode": "loop",
+                    "quantization": "continous",
+                    "scale": 1,
+                    "scaleWithGameTime": true,
+                    "animateInEditor": false
+                  }
+                }
+              ]
+            },
+            "children": []
+          }
+        }
+      ],
+      "idResource": "Graph|2023-07-18T14:55:12.358Z|50781",
+      "type": "Graph"
     }
   }
 }
