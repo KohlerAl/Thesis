@@ -1,7 +1,6 @@
 namespace Script {
     import ƒ = FudgeCore;
     let instance: NPC;
-
     export class NPC extends ƒ.ComponentScript {
         // Register the script as component for use in the editor via drag&drop
         public static readonly iSubclass: number = ƒ.Component.registerSubclass(NPC);
@@ -16,7 +15,7 @@ namespace Script {
             new Answer("Natürlich. Ich helfe dir gerne.", "Of course. I will be happy to help you.", "Ja, ich kann dir helfen. Wo soll ich suchen?", "Yes, I can help you. Where should I look?"),
             new Dialogue("Danke. Du solltest als erstes im Büro suchen. <br> Dazu musst du durch die linke Tür.", "Thank you. You should check the office first. <br> You have to go through the left door."),
             new Break("Pages"),
-            new Dialogue ("Danke! Kannst du mir ein paar Fragen beantworten?", "Thank you! Can you answer a few questions?"), 
+            new Dialogue("Danke! Kannst du mir ein paar Fragen beantworten?", "Thank you! Can you answer a few questions?"),
             new Dialogue("1. Wo wächst die Nianna Blume? <br> 2. Wie sieht die Nianna Blume aus? <br> 3. Wie wird die Nianna Blume verwendet?", "1. Where does the nianna flower grow? <br>2. What does the nianna flower look like? <br>3. How is the nianna flower used?"),
             new Break("Noot"),
             new Dialogue("Hast du alles nachgeschaut? <br> Dann kannst du deine Ergebnisse hier Eintragen", "Did you look everything up? You can put in your results here")
@@ -94,8 +93,16 @@ namespace Script {
                 this.hideDialouge();
 
                 if (current.typeQuest == "Pages" && pagesCollected == true) {
-                    this.currentDialogue++; 
-                    this.showDialogue(); 
+                    this.currentDialogue++;
+                    this.showDialogue();
+                }
+                else if (current.typeQuest == "Noot" && noot.researchAllowed == false) {
+                    noot.researchAllowed = true;
+                }
+
+                else if (current.typeQuest == "Noot" && noot.researchDone == true) {
+                    this.currentDialogue++
+                    this.showDialogue();
                 }
             }
 
@@ -123,17 +130,21 @@ namespace Script {
         }
 
         public switchLanguage(_event: Event): void {
-            let target: HTMLElement = <HTMLElement>_event.target;
+            if (translateAllowed) {
+                let target: HTMLElement = <HTMLElement>_event.target;
 
-            if (target.id != "optionA" && target.id != "optionB") {
-                if (instance.currentlanguage == "german")
-                    instance.currentlanguage = "english";
+                if (target.id != "optionA" && target.id != "optionB") {
+                    if (instance.currentlanguage == "german")
+                        instance.currentlanguage = "english";
 
-                else if (instance.currentlanguage == "english")
-                    instance.currentlanguage = "german";
+                    else if (instance.currentlanguage == "english")
+                        instance.currentlanguage = "german";
 
-                instance.showDialogue();
+                    instance.showDialogue();
+                }
             }
+
         }
+
     }
 }

@@ -36,14 +36,63 @@ canvas.fullscreen {
   height: 100vh;
   z-index: 2147483647;
 }
+
 #NOOT {
-  z-index: 999;
+  z-index: 2001;
   position: absolute;
   left: 85%;
   width: 200px;
   height: 200px;
   visibility: hidden;
 }
+
+#NootMenu {
+  position: absolute;
+  z-index: 2000;
+  width: 100%;
+  height: 100%;
+  display: none;
+  background-color: #64878c;
+  color: #fff;
+  font-family: pixel;
+  padding: 20px;
+  top: 0;
+  overflow: scroll;
+}
+
+.tableRow {
+  display: flex;
+  flex: 1;
+  font-size: 14px;
+  border-bottom: #283638 1px solid;
+}
+
+#vocabContainer {
+  display: none;
+  width: 90%;
+  flex-direction: column;
+  justify-content: space-between;
+  flex-wrap: nowrap;
+}
+
+#researchContainer {
+  display: none;
+}
+
+.tableRow p {
+  width: 50%;
+  padding: 0 5px;
+}
+
+.mode:hover {
+  font-size: 18px;
+}
+
+.active {
+  font-size: 18px;
+  color: #283638;
+}
+
 #dialogue,
 #npcTalk {
   position: absolute;
@@ -131,11 +180,28 @@ canvas.fullscreen {
   left: 40px;
 }
 
-#optionA, #optionB {
+#optionA,
+#optionB {
   display: inline;
   padding: 20px;
 }
 
 #npcText p {
   display: inline;
+}
+
+body {
+  cursor: url(images/Mousearrow.png), auto;
+  
+}
+
+.resultWrapper {
+  display: flex;
+  flex-direction: row;
+  padding: 10px 10px 10px 0;
+
+}
+
+.resultWrapper img {
+  margin-left: 10px;
 }

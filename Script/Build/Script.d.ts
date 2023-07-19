@@ -98,6 +98,8 @@ declare namespace Script {
     let current: ƒ.Node;
     let next: ƒ.Node;
     let pagesCollected: boolean;
+    let noot: Noot;
+    let translateAllowed: boolean;
     let inventory: Page[];
     function update(_event: Event): void;
     function handleClick(_event: PointerEvent): void;
@@ -121,6 +123,25 @@ declare namespace Script {
         hideDialouge(): void;
         choose(): void;
         switchLanguage(_event: Event): void;
+    }
+}
+declare namespace Script {
+    class Noot {
+        private activeTranslate;
+        researchAllowed: boolean;
+        researchDone: boolean;
+        private imgElement;
+        private nootMenu;
+        private vocabContainer;
+        private menuActive;
+        private vocabActive;
+        private researchActive;
+        constructor();
+        private toggleMenu;
+        handleInteract(_event: PointerEvent): void;
+        private createTable;
+        private setVocab;
+        private setResearch;
     }
 }
 declare namespace Script {

@@ -64,15 +64,11 @@ var Script;
         };
         async setup() {
             this.animationLeft = Script.branch.getChildrenByName("Animations")[0].getChildrenByName("AnimationLeft")[0].getComponent(ƒ.ComponentAnimator);
-            console.log(this.animationLeft.animation);
             this.animationRight = Script.branch.getChildrenByName("Animations")[0].getChildrenByName("AnimationRight")[0].getComponent(ƒ.ComponentAnimator);
-            console.log(this.animationRight.animation);
             this.animationStand = Script.branch.getChildrenByName("Animations")[0].getChildrenByName("AnimationStand")[0].getComponent(ƒ.ComponentAnimator);
-            console.log(this.animationStand.animation);
         }
         setToGround() {
-            Script.player.mtxLocal.translateY(500);
-            console.log("HAAAAAAAAAAAAAALLLLLLOOOOOOOO");
+            Script.player.mtxLocal.translate(new ƒ.Vector3(0, 360, 0));
         }
     }
     Script.Alien = Alien;
@@ -336,8 +332,9 @@ var Script;
     var ƒ = FudgeCore;
     Script.ƒAid = FudgeAid;
     ƒ.Debug.info("Main Program Template running!");
-    let first = true;
     Script.pagesCollected = false;
+    let first = true;
+    Script.translateAllowed = false;
     document.addEventListener("interactiveViewportStarted", start);
     Script.inventory = [];
     function start(_event) {
@@ -352,10 +349,7 @@ var Script;
         dialogueBox.style.width = Script.viewport.canvas.width + "px";
         let npcBox = document.querySelector("#npcTalk");
         npcBox.style.width = Script.viewport.canvas.width - 300 + "px";
-        let nootnoot = document.querySelector("#NOOT");
-        nootnoot.style.left = Script.viewport.canvas.width - 200 + "px";
-        nootnoot.style.top = Script.viewport.canvas.height - 200 + "px";
-        nootnoot.style.visibility = "visible";
+        Script.noot = new Script.Noot();
         Script.current = Script.branch.getChildrenByName("Paths")[0].getChildrenByName("Bookshelf")[0];
         Script.walker = Script.branch.getChildrenByName("Player")[0].getComponent(Script.PathWalker);
         Script.walker.addEventListener("arrived", changeAnimation);
@@ -521,6 +515,13 @@ var Script;
                     this.currentDialogue++;
                     this.showDialogue();
                 }
+                else if (current.typeQuest == "Noot" && Script.noot.researchAllowed == false) {
+                    Script.noot.researchAllowed = true;
+                }
+                else if (current.typeQuest == "Noot" && Script.noot.researchDone == true) {
+                    this.currentDialogue++;
+                    this.showDialogue();
+                }
             }
         }
         showNext() {
@@ -542,17 +543,133 @@ var Script;
             instance.showNext();
         }
         switchLanguage(_event) {
-            let target = _event.target;
-            if (target.id != "optionA" && target.id != "optionB") {
-                if (instance.currentlanguage == "german")
-                    instance.currentlanguage = "english";
-                else if (instance.currentlanguage == "english")
-                    instance.currentlanguage = "german";
-                instance.showDialogue();
+            if (Script.translateAllowed) {
+                let target = _event.target;
+                if (target.id != "optionA" && target.id != "optionB") {
+                    if (instance.currentlanguage == "german")
+                        instance.currentlanguage = "english";
+                    else if (instance.currentlanguage == "english")
+                        instance.currentlanguage = "german";
+                    instance.showDialogue();
+                }
             }
         }
     }
     Script.NPC = NPC;
+})(Script || (Script = {}));
+var Script;
+(function (Script) {
+    let instance;
+    class Noot {
+        activeTranslate = false;
+        researchAllowed = false;
+        researchDone = false;
+        imgElement;
+        nootMenu;
+        vocabContainer;
+        menuActive = false;
+        vocabActive = false;
+        researchActive = false;
+        constructor() {
+            this.imgElement = document.querySelector("#NOOT");
+            this.nootMenu = document.querySelector("#NootMenu");
+            this.vocabContainer = document.querySelector("#vocabContainer");
+            this.imgElement.style.left = Script.viewport.canvas.width - 200 + "px";
+            this.imgElement.style.top = Script.viewport.canvas.height - 200 + "px";
+            this.imgElement.style.visibility = "visible";
+            instance = this;
+            this.imgElement.addEventListener("pointerdown", this.toggleMenu);
+            this.nootMenu.addEventListener("pointerdown", this.handleInteract);
+            this.createTable();
+        }
+        toggleMenu() {
+            if (instance.menuActive) {
+                instance.menuActive = false;
+                instance.nootMenu.style.display = "none";
+            }
+            else {
+                instance.menuActive = true;
+                instance.nootMenu.style.display = "block";
+            }
+        }
+        handleInteract(_event) {
+            let target = _event.target;
+            let id = target.id;
+            switch (id) {
+                case "translateMode":
+                    let translate = document.querySelector("#translateMode");
+                    if (this.activeTranslate) {
+                        translate.classList.remove("active");
+                        translate.innerHTML = "Translate Mode Current Status: OFF";
+                        Script.translateAllowed = false;
+                        this.activeTranslate = false;
+                    }
+                    else {
+                        this.activeTranslate = true;
+                        Script.translateAllowed = true;
+                        translate.classList.add("active");
+                        translate.innerHTML = "Translate Mode Current Status: ON";
+                    }
+                    break;
+                case "researchMode":
+                    if (instance.researchAllowed)
+                        instance.setResearch();
+                    break;
+                case "vocabList":
+                    instance.setVocab();
+                    break;
+            }
+        }
+        async createTable() {
+            let table = await fetch("json/table.json");
+            let textTable = await table.text();
+            let data = JSON.parse(textTable);
+            for (let entry of data) {
+                let wrapper = document.createElement("div");
+                let pGerman = document.createElement("p");
+                wrapper.classList.add("tableRow");
+                pGerman.innerHTML = entry[0];
+                let pEnglish = document.createElement("p");
+                pEnglish.innerHTML = entry[1];
+                wrapper.appendChild(pGerman);
+                wrapper.appendChild(pEnglish);
+                this.vocabContainer.appendChild(wrapper);
+                console.log(entry[0]);
+                console.log(entry[1]);
+            }
+        }
+        setVocab() {
+            if (this.vocabActive) {
+                this.vocabActive = false;
+                this.vocabContainer.style.display = "none";
+                document.querySelector("#vocabList").classList.remove("active");
+            }
+            else {
+                this.vocabActive = true;
+                this.vocabContainer.style.display = "flex";
+                document.querySelector("#vocabList").classList.add("active");
+                if (this.researchActive)
+                    this.setResearch();
+            }
+        }
+        setResearch() {
+            this.researchDone = true;
+            let research = document.querySelector("#researchContainer");
+            if (this.researchActive) {
+                document.querySelector("#researchMode").classList.remove("active");
+                this.researchActive = false;
+                research.style.display = "none";
+            }
+            else {
+                this.researchActive = true;
+                document.querySelector("#researchMode").classList.add("active");
+                research.style.display = "block";
+                if (this.vocabActive)
+                    this.setVocab();
+            }
+        }
+    }
+    Script.Noot = Noot;
 })(Script || (Script = {}));
 var Script;
 (function (Script) {

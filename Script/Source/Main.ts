@@ -11,8 +11,10 @@ namespace Script {
   export let player: ƒ.Node;
   export let current: ƒ.Node;
   export let next: ƒ.Node;
-  let first: boolean = true;
   export let pagesCollected: boolean = false; 
+  export let noot: Noot; 
+  let first: boolean = true;
+  export let translateAllowed: boolean = false; 
   document.addEventListener("interactiveViewportStarted", <EventListener>start);
 
   export let inventory: Page[] = [];
@@ -32,11 +34,9 @@ namespace Script {
     let npcBox: HTMLDivElement = document.querySelector("#npcTalk");
     npcBox.style.width = viewport.canvas.width - 300 + "px";
 
-    let nootnoot: HTMLDivElement = document.querySelector("#NOOT");
-    nootnoot.style.left = viewport.canvas.width - 200 + "px"; 
-    nootnoot.style.top = viewport.canvas.height - 200 + "px"; 
-    nootnoot.style.visibility = "visible"; 
-
+    noot = new Noot(); 
+    
+    
     current = branch.getChildrenByName("Paths")[0].getChildrenByName("Bookshelf")[0]
     walker = branch.getChildrenByName("Player")[0].getComponent(PathWalker);
     walker.addEventListener("arrived", changeAnimation);

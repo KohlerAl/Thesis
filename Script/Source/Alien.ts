@@ -76,19 +76,15 @@ namespace Script {
 
         async setup() {
             this.animationLeft = branch.getChildrenByName("Animations")[0].getChildrenByName("AnimationLeft")[0].getComponent(ƒ.ComponentAnimator);
-            console.log(this.animationLeft.animation);
 
             this.animationRight = branch.getChildrenByName("Animations")[0].getChildrenByName("AnimationRight")[0].getComponent(ƒ.ComponentAnimator);
-            console.log(this.animationRight.animation);
 
             this.animationStand = branch.getChildrenByName("Animations")[0].getChildrenByName("AnimationStand")[0].getComponent(ƒ.ComponentAnimator);
-            console.log(this.animationStand.animation);
 
         }
 
         setToGround(): void {
-            player.mtxLocal.translateY(500)
-            console.log("HAAAAAAAAAAAAAALLLLLLOOOOOOOO")
+            player.mtxLocal.translate(new ƒ.Vector3(0, 360, 0));
         }
 
     }

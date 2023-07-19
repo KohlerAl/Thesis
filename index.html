@@ -1,12 +1,15 @@
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml">
+
 <head>
     <title>Thesis</title>
     <meta charset="utf-8" />
     <link rel="stylesheet" href="styles.css" />
 
     <!--Editor settings of this project-->
-    <meta type="settings" autoview="Graph|2023-05-18T10:13:56.922Z|12376" project="{'name':'Thesis','graphAutoView':'Graph|2023-05-18T10:13:56.922Z|12376'}" panels="[{'type':'PanelProject','state':{}},{'type':'PanelGraph','state':{'graph':'Graph|2023-05-18T10:13:56.922Z|12376'}}]" />
+    <meta type="settings" autoview="Graph|2023-05-18T10:13:56.922Z|12376"
+        project="{'name':'Thesis','graphAutoView':'Graph|2023-05-18T10:13:56.922Z|12376'}"
+        panels="[{'type':'PanelProject','state':{}},{'type':'PanelGraph','state':{'graph':'Graph|2023-05-18T10:13:56.922Z|12376'}}]" />
 
     <!--Activate the following line to include the FUDGE-version of Oimo-Physics. You may want to download a local copy to work offline and be independent from future changes!-->
     <!--<script type="text/javascript" src="https://jirkadelloro.github.io/FUDGE/Physics/OimoPhysics.js"></script>-->
@@ -63,14 +66,29 @@
 
     <img id="NOOT" src="images/Noot.png" />
     <div id="NootMenu">
-        <p id="translateMode">Translate Mode Current Status: Off</p>
-        <p id="researchMode">Research</p>
+        <p class="mode" id="translateMode">Translate Mode Current Status: Off</p>
+        <p class="mode" id="researchMode">Research</p>
+        <div id="researchContainer">
+            <h2 class="researchHeader">I found the following research results about the Nianna flower</h2>
+            <div class="resultWrapper">
+                <p>The Nianna flower is native to Nelara and can only be found there. Due to the characteristics of the
+                    oil,
+                    it is highly sought after and was exported to other planets until the oil production was banned in
+                    2012.
+                </p>
+                <img class="researchImg" src="images/Nianna_Flower.png">
+            </div>
+            <div class="resultWrapper">
+                <p>Today, the Nianna flower is primarily used as decoration on Nelara. Until the ban in 2012, the oil of
+                    the flower has been used for medical purposes, as it causes changes in behavior and personality.</p>
+            </div>
+        </div>
+        <p class="mode" id="vocabList">Vocabulary</p>
+        <div id="vocabContainer">
+
+        </div>
     </div>
 
-
-
-
-
-
 </body>
+
 </html>
