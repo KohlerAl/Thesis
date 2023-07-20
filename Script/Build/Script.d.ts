@@ -75,6 +75,19 @@ declare namespace Script {
     }
 }
 declare namespace Script {
+    class formTest {
+        private rightName;
+        private rightOrigin;
+        private rightColors;
+        private rightDescription;
+        private rightImage;
+        private buttonEle;
+        private formEle;
+        constructor();
+        handleSubmit(): void;
+    }
+}
+declare namespace Script {
     import ƒ = FudgeCore;
     class Interactable extends ƒ.ComponentScript {
         static readonly iSubclass: number;
@@ -97,9 +110,9 @@ declare namespace Script {
     let player: ƒ.Node;
     let current: ƒ.Node;
     let next: ƒ.Node;
-    let pagesCollected: boolean;
     let noot: Noot;
     let translateAllowed: boolean;
+    let pagesCollected: boolean;
     let inventory: Page[];
     function update(_event: Event): void;
     function handleClick(_event: PointerEvent): void;
@@ -111,7 +124,8 @@ declare namespace Script {
     class NPC extends ƒ.ComponentScript {
         static readonly iSubclass: number;
         currentDialogue: number;
-        dialogues: (Dialogue | Answer | Break)[];
+        private formEle;
+        dialogues: (formTest | Dialogue | Answer | Break)[];
         readonly dialogueBox: HTMLDivElement;
         readonly textBox: HTMLParagraphElement;
         readonly nextButton: HTMLDivElement;

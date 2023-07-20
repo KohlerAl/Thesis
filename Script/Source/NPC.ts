@@ -6,7 +6,9 @@ namespace Script {
         public static readonly iSubclass: number = ƒ.Component.registerSubclass(NPC);
         // Properties may be mutated by users in the editor via the automatically created user interface
         public currentDialogue: number = 0;
-        public dialogues: (Dialogue | Answer | Break)[] = [
+        private formEle: formTest = new formTest;
+        public dialogues: (formTest | Dialogue | Answer | Break)[] = [
+            this.formEle, 
             new Dialogue("Hallo Player. Schön, dich zu sehen. <br> Und danke, dass du uns hilfst.",
                 "Hello Player. It’s good to see you. <br>And thank you for supporting us."),
             new Dialogue("Hallo Mykah.", "Hello Mykah"),

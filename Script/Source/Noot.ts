@@ -90,8 +90,6 @@ namespace Script {
                 wrapper.appendChild(pGerman);
                 wrapper.appendChild(pEnglish);
                 this.vocabContainer.appendChild(wrapper);
-                console.log(entry[0]);
-                console.log(entry[1]);
             }
         }
 

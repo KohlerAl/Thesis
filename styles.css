@@ -38,7 +38,7 @@ canvas.fullscreen {
 }
 
 #NOOT {
-  z-index: 2001;
+  z-index: 999;
   position: absolute;
   left: 85%;
   width: 200px;
@@ -47,52 +47,55 @@ canvas.fullscreen {
 }
 
 #NootMenu {
+  display: none;
   position: absolute;
-  z-index: 2000;
+  top: 0;
+  z-index: 998;
+  background-color: #64878c;
+  font-family: pixel;
+  color: white;
   width: 100%;
   height: 100%;
-  display: none;
-  background-color: #64878c;
-  color: #fff;
-  font-family: pixel;
-  padding: 20px;
-  top: 0;
-  overflow: scroll;
-}
-
-.tableRow {
-  display: flex;
-  flex: 1;
-  font-size: 14px;
-  border-bottom: #283638 1px solid;
-}
-
-#vocabContainer {
-  display: none;
-  width: 90%;
-  flex-direction: column;
-  justify-content: space-between;
-  flex-wrap: nowrap;
+  overflow: auto;
+  padding: 10px;
 }
 
 #researchContainer {
   display: none;
 }
 
-.tableRow p {
-  width: 50%;
-  padding: 0 5px;
+#vocabContainer {
+  display: none; 
+  flex-direction: column;
+}
+
+#vocabContainer .tableRow {
+  width: 100%;
+  display: flex;
+  flex-direction: row;
+  border-bottom: #465456 2px solid;
+}
+
+#vocabContainer p {
+  width: 50%;;
+}
+
+.tableRow p:last-child {
+  padding-left: 10px;
 }
 
 .mode:hover {
   font-size: 18px;
 }
 
-.active {
-  font-size: 18px;
-  color: #283638;
+.resultWrapper {
+  display: flex;
+  flex-direction: row;
+  padding-right: 10px;
 }
-
+.researchImage {
+  margin: inhert; 
+}
 #dialogue,
 #npcTalk {
   position: absolute;
@@ -188,20 +191,4 @@ canvas.fullscreen {
 
 #npcText p {
   display: inline;
-}
-
-body {
-  cursor: url(images/Mousearrow.png), auto;
-  
-}
-
-.resultWrapper {
-  display: flex;
-  flex-direction: row;
-  padding: 10px 10px 10px 0;
-
-}
-
-.resultWrapper img {
-  margin-left: 10px;
 }

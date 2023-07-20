@@ -76,11 +76,11 @@
                     it is highly sought after and was exported to other planets until the oil production was banned in
                     2012.
                 </p>
-                <img class="researchImg" src="images/Nianna_Flower.png">
+                <img class="researchImg" src="images/Nianna_Flower.png" />
             </div>
             <div class="resultWrapper">
                 <p>Today, the Nianna flower is primarily used as decoration on Nelara. Until the ban in 2012, the oil of
-                    the flower has been used for medical purposes, as it causes changes in behavior and personality.</p>
+                    the flower has been used for medical purposes, as it causes changes in behavior and personality</p>
             </div>
         </div>
         <p class="mode" id="vocabList">Vocabulary</p>
@@ -88,6 +88,57 @@
 
         </div>
     </div>
+
+    <div id="form">
+        <form>
+            <input class="formInput" id="plantName" />
+            <datalist id="origin">
+                <option name="Erde" value="Erde">Erde</option>
+                <option name="Nelara" value="Nelara">Nelara</option>
+                <option name="Talinea" value="Talinea">Talinea</option>
+            </datalist>
+            <div class="inputWrapper">
+                <input class="formInput" id="colorOne" />
+                <input class="formInput" id="colorTwo" />
+                <input class="formInput" id="colorThree" />
+            </div>
+            <legend>Beschreibung</legend>
+            <div class="inputWrapper">
+                <input type="checkbox" name="description" value="allYear" id="allYear" />
+                <label for="allYear">Die Blume
+                    blüht
+                    das ganze Jahr lang</label>
+                <input type="checkbox" name="description" value="smell" id="smell" />
+                <label for="smell">Der Geruch ist
+                    süß</label>
+                <input type="checkbox" name="description" value="juli" id="juli" />
+                <label for="juli">Die Blume blüht im
+                    Juli</label>
+                <input type="checkbox" name="description" value="paleRound" id="paleRound" />
+                <label for="paleRound">Die
+                    Blume
+                    hat blasse, runde Blüten</label>
+                <input type="checkbox" name="description" value="effect" id="effect" />
+                <label for="effect">Das Öl der
+                    Blume
+                    hat keine Wirkung</label>
+            </div>
+            <div class="imgWrapper">
+                <input type="checkbox" name="image" value="flower2" id="flower2" /> <label for="flower2"> <img
+                        class="formImg" src="images/Blume2.png" />
+                </label>
+                <input type="checkbox" name="image" value="flower3" id="flower3" /> <label for="flower3">
+                    <img class="formImg" src="images/Blume3.png" />
+                </label>
+                <input type="checkbox" name="image" value="nianna" id="Nianna" />
+                <label for="Nianna"> <img class="formImg" id="Nianna" src="images/Nianna_Flower.png" />
+                </label>
+            </div>
+            <button type="button" id="submit">Prüfen</button>
+        </form>
+    </div>
+
+
 
 </body>
 

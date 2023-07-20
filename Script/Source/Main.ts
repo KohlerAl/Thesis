@@ -11,10 +11,10 @@ namespace Script {
   export let player: ƒ.Node;
   export let current: ƒ.Node;
   export let next: ƒ.Node;
-  export let pagesCollected: boolean = false; 
-  export let noot: Noot; 
+  export let noot: Noot;
   let first: boolean = true;
   export let translateAllowed: boolean = false; 
+  export let pagesCollected: boolean = false;
   document.addEventListener("interactiveViewportStarted", <EventListener>start);
 
   export let inventory: Page[] = [];
@@ -34,9 +34,11 @@ namespace Script {
     let npcBox: HTMLDivElement = document.querySelector("#npcTalk");
     npcBox.style.width = viewport.canvas.width - 300 + "px";
 
-    noot = new Noot(); 
-    
-    
+    let nootnoot: HTMLDivElement = document.querySelector("#NOOT");
+    nootnoot.style.left = viewport.canvas.width - 200 + "px";
+    nootnoot.style.top = viewport.canvas.height - 200 + "px";
+    nootnoot.style.visibility = "visible";
+
     current = branch.getChildrenByName("Paths")[0].getChildrenByName("Bookshelf")[0]
     walker = branch.getChildrenByName("Player")[0].getComponent(PathWalker);
     walker.addEventListener("arrived", changeAnimation);
@@ -59,9 +61,9 @@ namespace Script {
     //#endregion
 
 
-
-    player = branch.getChildrenByName("Player")[0]; 
-    player.addComponent(new Alien); 
+    noot = new Noot();
+    player = branch.getChildrenByName("Player")[0];
+    player.addComponent(new Alien);
     ƒ.Loop.addEventListener(ƒ.EVENT.LOOP_FRAME, update);
     ƒ.Loop.start();
     // update(null);
@@ -110,7 +112,7 @@ namespace Script {
 
   export function findWaypoint(_target: string): void {
     if (first == true) {
-      first = false; 
+      first = false;
       player.getComponent(Alien).setToGround()
     }
     let pickedWP: ƒ.Node = branch.getChildrenByName("Paths")[0].getChildrenByName(_target)[0];
@@ -122,8 +124,8 @@ namespace Script {
   }
 
   function changeAnimation(): void {
-    player.getComponent(Alien).state = STATE.STAND; 
-    player.getComponent(Alien).changeAnimation(); 
+    player.getComponent(Alien).state = STATE.STAND;
+    player.getComponent(Alien).changeAnimation();
   }
 }
 

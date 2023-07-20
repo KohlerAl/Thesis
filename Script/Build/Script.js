@@ -64,11 +64,15 @@ var Script;
         };
         async setup() {
             this.animationLeft = Script.branch.getChildrenByName("Animations")[0].getChildrenByName("AnimationLeft")[0].getComponent(ƒ.ComponentAnimator);
+            console.log(this.animationLeft.animation);
             this.animationRight = Script.branch.getChildrenByName("Animations")[0].getChildrenByName("AnimationRight")[0].getComponent(ƒ.ComponentAnimator);
+            console.log(this.animationRight.animation);
             this.animationStand = Script.branch.getChildrenByName("Animations")[0].getChildrenByName("AnimationStand")[0].getComponent(ƒ.ComponentAnimator);
+            console.log(this.animationStand.animation);
         }
         setToGround() {
-            Script.player.mtxLocal.translate(new ƒ.Vector3(0, 360, 0));
+            Script.player.mtxLocal.translateY(500);
+            console.log("HAAAAAAAAAAAAAALLLLLLOOOOOOOO");
         }
     }
     Script.Alien = Alien;
@@ -99,7 +103,7 @@ var Script;
         static iSubclass = ƒ.Component.registerSubclass(Board);
         // Properties may be mutated by users in the editor via the automatically created user interface
         pages = [
-            new Script.Page("Nianna Blume <br> -Die Blume riecht süß. <br>- Blasse, runde Blüten <br>- Die Blume blüht das ganze Jahr lang.", "Nianna flower <br>- The flower smells sweet. <br>- Pale, round flowers <br>- The flower blooms all year round", true),
+            new Script.Page("Nianna Blume <br> -Die Blume riecht süß. <br>- Blasse, runde Blüten <br>- Die Blume blüht das ganze Jahr lang. <br> Die Blüten sind blau, rosa und lila.", "Nianna flower <br>- The flower smells sweet. <br>- Pale, round flowers <br>- The flower blooms all year round. <br> The flowers are blue, pink and purple.", true),
             new Script.Page("- Das Öl der Nianna Blume ist gelb und riecht sehr süß. <br>- Das Öl kann Änderungen im Verhalten und der Persönlichkeit hervorrufen", "- The oil of Nianna flower is yellow and smells very sweet. <br>- The oil can cause changes in behavior and personality", true),
             new Script.Page("Die ersten Menschen kamen 1986 auf Nelara an. <br>Sie kamen von der Erde und sollten auf dem neuen <br>Planeten nach Rohstoffen suchen.", "The first humans arrived on Nelara in 1986. <br>They came from Earth and were supposed to search for<br> raw materials on the new planet.", false),
             new Script.Page("Einkaufsliste: <br>Nudeln<br>Tomaten<br>Pilze<br>Äpfel", "Shopping list: <br>Pasta<br>Tomatoes<br>Mushrooms<br>Apples", false),
@@ -279,6 +283,31 @@ var Script;
 })(Script || (Script = {}));
 var Script;
 (function (Script) {
+    let instance;
+    class formTest {
+        rightName = "nianna";
+        rightOrigin = "Nelara";
+        rightColors = ["blau", "rosa", "lila"];
+        rightDescription = ["allYear", "smell", "paleRound"];
+        rightImage = "Nianna";
+        buttonEle;
+        formEle;
+        constructor() {
+            this.buttonEle = document.querySelector("#submit");
+            this.buttonEle.addEventListener("pointerdown", this.handleSubmit);
+            instance = this;
+        }
+        handleSubmit() {
+            let formData = new FormData(document.forms[0]);
+            for (let entry of formData) {
+                console.log(entry);
+            }
+        }
+    }
+    Script.formTest = formTest;
+})(Script || (Script = {}));
+var Script;
+(function (Script) {
     var ƒ = FudgeCore;
     ƒ.Project.registerScriptNamespace(Script); // Register the namespace to FUDGE for serialization
     class Interactable extends ƒ.ComponentScript {
@@ -332,9 +361,9 @@ var Script;
     var ƒ = FudgeCore;
     Script.ƒAid = FudgeAid;
     ƒ.Debug.info("Main Program Template running!");
-    Script.pagesCollected = false;
     let first = true;
     Script.translateAllowed = false;
+    Script.pagesCollected = false;
     document.addEventListener("interactiveViewportStarted", start);
     Script.inventory = [];
     function start(_event) {
@@ -349,7 +378,10 @@ var Script;
         dialogueBox.style.width = Script.viewport.canvas.width + "px";
         let npcBox = document.querySelector("#npcTalk");
         npcBox.style.width = Script.viewport.canvas.width - 300 + "px";
-        Script.noot = new Script.Noot();
+        let nootnoot = document.querySelector("#NOOT");
+        nootnoot.style.left = Script.viewport.canvas.width - 200 + "px";
+        nootnoot.style.top = Script.viewport.canvas.height - 200 + "px";
+        nootnoot.style.visibility = "visible";
         Script.current = Script.branch.getChildrenByName("Paths")[0].getChildrenByName("Bookshelf")[0];
         Script.walker = Script.branch.getChildrenByName("Player")[0].getComponent(Script.PathWalker);
         Script.walker.addEventListener("arrived", changeAnimation);
@@ -369,6 +401,7 @@ var Script;
          console.log("Path: ", ...path.map(_node => _node.name));
        } */
         //#endregion
+        Script.noot = new Script.Noot();
         Script.player = Script.branch.getChildrenByName("Player")[0];
         Script.player.addComponent(new Script.Alien);
         ƒ.Loop.addEventListener("loopFrame" /* LOOP_FRAME */, update);
@@ -437,7 +470,9 @@ var Script;
         static iSubclass = ƒ.Component.registerSubclass(NPC);
         // Properties may be mutated by users in the editor via the automatically created user interface
         currentDialogue = 0;
+        formEle = new Script.formTest;
         dialogues = [
+            this.formEle,
             new Script.Dialogue("Hallo Player. Schön, dich zu sehen. <br> Und danke, dass du uns hilfst.", "Hello Player. It’s good to see you. <br>And thank you for supporting us."),
             new Script.Dialogue("Hallo Mykah.", "Hello Mykah"),
             new Script.Answer("Kann ich dir bei etwas helfen?", "Can I help you with something?", "Wie kann ich dir helfen?", "How can I support you?"),
@@ -634,8 +669,6 @@ var Script;
                 wrapper.appendChild(pGerman);
                 wrapper.appendChild(pEnglish);
                 this.vocabContainer.appendChild(wrapper);
-                console.log(entry[0]);
-                console.log(entry[1]);
             }
         }
         setVocab() {
