@@ -382,7 +382,7 @@ var Script;
         nootnoot.style.left = Script.viewport.canvas.width - 200 + "px";
         nootnoot.style.top = Script.viewport.canvas.height - 200 + "px";
         nootnoot.style.visibility = "visible";
-        Script.current = Script.branch.getChildrenByName("Paths")[0].getChildrenByName("Bookshelf")[0];
+        Script.current = Script.branch.getChildrenByName("Paths")[0].getChildrenByName("Door")[0];
         Script.walker = Script.branch.getChildrenByName("Player")[0].getComponent(Script.PathWalker);
         Script.walker.addEventListener("arrived", changeAnimation);
         //#region PathWalker demo

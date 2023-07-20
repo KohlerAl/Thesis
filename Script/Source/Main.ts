@@ -39,7 +39,7 @@ namespace Script {
     nootnoot.style.top = viewport.canvas.height - 200 + "px";
     nootnoot.style.visibility = "visible";
 
-    current = branch.getChildrenByName("Paths")[0].getChildrenByName("Bookshelf")[0]
+    current = branch.getChildrenByName("Paths")[0].getChildrenByName("Door")[0]
     walker = branch.getChildrenByName("Player")[0].getComponent(PathWalker);
     walker.addEventListener("arrived", changeAnimation);
 
