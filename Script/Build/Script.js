@@ -404,6 +404,7 @@ var Script;
         Script.noot = new Script.Noot();
         Script.player = Script.branch.getChildrenByName("Player")[0];
         Script.player.addComponent(new Script.Alien);
+        Script.player.mtxLocal.translate(Script.current.mtxLocal.translation);
         ƒ.Loop.addEventListener("loopFrame" /* LOOP_FRAME */, update);
         ƒ.Loop.start();
         // update(null);
@@ -447,7 +448,6 @@ var Script;
     function findWaypoint(_target) {
         if (first == true) {
             first = false;
-            Script.player.getComponent(Script.Alien).setToGround();
         }
         let pickedWP = Script.branch.getChildrenByName("Paths")[0].getChildrenByName(_target)[0];
         let path = Script.nodePaths.getComponent(Script.Paths).findPath(Script.current.name, pickedWP.name);

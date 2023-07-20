@@ -43,6 +43,7 @@ namespace Script {
     walker = branch.getChildrenByName("Player")[0].getComponent(PathWalker);
     walker.addEventListener("arrived", changeAnimation);
 
+    
     //#region PathWalker demo
     /* 
    
@@ -64,6 +65,7 @@ namespace Script {
     noot = new Noot();
     player = branch.getChildrenByName("Player")[0];
     player.addComponent(new Alien);
+    player.mtxLocal.translate(current.mtxLocal.translation); 
     ƒ.Loop.addEventListener(ƒ.EVENT.LOOP_FRAME, update);
     ƒ.Loop.start();
     // update(null);
@@ -113,7 +115,6 @@ namespace Script {
   export function findWaypoint(_target: string): void {
     if (first == true) {
       first = false;
-      player.getComponent(Alien).setToGround()
     }
     let pickedWP: ƒ.Node = branch.getChildrenByName("Paths")[0].getChildrenByName(_target)[0];
     let path: ƒ.Node[] = nodePaths.getComponent(Paths).findPath(current.name, pickedWP.name);
