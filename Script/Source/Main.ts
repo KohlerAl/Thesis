@@ -69,6 +69,8 @@ namespace Script {
     ƒ.Loop.addEventListener(ƒ.EVENT.LOOP_FRAME, update);
     ƒ.Loop.start();
     // update(null);
+    new ƒ.Time()
+    animateCoin(); 
   }
   export function update(_event: Event): void {
     // ƒ.Physics.simulate();  // if physics is included and used
@@ -81,7 +83,6 @@ namespace Script {
 
   export function handleClick(_event: PointerEvent): void {
     let node: ƒ.Node = (<ƒ.Node>_event.target);
-    console.log(node.name);
     if (node.getComponent(Interactable)) {
       let dialogue: Interactable = node.getComponent(Interactable);
       dialogue.showText();
@@ -128,5 +129,34 @@ namespace Script {
     player.getComponent(Alien).state = STATE.STAND;
     player.getComponent(Alien).changeAnimation();
   }
+
+  function animateCoin(): void {
+
+    let animseq: ƒ.AnimationSequence = new ƒ.AnimationSequence();
+    animseq.addKey(new ƒ.AnimationKey(0, 1));
+    animseq.addKey(new ƒ.AnimationKey(750, 2));
+    animseq.addKey(new ƒ.AnimationKey(1000, 1));
+
+    let animStructure: ƒ.AnimationStructure = {
+        components: {
+            ComponentTransform: [
+                {
+                    "ƒ.ComponentTransform": {
+                        mtxLocal: {
+                            translation: {
+                                x: animseq
+                            }
+                        }
+                    }
+                }
+            ]
+        }
+    };
+
+    let animation: ƒ.Animation = new ƒ.Animation("testAnimation", animStructure);
+    let cmpAnimator: ƒ.ComponentAnimator = new ƒ.ComponentAnimator(animation);
+    branch.getChildrenByName("NPC")[0].addComponent(cmpAnimator);
+    console.log(branch.getChildrenByName("NPC")[0])
+}
 }
 

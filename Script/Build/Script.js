@@ -64,15 +64,11 @@ var Script;
         };
         async setup() {
             this.animationLeft = Script.branch.getChildrenByName("Animations")[0].getChildrenByName("AnimationLeft")[0].getComponent(ƒ.ComponentAnimator);
-            console.log(this.animationLeft.animation);
             this.animationRight = Script.branch.getChildrenByName("Animations")[0].getChildrenByName("AnimationRight")[0].getComponent(ƒ.ComponentAnimator);
-            console.log(this.animationRight.animation);
             this.animationStand = Script.branch.getChildrenByName("Animations")[0].getChildrenByName("AnimationStand")[0].getComponent(ƒ.ComponentAnimator);
-            console.log(this.animationStand.animation);
         }
         setToGround() {
             Script.player.mtxLocal.translateY(500);
-            console.log("HAAAAAAAAAAAAAALLLLLLOOOOOOOO");
         }
     }
     Script.Alien = Alien;
@@ -289,19 +285,148 @@ var Script;
         rightOrigin = "Nelara";
         rightColors = ["blau", "rosa", "lila"];
         rightDescription = ["allYear", "smell", "paleRound"];
-        rightImage = "Nianna";
+        rightImage = "nianna";
         buttonEle;
         formEle;
+        isShowing = false;
+        isChecked = {
+            name: false,
+            origin: false,
+            pink: false,
+            blue: false,
+            purple: false,
+            descriptionYear: false,
+            descriptionSmell: false,
+            descriptionLook: false,
+            image: false
+        };
         constructor() {
             this.buttonEle = document.querySelector("#submit");
-            this.buttonEle.addEventListener("pointerdown", this.handleSubmit);
+            this.buttonEle.addEventListener("pointerdown", this.checkSubmit);
+            this.formEle = document.querySelector("#form");
             instance = this;
+        }
+        checkSubmit() {
+            instance.handleSubmit();
         }
         handleSubmit() {
             let formData = new FormData(document.forms[0]);
             for (let entry of formData) {
-                console.log(entry);
+                switch (entry[0]) {
+                    case "plantName":
+                        let lowerEntry = entry[1];
+                        let inputEle = document.querySelector("#plantName");
+                        if (this.switchClass(lowerEntry.toLowerCase(), this.rightName, inputEle))
+                            this.isChecked.name = true;
+                        break;
+                    case "origin":
+                        let originEle = document.querySelector("#originList");
+                        if (this.switchClass(entry[1].toString(), this.rightOrigin, originEle))
+                            this.isChecked.origin = true;
+                        break;
+                    case "color":
+                        let colorInputs = document.querySelectorAll(".formInput");
+                        for (let input of colorInputs) {
+                            if (entry[1].toString().toLowerCase() == this.rightColors[0] || entry[1].toString().toLowerCase() == this.rightColors[1] || entry[1].toString().toLowerCase() == this.rightColors[2]) {
+                                input.disabled = true;
+                                input.classList.add("right");
+                                switch (entry[1].toString().toLowerCase()) {
+                                    case "blau":
+                                        this.isChecked.blue = true;
+                                        break;
+                                    case "rosa":
+                                        this.isChecked.pink = true;
+                                        break;
+                                    case "lila":
+                                        this.isChecked.purple = true;
+                                        break;
+                                }
+                                if (input.classList.contains("wrong"))
+                                    input.classList.remove("wrong");
+                            }
+                            else {
+                                input.classList.add("wrong");
+                            }
+                        }
+                        break;
+                    case "description":
+                        let input = document.getElementById(entry[1].toString());
+                        if (input.checked == true) {
+                            if (entry[1].toString() == this.rightDescription[0] || entry[1].toString() == this.rightDescription[1] || entry[1].toString() == this.rightDescription[2]) {
+                                input.disabled = true;
+                                input.classList.add("right");
+                                switch (entry[1]) {
+                                    case "allYear":
+                                        this.isChecked.descriptionYear = true;
+                                        break;
+                                    case "smell":
+                                        this.isChecked.descriptionSmell = true;
+                                        break;
+                                    case "paleRound":
+                                        this.isChecked.descriptionLook = true;
+                                        break;
+                                }
+                                if (input.classList.contains("wrong")) {
+                                    input.classList.remove("wrong");
+                                }
+                            }
+                            else {
+                                input.classList.add("wrong");
+                            }
+                        }
+                        if (this.isChecked.descriptionYear == true && this.isChecked.descriptionSmell == true && this.isChecked.descriptionLook == true) {
+                            let allInputs = document.querySelectorAll(".descriptionRadio");
+                            for (let entry of allInputs) {
+                                entry.disabled = true;
+                            }
+                        }
+                        break;
+                    case "image":
+                        if (entry[1].toString() == this.rightImage) {
+                            let allImgs = document.querySelectorAll(".imgRadio");
+                            for (let img of allImgs) {
+                                img.disabled = true;
+                                img.classList.add("right");
+                            }
+                            this.isChecked.image = true;
+                        }
+                        break;
+                }
             }
+            this.checkAll();
+        }
+        switchClass(_entry, _rightValue, _ele) {
+            if (_entry == _rightValue) {
+                if (_ele.classList.contains("wrong"))
+                    _ele.classList.remove("wrong");
+                _ele.classList.add("right");
+                _ele.disabled = true;
+                return true;
+            }
+            else {
+                if (!_ele.classList.contains("wrong"))
+                    _ele.classList.add("wrong");
+                return false;
+            }
+        }
+        showForm() {
+            if (this.isShowing == false) {
+                this.formEle.style.display = "block";
+                this.isShowing = true;
+            }
+            else {
+                this.formEle.style.display = "none";
+                this.isShowing = false;
+            }
+        }
+        checkAll() {
+            let counter = 0;
+            for (let entry in this.isChecked) {
+                if (this.isChecked[entry] == true)
+                    counter++;
+            }
+            if (counter == 9)
+                alert("Das war der Prototyp! Danke fürs Spielen! :)");
         }
     }
     Script.formTest = formTest;
@@ -408,6 +533,8 @@ var Script;
         ƒ.Loop.addEventListener("loopFrame" /* LOOP_FRAME */, update);
         ƒ.Loop.start();
         // update(null);
+        new ƒ.Time();
+        animateCoin();
     }
     function update(_event) {
         // ƒ.Physics.simulate();  // if physics is included and used
@@ -418,7 +545,6 @@ var Script;
     Script.update = update;
     function handleClick(_event) {
         let node = _event.target;
-        console.log(node.name);
         if (node.getComponent(Script.Interactable)) {
             let dialogue = node.getComponent(Script.Interactable);
             dialogue.showText();
@@ -460,6 +586,31 @@ var Script;
         Script.player.getComponent(Script.Alien).state = Script.STATE.STAND;
         Script.player.getComponent(Script.Alien).changeAnimation();
     }
+    function animateCoin() {
+        let animseq = new ƒ.AnimationSequence();
+        animseq.addKey(new ƒ.AnimationKey(0, 1));
+        animseq.addKey(new ƒ.AnimationKey(750, 2));
+        animseq.addKey(new ƒ.AnimationKey(1000, 1));
+        let animStructure = {
+            components: {
+                ComponentTransform: [
+                    {
+                        "ƒ.ComponentTransform": {
+                            mtxLocal: {
+                                translation: {
+                                    x: animseq
+                                }
+                            }
+                        }
+                    }
+                ]
+            }
+        };
+        let animation = new ƒ.Animation("testAnimation", animStructure);
+        let cmpAnimator = new ƒ.ComponentAnimator(animation);
+        Script.branch.getChildrenByName("NPC")[0].addComponent(cmpAnimator);
+        console.log(Script.branch.getChildrenByName("NPC")[0]);
+    }
 })(Script || (Script = {}));
 var Script;
 (function (Script) {
@@ -470,7 +621,7 @@ var Script;
         static iSubclass = ƒ.Component.registerSubclass(NPC);
         // Properties may be mutated by users in the editor via the automatically created user interface
         currentDialogue = 0;
-        formEle = new Script.formTest;
+        formEle = new Script.formTest();
         dialogues = [
             this.formEle,
             new Script.Dialogue("Hallo Player. Schön, dich zu sehen. <br> Und danke, dass du uns hilfst.", "Hello Player. It’s good to see you. <br>And thank you for supporting us."),
@@ -504,6 +655,7 @@ var Script;
             this.nextButton = this.dialogueBox.querySelector("#Next");
             this.nextButton.addEventListener("pointerdown", this.showNext);
             instance = this;
+            console.log(this.node);
         }
         // Activate the functions of this component as response to events
         hndEvent = (_event) => {
@@ -557,6 +709,9 @@ var Script;
                     this.currentDialogue++;
                     this.showDialogue();
                 }
+            }
+            else if (this.dialogues[this.currentDialogue] instanceof Script.formTest) {
+                this.formEle.showForm();
             }
         }
         showNext() {
@@ -859,7 +1014,6 @@ var Script;
             for (let path of this.paths) {
                 let posStart = this.node.getChildrenByName(path.start)[0].mtxLocal.translation;
                 let posEnd = this.node.getChildrenByName(path.end)[0].mtxLocal.translation;
-                console.log(posStart.toString(), posEnd.toString());
                 path.cost = ƒ.Vector3.DIFFERENCE(posEnd, posStart).magnitude;
                 if (!this.#matrix[path.start])
                     this.#matrix[path.start] = {};
@@ -868,8 +1022,8 @@ var Script;
                 this.#matrix[path.start][path.end] = path.cost;
                 this.#matrix[path.end][path.start] = path.cost;
             }
-            console.warn(this);
-            console.table(this.#matrix);
+            /* console.warn(this);
+            console.table(this.#matrix); */
         }
         findPath(_start, _end) {
             if (this.#matrix[_start][_end]) {

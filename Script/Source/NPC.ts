@@ -6,7 +6,7 @@ namespace Script {
         public static readonly iSubclass: number = ƒ.Component.registerSubclass(NPC);
         // Properties may be mutated by users in the editor via the automatically created user interface
         public currentDialogue: number = 0;
-        private formEle: formTest = new formTest;
+        private formEle: formTest = new formTest();
         public dialogues: (formTest | Dialogue | Answer | Break)[] = [
             this.formEle, 
             new Dialogue("Hallo Player. Schön, dich zu sehen. <br> Und danke, dass du uns hilfst.",
@@ -45,6 +45,7 @@ namespace Script {
             this.nextButton = this.dialogueBox.querySelector("#Next");
             this.nextButton.addEventListener("pointerdown", this.showNext);
             instance = this;
+            console.log(this.node)
         }
 
         // Activate the functions of this component as response to events
@@ -106,6 +107,10 @@ namespace Script {
                     this.currentDialogue++
                     this.showDialogue();
                 }
+            }
+
+            else if (this.dialogues[this.currentDialogue] instanceof formTest) {
+                this.formEle.showForm(); 
             }
 
         }

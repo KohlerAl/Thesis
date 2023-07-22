@@ -50,6 +50,10 @@
             <p>Next</p>
         </div>
     </div>
+
+    <div id="questEle">
+        <h1 id="questHeadline"></h1>
+    </div>
     <div id="notes">
         <img id="background" src="images/Letter.png" />
         <img id="left" src="images/left.png" />
@@ -91,46 +95,50 @@
 
     <div id="form">
         <form>
-            <input class="formInput" id="plantName" />
-            <datalist id="origin">
+            <h2>Name</h2>
+            <input name="plantName" class="className" id="plantName" />
+            <h2>Herkunft </h2>
+            <select name="origin" id="originList">
                 <option name="Erde" value="Erde">Erde</option>
                 <option name="Nelara" value="Nelara">Nelara</option>
                 <option name="Talinea" value="Talinea">Talinea</option>
-            </datalist>
+            </select>
+            <h2>Farben</h2>
             <div class="inputWrapper">
-                <input class="formInput" id="colorOne" />
-                <input class="formInput" id="colorTwo" />
-                <input class="formInput" id="colorThree" />
+                <input name="color" class="formInput" id="colorOne" />
+                <input name="color" class="formInput" id="colorTwo" />
+                <input name="color" class="formInput" id="colorThree" />
             </div>
-            <legend>Beschreibung</legend>
+            <h2>Beschreibung</h2>
             <div class="inputWrapper">
-                <input type="checkbox" name="description" value="allYear" id="allYear" />
+                <input class="descriptionRadio" type="checkbox" name="description" value="allYear" id="allYear" />
                 <label for="allYear">Die Blume
                     blüht
-                    das ganze Jahr lang</label>
-                <input type="checkbox" name="description" value="smell" id="smell" />
+                    das ganze Jahr lang</label> <br>
+                <input class="descriptionRadio" type="checkbox" name="description" value="smell" id="smell" />
                 <label for="smell">Der Geruch ist
-                    süß</label>
-                <input type="checkbox" name="description" value="juli" id="juli" />
+                    süß</label><br>
+                <input class="descriptionRadio" type="checkbox" name="description" value="juli" id="juli" />
                 <label for="juli">Die Blume blüht im
-                    Juli</label>
-                <input type="checkbox" name="description" value="paleRound" id="paleRound" />
+                    Juli</label><br>
+                <input class="descriptionRadio" type="checkbox" name="description" value="paleRound" id="paleRound" />
                 <label for="paleRound">Die
                     Blume
-                    hat blasse, runde Blüten</label>
-                <input type="checkbox" name="description" value="effect" id="effect" />
+                    hat blasse, runde Blüten</label><br>
+                <input class="descriptionRadio" type="checkbox" name="description" value="effect" id="effect" />
                 <label for="effect">Das Öl der
                     Blume
-                    hat keine Wirkung</label>
+                    hat keine Wirkung</label><br>
             </div>
+            <h2>Aussehen</h2>
             <div class="imgWrapper">
-                <input type="checkbox" name="image" value="flower2" id="flower2" /> <label for="flower2"> <img
+                <input class="imgRadio" type="radio" name="image" value="flower2" id="flower2" /> <label for="flower2"> <img
                         class="formImg" src="images/Blume2.png" />
                 </label>
-                <input type="checkbox" name="image" value="flower3" id="flower3" /> <label for="flower3">
+                <input class="imgRadio" type="radio" name="image" value="flower3" id="flower3" /> <label for="flower3">
                     <img class="formImg" src="images/Blume3.png" />
                 </label>
-                <input type="checkbox" name="image" value="nianna" id="Nianna" />
+                <input class="imgRadio" type="radio" name="image" value="nianna" id="Nianna" />
                 <label for="Nianna"> <img class="formImg" id="Nianna" src="images/Nianna_Flower.png" />
                 </label>
             </div>

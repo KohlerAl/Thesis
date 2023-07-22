@@ -83,8 +83,14 @@ declare namespace Script {
         private rightImage;
         private buttonEle;
         private formEle;
+        private isShowing;
+        private isChecked;
         constructor();
+        checkSubmit(): void;
         handleSubmit(): void;
+        switchClass(_entry: string, _rightValue: string, _ele: HTMLInputElement | HTMLSelectElement): boolean;
+        showForm(): void;
+        checkAll(): void;
     }
 }
 declare namespace Script {

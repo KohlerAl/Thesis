@@ -71,7 +71,6 @@ namespace Script {
       for (let path of this.paths) {
         let posStart: ƒ.Vector3 = this.node.getChildrenByName(path.start)[0].mtxLocal.translation;
         let posEnd: ƒ.Vector3 = this.node.getChildrenByName(path.end)[0].mtxLocal.translation;
-        console.log(posStart.toString(), posEnd.toString())
         path.cost = ƒ.Vector3.DIFFERENCE(posEnd, posStart).magnitude;
 
         if (!this.#matrix[path.start])
@@ -83,8 +82,8 @@ namespace Script {
         this.#matrix[path.end][path.start] = path.cost;
       }
 
-      console.warn(this);
-      console.table(this.#matrix);
+      /* console.warn(this);
+      console.table(this.#matrix); */
     }
 
     public findPath(_start: string, _end: string): ƒ.Node[] {
