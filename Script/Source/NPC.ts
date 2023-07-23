@@ -18,7 +18,7 @@ namespace Script {
             new Answer("Kann ich dir bei etwas helfen Mykah?", "Can I help you with something Mykah?", "Wie kann ich dir helfen Mykah?", "How can I support you Mykah?"),
             new Dialogue("Ich suche Hinweise über eine Blume. <br>Kannst du mir helfen, sie zu finden?", "I am looking for some clues about a flower. <br> Can you help me to find them?"),
             new Answer("Natürlich. Ich helfe dir gerne.", "Of course. I will be happy to help you.", "Ja, ich kann dir helfen. Wo soll ich suchen?", "Yes, I can help you. Where should I look?"),
-            new Dialogue("Danke. Du solltest als erstes im Büro suchen. <br> Dazu musst du durch die linke Tür.", "Thank you. You should check the office first. <br> You have to go through the left door."),
+            new Dialogue("Danke. Du solltest als erstes im Büro suchen. <br> Dazu musst du durch die rechte Tür.", "Thank you. You should check the office first. <br> You have to go through the right door."),
             new Break("Pages"),
             new Dialogue("Danke! Kannst du mir ein paar Fragen beantworten?", "Thank you! Can you answer a few questions?"),
             new Dialogue("1. Wo wächst die Nianna Blume? <br> 2. Wie sieht die Nianna Blume aus? <br> 3. Wie wird die Nianna Blume verwendet?", "1. Where does the nianna flower grow? <br>2. What does the nianna flower look like? <br>3. How is the nianna flower used?"),
