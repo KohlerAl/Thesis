@@ -384,7 +384,7 @@
                       {
                         "ƒ.ComponentMaterial": {
                           "sortForAlpha": false,
-                          "clrPrimary": "[1, 1, 1, 1]",
+                          "clrPrimary": "[1, 1, 1, 0]",
                           "clrSecondary": "[1, 1, 1, 1]",
                           "pivot": {
                             "translation": "[0, 0]",
@@ -455,7 +455,7 @@
                       {
                         "ƒ.ComponentMaterial": {
                           "sortForAlpha": false,
-                          "clrPrimary": "[1, 1, 1, 1]",
+                          "clrPrimary": "[1, 1, 1, 0]",
                           "clrSecondary": "[1, 1, 1, 1]",
                           "pivot": {
                             "translation": "[0, 0]",
@@ -526,7 +526,7 @@
                       {
                         "ƒ.ComponentMaterial": {
                           "sortForAlpha": false,
-                          "clrPrimary": "[1, 1, 1, 1]",
+                          "clrPrimary": "[1, 1, 1, 0]",
                           "clrSecondary": "[1, 1, 1, 1]",
                           "pivot": {
                             "translation": "[0, 0]",
@@ -597,7 +597,7 @@
                       {
                         "ƒ.ComponentMaterial": {
                           "sortForAlpha": false,
-                          "clrPrimary": "[1, 1, 1, 1]",
+                          "clrPrimary": "[1, 1, 1, 0]",
                           "clrSecondary": "[1, 1, 1, 1]",
                           "pivot": {
                             "translation": "[0, 0]",
@@ -781,7 +781,7 @@
                         "Script.Interactable": {
                           "active": true,
                           "dialogue": {
-                            "text": "Unfortunately, no flower here. But looks like here is the secret candy stash."
+                            "text": "Unfortunately, no flower here. <br>But looks like here is the secret candy stash."
                           }
                         }
                       }
@@ -863,7 +863,7 @@
                         "Script.Interactable": {
                           "active": true,
                           "dialogue": {
-                            "text": "Many interesting books. But, unfortunately, nothing about flowers"
+                            "text": "Many interesting books. <br>But, unfortunately, nothing about flowers"
                           }
                         }
                       }
@@ -1722,7 +1722,7 @@
                         "Script.Interactable": {
                           "active": true,
                           "dialogue": {
-                            "text": "So many books. But unfortunately no clues."
+                            "text": "So many books. <br>But unfortunately no clues."
                           }
                         }
                       }

@@ -124,6 +124,7 @@ canvas.fullscreen {
   height: 150px;
   font-size: 25px;
   padding: 0px;
+  font-family: pixel;
 }
 
 #npcTalk {

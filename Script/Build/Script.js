@@ -151,14 +151,15 @@ var Script;
             classInstance = this;
         }
         showTranslation() {
-            console.log("clicky");
-            if (classInstance.currentLanguage == "german") {
-                classInstance.p.innerHTML = classInstance.pages[classInstance.currentPage].textenglish;
-                classInstance.currentLanguage = "english";
-            }
-            else {
-                classInstance.p.innerHTML = classInstance.pages[classInstance.currentPage].textgerman;
-                classInstance.currentLanguage = "german";
+            if (Script.translateAllowed) {
+                if (classInstance.currentLanguage == "german") {
+                    classInstance.p.innerHTML = classInstance.pages[classInstance.currentPage].textenglish;
+                    classInstance.currentLanguage = "english";
+                }
+                else {
+                    classInstance.p.innerHTML = classInstance.pages[classInstance.currentPage].textgerman;
+                    classInstance.currentLanguage = "german";
+                }
             }
         }
         changePage(_event) {
@@ -193,7 +194,6 @@ var Script;
             if (classInstance.pages[classInstance.currentPage].shouldCollect == true) {
                 Script.inventory.push(classInstance.pages[classInstance.currentPage]);
                 classInstance.pages.splice(classInstance.currentPage, 1);
-                console.log(Script.inventory);
                 classInstance.flipPage();
             }
             if (Script.inventory.length == 2) {
@@ -304,14 +304,14 @@ var Script;
             descriptionLook: false,
             image: false
         };
-        constructor() {
+        checkSubmit() {
+            instance.handleSubmit();
+        }
+        setup() {
             this.buttonEle = document.querySelector("#submit");
             this.buttonEle.addEventListener("pointerdown", this.checkSubmit);
             this.formEle = document.querySelector("#form");
             instance = this;
-        }
-        checkSubmit() {
-            instance.handleSubmit();
         }
         handleSubmit() {
             let formData = new FormData(document.forms[0]);
@@ -608,7 +608,7 @@ var Script;
         dialogues = [
             this.talk,
             this.dialogue,
-            new Script.Answer("Kann ich dir bei etwas helfen?", "Can I help you with something?", "Wie kann ich dir helfen?", "How can I support you?"),
+            new Script.Answer("Kann ich dir bei etwas helfen Mykah?", "Can I help you with something Mykah?", "Wie kann ich dir helfen Mykah?", "How can I support you Mykah?"),
             new Script.Dialogue("Ich suche Hinweise über eine Blume. <br>Kannst du mir helfen, sie zu finden?", "I am looking for some clues about a flower. <br> Can you help me to find them?"),
             new Script.Answer("Natürlich. Ich helfe dir gerne.", "Of course. I will be happy to help you.", "Ja, ich kann dir helfen. Wo soll ich suchen?", "Yes, I can help you. Where should I look?"),
             new Script.Dialogue("Danke. Du solltest als erstes im Büro suchen. <br> Dazu musst du durch die linke Tür.", "Thank you. You should check the office first. <br> You have to go through the left door."),
@@ -691,18 +691,17 @@ var Script;
                     this.currentDialogue++;
                     this.showDialogue();
                 }
+                Script.quest.updateCounter();
             }
             else if (this.dialogues[this.currentDialogue] instanceof Script.talkyTalk) {
                 this.textBox.innerHTML = this.talk.returnPrompt();
-                console.log(this.talk.returnPrompt());
-                console.log(this.talk.prompt);
                 this.talk.setAllowed(true);
                 this.nextButton.style.visibility = "hidden";
             }
             else if (this.dialogues[this.currentDialogue] instanceof Script.formTest) {
+                this.formEle.setup();
                 this.formEle.showForm();
             }
-            console.log(this.dialogues);
         }
         showNext() {
             instance.currentDialogue++;
@@ -736,7 +735,6 @@ var Script;
         }
         getSpeech() {
             let said = this.talk.whatWasSaid;
-            console.log(said);
             switch (said) {
                 case "hallo":
                     this.answertoSaid = "Hallo!";
@@ -1302,9 +1300,8 @@ var Script;
             action: function (_entry, _wildcard) {
             }
         });
-        artyom.redirectRecognizedTextOutput(function (recognized, isFinal) {
+        artyom.redirectRecognizedTextOutput(function (recognized) {
             let npc = Script.branch.getChildrenByName("NPC")[0].getComponent(Script.NPC);
-            console.log(recognized);
             if (npc.talk.talkingAllowed) {
                 console.log(recognized.toString().toLowerCase());
                 if (recognized.toString().toLowerCase() == "hallo") {
@@ -1317,7 +1314,6 @@ var Script;
                     npc.talk.whatWasSaid = "guten tag";
                 }
                 else {
-                    console.log(recognized);
                     npc.talk.whatWasSaid = recognized.toString();
                 }
                 npc.getSpeech();
@@ -1328,12 +1324,11 @@ var Script;
             setTimeout(function () {
                 artyom.initialize({
                     lang: "de-DE",
-                    continuous: true,
+                    continuous: false,
                     listen: true,
                     interimResults: true,
                     debug: true
                 }).then(function () {
-                    console.log("Ready!");
                 });
             }, 250);
         }

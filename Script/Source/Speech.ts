@@ -11,9 +11,8 @@ namespace Script {
             }
         });
 
-        artyom.redirectRecognizedTextOutput(function (recognized: any, isFinal: any) {
+        artyom.redirectRecognizedTextOutput(function (recognized: any) {
             let npc: NPC = branch.getChildrenByName("NPC")[0].getComponent(NPC);
-            console.log(recognized)
             if (npc.talk.talkingAllowed) {
                 console.log(recognized.toString().toLowerCase())
                 if (recognized.toString().toLowerCase() == "hallo") {
@@ -26,10 +25,9 @@ namespace Script {
                     npc.talk.whatWasSaid = "guten tag";
                 }
                 else {
-                    console.log(recognized);
                     npc.talk.whatWasSaid = recognized.toString();
                 }
-                
+
                 npc.getSpeech();
             }
         });
@@ -41,12 +39,11 @@ namespace Script {
                 function (): void {
                     artyom.initialize({
                         lang: "de-DE",
-                        continuous: true,
+                        continuous: false,
                         listen: true,
                         interimResults: true,
                         debug: true
                     }).then(function (): void {
-                        console.log("Ready!");
                     });
                 },
                 250);

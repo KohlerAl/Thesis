@@ -15,7 +15,7 @@ namespace Script {
         public dialogues: (formTest | Dialogue | Answer | Break | talkyTalk)[] = [
             this.talk, 
             this.dialogue,
-            new Answer("Kann ich dir bei etwas helfen?", "Can I help you with something?", "Wie kann ich dir helfen?", "How can I support you?"),
+            new Answer("Kann ich dir bei etwas helfen Mykah?", "Can I help you with something Mykah?", "Wie kann ich dir helfen Mykah?", "How can I support you Mykah?"),
             new Dialogue("Ich suche Hinweise über eine Blume. <br>Kannst du mir helfen, sie zu finden?", "I am looking for some clues about a flower. <br> Can you help me to find them?"),
             new Answer("Natürlich. Ich helfe dir gerne.", "Of course. I will be happy to help you.", "Ja, ich kann dir helfen. Wo soll ich suchen?", "Yes, I can help you. Where should I look?"),
             new Dialogue("Danke. Du solltest als erstes im Büro suchen. <br> Dazu musst du durch die linke Tür.", "Thank you. You should check the office first. <br> You have to go through the left door."),
@@ -112,20 +112,20 @@ namespace Script {
                     this.currentDialogue++
                     this.showDialogue();
                 }
+                quest.updateCounter(); 
+
             }
 
             else if (this.dialogues[this.currentDialogue] instanceof talkyTalk) {
                 this.textBox.innerHTML = this.talk.returnPrompt(); 
-                console.log(this.talk.returnPrompt());
-                console.log(this.talk.prompt); 
                 this.talk.setAllowed(true); 
                 this.nextButton.style.visibility = "hidden";
             }
 
             else if (this.dialogues[this.currentDialogue] instanceof formTest) {
+                this.formEle.setup(); 
                 this.formEle.showForm();
             }
-            console.log(this.dialogues); 
         }
 
         public showNext(): void {
@@ -168,7 +168,6 @@ namespace Script {
 
         getSpeech(): void {
             let said: string = this.talk.whatWasSaid;
-            console.log(said); 
             switch (said) {
                 case "hallo":
                     this.answertoSaid = "Hallo!";

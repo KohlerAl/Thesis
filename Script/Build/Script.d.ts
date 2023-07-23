@@ -86,8 +86,8 @@ declare namespace Script {
         private formEle;
         private isShowing;
         private isChecked;
-        constructor();
         checkSubmit(): void;
+        setup(): void;
         handleSubmit(): void;
         switchClass(_entry: string, _rightValue: string, _ele: HTMLInputElement | HTMLSelectElement): boolean;
         showForm(): void;

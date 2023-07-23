@@ -29,16 +29,17 @@ namespace Script {
             image: false
         }
 
-        constructor() {
+
+        checkSubmit(): void {
+            instance.handleSubmit();
+        }
+
+        setup(): void {
             this.buttonEle = document.querySelector("#submit");
             this.buttonEle.addEventListener("pointerdown", this.checkSubmit)
 
             this.formEle = document.querySelector("#form")
             instance = this;
-        }
-
-        checkSubmit(): void {
-            instance.handleSubmit();
         }
 
         handleSubmit(): void {

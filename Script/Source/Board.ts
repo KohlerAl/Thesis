@@ -66,6 +66,7 @@ namespace Script {
         }
 
         public openPage(): void {
+
             this.letterBox.style.height = viewport.canvas.height + "px";
             this.letterBox.style.width = viewport.canvas.width + "px";
             this.letterBox.style.visibility = "visible";
@@ -73,17 +74,19 @@ namespace Script {
             this.p.innerHTML = this.pages[this.currentPage].textgerman;
             this.currentLanguage = "german";
             classInstance = this;
+
         }
 
         public showTranslation(): void {
-            console.log("clicky");
-            if (classInstance.currentLanguage == "german") {
-                classInstance.p.innerHTML = classInstance.pages[classInstance.currentPage].textenglish;
-                classInstance.currentLanguage = "english";
-            }
-            else {
-                classInstance.p.innerHTML = classInstance.pages[classInstance.currentPage].textgerman;
-                classInstance.currentLanguage = "german";
+            if (translateAllowed) {
+                if (classInstance.currentLanguage == "german") {
+                    classInstance.p.innerHTML = classInstance.pages[classInstance.currentPage].textenglish;
+                    classInstance.currentLanguage = "english";
+                }
+                else {
+                    classInstance.p.innerHTML = classInstance.pages[classInstance.currentPage].textgerman;
+                    classInstance.currentLanguage = "german";
+                }
             }
         }
 
@@ -125,15 +128,14 @@ namespace Script {
             if (classInstance.pages[classInstance.currentPage].shouldCollect == true) {
                 inventory.push(classInstance.pages[classInstance.currentPage]);
                 classInstance.pages.splice(classInstance.currentPage, 1);
-                console.log(inventory);
                 classInstance.flipPage();
             }
 
 
             if (inventory.length == 2) {
-                let letters: ƒ.Node = branch.getChildrenByName("Letters")[0]; 
-                letters.activate(false); 
-                pagesCollected = true; 
+                let letters: ƒ.Node = branch.getChildrenByName("Letters")[0];
+                letters.activate(false);
+                pagesCollected = true;
                 update(null)
             }
         }
