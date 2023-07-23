@@ -131,8 +131,9 @@ canvas.fullscreen {
 }
 
 #npcTalk #Next {
-  position: absolute;
-  top: 80px;
+  /* position: absolute;
+  top: 80px; */
+  padding-top: 20px;
 }
 
 #notes {
@@ -152,19 +153,18 @@ canvas.fullscreen {
   max-height: 95%;
 }
 
-#right,
+/* #right,
 #left {
   position: relative;
   top: -50px;
   left: -20%;
-}
+} */
 
-#notes .interface,
 #npcTalk .interface {
   color: #fff;
   font-family: pixel;
   position: relative;
-  top: -22%;
+  top: -35%;
   font-size: 30px;
 }
 
@@ -183,12 +183,16 @@ canvas.fullscreen {
   left: 8%;
 }
 
-#notes p {
+#notes #noteText {
   position: absolute;
   left: 150px;
   top: 30px;
   font-family: hw5;
   z-index: 10000000;
+}
+
+#notes .interface p {
+  display: inline;
 }
 
 #text {
@@ -273,4 +277,26 @@ form .wrong {
   height: 30px;
   font-family: pixel;
   border: none;
+}
+
+#questEle {
+  display: block;
+  z-index: 900;
+  position: absolute;
+  top: 0;
+  color: white;
+  font-family: pixel;
+  font-size: 10px;
+  padding: 10px;
+}
+
+#noteInterface {
+  display: flex; 
+  flex-direction: row;
+  position: relative;
+  top: -100px;
+  left: 100px;
+}
+#noteInterface > * {
+  padding-left: 20px;
 }

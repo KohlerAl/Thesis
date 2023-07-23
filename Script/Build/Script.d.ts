@@ -62,6 +62,7 @@ declare namespace Script {
         textGerman: string;
         textEnglish: string;
         constructor(_textGerman: string, _textEnglish: string);
+        setNewText(_newTextGerman: string, _newTextEnglish: string): void;
     }
 }
 declare namespace Script {
@@ -119,6 +120,7 @@ declare namespace Script {
     let noot: Noot;
     let translateAllowed: boolean;
     let pagesCollected: boolean;
+    let quest: Quest;
     let inventory: Page[];
     function update(_event: Event): void;
     function handleClick(_event: PointerEvent): void;
@@ -131,7 +133,11 @@ declare namespace Script {
         static readonly iSubclass: number;
         currentDialogue: number;
         private formEle;
-        dialogues: (formTest | Dialogue | Answer | Break)[];
+        talk: talkyTalk;
+        answertoSaid: string;
+        translateSaid: string;
+        private dialogue;
+        dialogues: (formTest | Dialogue | Answer | Break | talkyTalk)[];
         readonly dialogueBox: HTMLDivElement;
         readonly textBox: HTMLParagraphElement;
         readonly nextButton: HTMLDivElement;
@@ -143,6 +149,7 @@ declare namespace Script {
         hideDialouge(): void;
         choose(): void;
         switchLanguage(_event: Event): void;
+        getSpeech(): void;
     }
 }
 declare namespace Script {
@@ -212,6 +219,18 @@ declare namespace Script {
     }
 }
 declare namespace Script {
+    class Quest {
+        quests: string[];
+        questsCounter: number;
+        questEle: HTMLDivElement;
+        questHeader: HTMLHeadingElement;
+        constructor();
+        displayQuest(): void;
+        updateCounter(): void;
+        hideQuest(): void;
+    }
+}
+declare namespace Script {
     abstract class Question {
         question: string;
         answer: string;
@@ -249,6 +268,19 @@ declare namespace Script {
     let cmpCamera: ƒ.ComponentCamera;
     function setUpCam(): void;
     function createCamera(): ƒ.ComponentCamera;
+}
+declare namespace Script {
+    function startArtyom(): void;
+    class talkyTalk {
+        prompt: string;
+        whatWasSaid: string;
+        talkingAllowed: boolean;
+        returnSaid(): string;
+        returnAllowed(): boolean;
+        setSaid(_newValue: string): void;
+        setAllowed(_newValue: boolean): void;
+        returnPrompt(): string;
+    }
 }
 declare namespace Script {
     import ƒ = FudgeCore;

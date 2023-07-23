@@ -226,6 +226,10 @@ var Script;
             this.textGerman = _textGerman;
             this.textEnglish = _textEnglish;
         }
+        setNewText(_newTextGerman, _newTextEnglish) {
+            this.textGerman = _newTextGerman;
+            this.textEnglish = _newTextEnglish;
+        }
     }
     Script.Dialogue = Dialogue;
 })(Script || (Script = {}));
@@ -533,8 +537,8 @@ var Script;
         ƒ.Loop.addEventListener("loopFrame" /* LOOP_FRAME */, update);
         ƒ.Loop.start();
         // update(null);
-        new ƒ.Time();
-        animateCoin();
+        Script.quest = new Script.Quest();
+        Script.startArtyom();
     }
     function update(_event) {
         // ƒ.Physics.simulate();  // if physics is included and used
@@ -586,31 +590,6 @@ var Script;
         Script.player.getComponent(Script.Alien).state = Script.STATE.STAND;
         Script.player.getComponent(Script.Alien).changeAnimation();
     }
-    function animateCoin() {
-        let animseq = new ƒ.AnimationSequence();
-        animseq.addKey(new ƒ.AnimationKey(0, 1));
-        animseq.addKey(new ƒ.AnimationKey(750, 2));
-        animseq.addKey(new ƒ.AnimationKey(1000, 1));
-        let animStructure = {
-            components: {
-                ComponentTransform: [
-                    {
-                        "ƒ.ComponentTransform": {
-                            mtxLocal: {
-                                translation: {
-                                    x: animseq
-                                }
-                            }
-                        }
-                    }
-                ]
-            }
-        };
-        let animation = new ƒ.Animation("testAnimation", animStructure);
-        let cmpAnimator = new ƒ.ComponentAnimator(animation);
-        Script.branch.getChildrenByName("NPC")[0].addComponent(cmpAnimator);
-        console.log(Script.branch.getChildrenByName("NPC")[0]);
-    }
 })(Script || (Script = {}));
 var Script;
 (function (Script) {
@@ -622,10 +601,13 @@ var Script;
         // Properties may be mutated by users in the editor via the automatically created user interface
         currentDialogue = 0;
         formEle = new Script.formTest();
+        talk = new Script.talkyTalk();
+        answertoSaid;
+        translateSaid;
+        dialogue = new Script.Dialogue("Hallo Player. Schön, dich zu sehen. <br> Und danke, dass du uns hilfst.", "Hello Player. It’s good to see you. <br>And thank you for supporting us.");
         dialogues = [
-            this.formEle,
-            new Script.Dialogue("Hallo Player. Schön, dich zu sehen. <br> Und danke, dass du uns hilfst.", "Hello Player. It’s good to see you. <br>And thank you for supporting us."),
-            new Script.Dialogue("Hallo Mykah.", "Hello Mykah"),
+            this.talk,
+            this.dialogue,
             new Script.Answer("Kann ich dir bei etwas helfen?", "Can I help you with something?", "Wie kann ich dir helfen?", "How can I support you?"),
             new Script.Dialogue("Ich suche Hinweise über eine Blume. <br>Kannst du mir helfen, sie zu finden?", "I am looking for some clues about a flower. <br> Can you help me to find them?"),
             new Script.Answer("Natürlich. Ich helfe dir gerne.", "Of course. I will be happy to help you.", "Ja, ich kann dir helfen. Wo soll ich suchen?", "Yes, I can help you. Where should I look?"),
@@ -634,7 +616,8 @@ var Script;
             new Script.Dialogue("Danke! Kannst du mir ein paar Fragen beantworten?", "Thank you! Can you answer a few questions?"),
             new Script.Dialogue("1. Wo wächst die Nianna Blume? <br> 2. Wie sieht die Nianna Blume aus? <br> 3. Wie wird die Nianna Blume verwendet?", "1. Where does the nianna flower grow? <br>2. What does the nianna flower look like? <br>3. How is the nianna flower used?"),
             new Script.Break("Noot"),
-            new Script.Dialogue("Hast du alles nachgeschaut? <br> Dann kannst du deine Ergebnisse hier Eintragen", "Did you look everything up? You can put in your results here")
+            new Script.Dialogue("Hast du alles nachgeschaut? <br> Dann kannst du deine Ergebnisse hier Eintragen", "Did you look everything up? You can put in your results here"),
+            this.formEle,
         ];
         dialogueBox;
         textBox;
@@ -655,7 +638,6 @@ var Script;
             this.nextButton = this.dialogueBox.querySelector("#Next");
             this.nextButton.addEventListener("pointerdown", this.showNext);
             instance = this;
-            console.log(this.node);
         }
         // Activate the functions of this component as response to events
         hndEvent = (_event) => {
@@ -710,9 +692,17 @@ var Script;
                     this.showDialogue();
                 }
             }
+            else if (this.dialogues[this.currentDialogue] instanceof Script.talkyTalk) {
+                this.textBox.innerHTML = this.talk.returnPrompt();
+                console.log(this.talk.returnPrompt());
+                console.log(this.talk.prompt);
+                this.talk.setAllowed(true);
+                this.nextButton.style.visibility = "hidden";
+            }
             else if (this.dialogues[this.currentDialogue] instanceof Script.formTest) {
                 this.formEle.showForm();
             }
+            console.log(this.dialogues);
         }
         showNext() {
             instance.currentDialogue++;
@@ -743,6 +733,32 @@ var Script;
                     instance.showDialogue();
                 }
             }
+        }
+        getSpeech() {
+            let said = this.talk.whatWasSaid;
+            console.log(said);
+            switch (said) {
+                case "hallo":
+                    this.answertoSaid = "Hallo!";
+                    this.translateSaid = "Hello!";
+                    break;
+                case "hey":
+                    this.answertoSaid = "Hey!";
+                    this.translateSaid = "Hey!";
+                    break;
+                case "guten tag":
+                    this.answertoSaid = "Guten Tag!";
+                    this.translateSaid = "Good Day!";
+                    break;
+                default:
+                    this.answertoSaid = "Schön dich zu sehen!";
+                    this.translateSaid = "Nice to see you!";
+                    break;
+            }
+            this.dialogue.setNewText(this.answertoSaid, this.translateSaid);
+            this.talk.setAllowed(false);
+            this.currentDialogue++;
+            this.showDialogue();
         }
     }
     Script.NPC = NPC;
@@ -1101,6 +1117,31 @@ var Script;
 })(Script || (Script = {}));
 var Script;
 (function (Script) {
+    class Quest {
+        quests = ["Go to Mykah and ask if they need help.", "Find the two notes Mykah described.", "Look up the answers for Mykah’s questions with Noot", "Return to Mykah"];
+        questsCounter = 0;
+        questEle;
+        questHeader;
+        constructor() {
+            this.questEle = document.querySelector("#questEle");
+            this.questHeader = this.questEle.querySelector("h1");
+        }
+        displayQuest() {
+            this.questEle.style.display = "block";
+            this.questHeader.innerHTML = this.quests[this.questsCounter];
+        }
+        updateCounter() {
+            this.questsCounter++;
+            this.displayQuest();
+        }
+        hideQuest() {
+            this.questEle.style.display = "none";
+        }
+    }
+    Script.Quest = Quest;
+})(Script || (Script = {}));
+var Script;
+(function (Script) {
     let instance;
     class Question {
         question;
@@ -1250,6 +1291,76 @@ var Script;
         return newCam;
     }
     Script.createCamera = createCamera;
+})(Script || (Script = {}));
+var Script;
+(function (Script) {
+    function startArtyom() {
+        const artyom = new Artyom();
+        artyom.addCommands({
+            indexes: ["Hallo *", "Guten Tag *", "Hey *"],
+            smart: true,
+            action: function (_entry, _wildcard) {
+            }
+        });
+        artyom.redirectRecognizedTextOutput(function (recognized, isFinal) {
+            let npc = Script.branch.getChildrenByName("NPC")[0].getComponent(Script.NPC);
+            console.log(recognized);
+            if (npc.talk.talkingAllowed) {
+                console.log(recognized.toString().toLowerCase());
+                if (recognized.toString().toLowerCase() == "hallo") {
+                    npc.talk.whatWasSaid = "hallo";
+                }
+                else if (recognized.toString().toLowerCase() == "hey") {
+                    npc.talk.whatWasSaid = "hey";
+                }
+                else if (recognized.toString().toLowerCase() == "guten tag") {
+                    npc.talk.whatWasSaid = "guten tag";
+                }
+                else {
+                    console.log(recognized);
+                    npc.talk.whatWasSaid = recognized.toString();
+                }
+                npc.getSpeech();
+            }
+        });
+        function listenArtyom() {
+            artyom.fatality();
+            setTimeout(function () {
+                artyom.initialize({
+                    lang: "de-DE",
+                    continuous: true,
+                    listen: true,
+                    interimResults: true,
+                    debug: true
+                }).then(function () {
+                    console.log("Ready!");
+                });
+            }, 250);
+        }
+        listenArtyom();
+    }
+    Script.startArtyom = startArtyom;
+    class talkyTalk {
+        prompt = "Use your microphone to say hello to Mykah!";
+        whatWasSaid;
+        talkingAllowed;
+        returnSaid() {
+            return this.whatWasSaid;
+        }
+        returnAllowed() {
+            return this.talkingAllowed;
+        }
+        setSaid(_newValue) {
+            this.whatWasSaid = _newValue;
+        }
+        setAllowed(_newValue) {
+            this.talkingAllowed = _newValue;
+        }
+        returnPrompt() {
+            return this.prompt;
+        }
+    }
+    Script.talkyTalk = talkyTalk;
 })(Script || (Script = {}));
 var Script;
 (function (Script) {

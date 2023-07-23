@@ -13,8 +13,9 @@ namespace Script {
   export let next: ƒ.Node;
   export let noot: Noot;
   let first: boolean = true;
-  export let translateAllowed: boolean = false; 
+  export let translateAllowed: boolean = false;
   export let pagesCollected: boolean = false;
+  export let quest: Quest;
   document.addEventListener("interactiveViewportStarted", <EventListener>start);
 
   export let inventory: Page[] = [];
@@ -43,7 +44,7 @@ namespace Script {
     walker = branch.getChildrenByName("Player")[0].getComponent(PathWalker);
     walker.addEventListener("arrived", changeAnimation);
 
-    
+
     //#region PathWalker demo
     /* 
    
@@ -65,12 +66,13 @@ namespace Script {
     noot = new Noot();
     player = branch.getChildrenByName("Player")[0];
     player.addComponent(new Alien);
-    player.mtxLocal.translate(current.mtxLocal.translation); 
+    player.mtxLocal.translate(current.mtxLocal.translation);
     ƒ.Loop.addEventListener(ƒ.EVENT.LOOP_FRAME, update);
     ƒ.Loop.start();
     // update(null);
-    new ƒ.Time()
-    animateCoin(); 
+    quest = new Quest();
+
+    startArtyom(); 
   }
   export function update(_event: Event): void {
     // ƒ.Physics.simulate();  // if physics is included and used
@@ -129,34 +131,4 @@ namespace Script {
     player.getComponent(Alien).state = STATE.STAND;
     player.getComponent(Alien).changeAnimation();
   }
-
-  function animateCoin(): void {
-
-    let animseq: ƒ.AnimationSequence = new ƒ.AnimationSequence();
-    animseq.addKey(new ƒ.AnimationKey(0, 1));
-    animseq.addKey(new ƒ.AnimationKey(750, 2));
-    animseq.addKey(new ƒ.AnimationKey(1000, 1));
-
-    let animStructure: ƒ.AnimationStructure = {
-        components: {
-            ComponentTransform: [
-                {
-                    "ƒ.ComponentTransform": {
-                        mtxLocal: {
-                            translation: {
-                                x: animseq
-                            }
-                        }
-                    }
-                }
-            ]
-        }
-    };
-
-    let animation: ƒ.Animation = new ƒ.Animation("testAnimation", animStructure);
-    let cmpAnimator: ƒ.ComponentAnimator = new ƒ.ComponentAnimator(animation);
-    branch.getChildrenByName("NPC")[0].addComponent(cmpAnimator);
-    console.log(branch.getChildrenByName("NPC")[0])
 }
-}
-

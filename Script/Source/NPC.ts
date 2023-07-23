@@ -7,11 +7,14 @@ namespace Script {
         // Properties may be mutated by users in the editor via the automatically created user interface
         public currentDialogue: number = 0;
         private formEle: formTest = new formTest();
-        public dialogues: (formTest | Dialogue | Answer | Break)[] = [
-            this.formEle, 
-            new Dialogue("Hallo Player. Schön, dich zu sehen. <br> Und danke, dass du uns hilfst.",
-                "Hello Player. It’s good to see you. <br>And thank you for supporting us."),
-            new Dialogue("Hallo Mykah.", "Hello Mykah"),
+        public talk: talkyTalk = new talkyTalk(); 
+        public answertoSaid: string;
+        public translateSaid: string;
+        private dialogue: Dialogue = new Dialogue("Hallo Player. Schön, dich zu sehen. <br> Und danke, dass du uns hilfst.",
+        "Hello Player. It’s good to see you. <br>And thank you for supporting us."); 
+        public dialogues: (formTest | Dialogue | Answer | Break | talkyTalk)[] = [
+            this.talk, 
+            this.dialogue,
             new Answer("Kann ich dir bei etwas helfen?", "Can I help you with something?", "Wie kann ich dir helfen?", "How can I support you?"),
             new Dialogue("Ich suche Hinweise über eine Blume. <br>Kannst du mir helfen, sie zu finden?", "I am looking for some clues about a flower. <br> Can you help me to find them?"),
             new Answer("Natürlich. Ich helfe dir gerne.", "Of course. I will be happy to help you.", "Ja, ich kann dir helfen. Wo soll ich suchen?", "Yes, I can help you. Where should I look?"),
@@ -20,7 +23,8 @@ namespace Script {
             new Dialogue("Danke! Kannst du mir ein paar Fragen beantworten?", "Thank you! Can you answer a few questions?"),
             new Dialogue("1. Wo wächst die Nianna Blume? <br> 2. Wie sieht die Nianna Blume aus? <br> 3. Wie wird die Nianna Blume verwendet?", "1. Where does the nianna flower grow? <br>2. What does the nianna flower look like? <br>3. How is the nianna flower used?"),
             new Break("Noot"),
-            new Dialogue("Hast du alles nachgeschaut? <br> Dann kannst du deine Ergebnisse hier Eintragen", "Did you look everything up? You can put in your results here")
+            new Dialogue("Hast du alles nachgeschaut? <br> Dann kannst du deine Ergebnisse hier Eintragen", "Did you look everything up? You can put in your results here"),
+            this.formEle,
         ];
         public readonly dialogueBox: HTMLDivElement;
         public readonly textBox: HTMLParagraphElement;
@@ -45,7 +49,6 @@ namespace Script {
             this.nextButton = this.dialogueBox.querySelector("#Next");
             this.nextButton.addEventListener("pointerdown", this.showNext);
             instance = this;
-            console.log(this.node)
         }
 
         // Activate the functions of this component as response to events
@@ -90,6 +93,8 @@ namespace Script {
                 this.nextButton.style.visibility = "hidden";
                 this.dialogueBox.querySelector("#optionA").addEventListener("pointerdown", this.choose);
                 this.dialogueBox.querySelector("#optionB").addEventListener("pointerdown", this.choose);
+
+
             }
             else if (this.dialogues[this.currentDialogue] instanceof Break) {
                 let current: Break = <Break>this.dialogues[this.currentDialogue];
@@ -109,10 +114,18 @@ namespace Script {
                 }
             }
 
-            else if (this.dialogues[this.currentDialogue] instanceof formTest) {
-                this.formEle.showForm(); 
+            else if (this.dialogues[this.currentDialogue] instanceof talkyTalk) {
+                this.textBox.innerHTML = this.talk.returnPrompt(); 
+                console.log(this.talk.returnPrompt());
+                console.log(this.talk.prompt); 
+                this.talk.setAllowed(true); 
+                this.nextButton.style.visibility = "hidden";
             }
 
+            else if (this.dialogues[this.currentDialogue] instanceof formTest) {
+                this.formEle.showForm();
+            }
+            console.log(this.dialogues); 
         }
 
         public showNext(): void {
@@ -151,6 +164,33 @@ namespace Script {
                 }
             }
 
+        }
+
+        getSpeech(): void {
+            let said: string = this.talk.whatWasSaid;
+            console.log(said); 
+            switch (said) {
+                case "hallo":
+                    this.answertoSaid = "Hallo!";
+                    this.translateSaid = "Hello!";
+                    break;
+                case "hey":
+                    this.answertoSaid = "Hey!"
+                    this.translateSaid = "Hey!";
+                    break;
+                case "guten tag":
+                    this.answertoSaid = "Guten Tag!"
+                    this.translateSaid = "Good Day!";
+                    break;
+                default:
+                    this.answertoSaid = "Schön dich zu sehen!"
+                    this.translateSaid = "Nice to see you!";
+                    break;
+            }
+            this.dialogue.setNewText(this.answertoSaid, this.translateSaid);
+            this.talk.setAllowed(false); 
+            this.currentDialogue++;
+            this.showDialogue();  
         }
 
     }

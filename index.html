@@ -18,6 +18,9 @@
     <script type="text/javascript" src="https://jirkadelloro.github.io/FUDGE/Core/Build/FudgeCore.js"></script>
     <script type="text/javascript" src="https://jirkadelloro.github.io/FUDGE/Aid/Build/FudgeAid.js"></script>
 
+    <!-- Speech Recognition-->
+    <script src="lib/artyom.window.min.js"></script>
+
     <!--Link internal resources. The editor only loads the first, but at runtime, multiple files can contribute-->
     <link type="resources" src="Internal.json" />
 
@@ -56,16 +59,19 @@
     </div>
     <div id="notes">
         <img id="background" src="images/Letter.png" />
-        <img id="left" src="images/left.png" />
-        <img id="right" src="images/right.png" />
         <p id="noteText">
+            <div id="noteInterface">
+                <img id="left" src="images/left.png" />
+                <img id="right" src="images/right.png" />
+                <div class="interface" id="Close">
+                    <p>Close</p>
+                </div>
+                <div class="interface" id="Collect">
+                    <p>Collect</p>
+                </div>
+            </div>
         </p>
-        <div class="interface" id="Close">
-            <p>Close</p>
-        </div>
-        <div class="interface" id="Collect">
-            <p>Collect</p>
-        </div>
+        
     </div>
 
     <img id="NOOT" src="images/Noot.png" />
@@ -132,8 +138,8 @@
             </div>
             <h2>Aussehen</h2>
             <div class="imgWrapper">
-                <input class="imgRadio" type="radio" name="image" value="flower2" id="flower2" /> <label for="flower2"> <img
-                        class="formImg" src="images/Blume2.png" />
+                <input class="imgRadio" type="radio" name="image" value="flower2" id="flower2" /> <label for="flower2">
+                    <img class="formImg" src="images/Blume2.png" />
                 </label>
                 <input class="imgRadio" type="radio" name="image" value="flower3" id="flower3" /> <label for="flower3">
                     <img class="formImg" src="images/Blume3.png" />
