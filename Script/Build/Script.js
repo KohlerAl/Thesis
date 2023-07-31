@@ -19,6 +19,7 @@ var Script;
         animationStand;
         constructor() {
             super();
+            //get node and set state to stand (as the alien isn't moving in the beginning)
             this.alienNode = Script.branch.getChildrenByName("Player")[0];
             this.animation = this.alienNode.getComponent(ƒ.ComponentAnimator);
             this.state = STATE.STAND;
@@ -29,6 +30,7 @@ var Script;
             this.changeAnimation();
         }
         changeState(_new, _current) {
+            //depending on in which direction the alien is walking, the animation is adjusted
             if (_new.mtxLocal.translation.x < _current.mtxLocal.translation.x)
                 this.state = STATE.LEFT;
             else if (_new.mtxLocal.translation.x > _current.mtxLocal.translation.x)
@@ -36,6 +38,7 @@ var Script;
             this.changeAnimation();
         }
         changeAnimation() {
+            //switch the state
             switch (this.state) {
                 case STATE.LEFT:
                     this.animation.animation = this.animationLeft.animation;
@@ -63,6 +66,7 @@ var Script;
             }
         };
         async setup() {
+            //get the animations
             this.animationLeft = Script.branch.getChildrenByName("Animations")[0].getChildrenByName("AnimationLeft")[0].getComponent(ƒ.ComponentAnimator);
             this.animationRight = Script.branch.getChildrenByName("Animations")[0].getChildrenByName("AnimationRight")[0].getComponent(ƒ.ComponentAnimator);
             this.animationStand = Script.branch.getChildrenByName("Animations")[0].getChildrenByName("AnimationStand")[0].getComponent(ƒ.ComponentAnimator);
@@ -76,6 +80,8 @@ var Script;
 var Script;
 (function (Script) {
     class Answer {
+        //class for a dialogue when the player has the option to choose from different options
+        //both options are saved in english and german, so that they can be shown in both languages
         choiceAGerman;
         choiceAEnglish;
         choiceBGerman;
@@ -98,6 +104,7 @@ var Script;
         // Register the script as component for use in the editor via drag&drop
         static iSubclass = ƒ.Component.registerSubclass(Board);
         // Properties may be mutated by users in the editor via the automatically created user interface
+        //The board manages the notes
         pages = [
             new Script.Page("Nianna Blume <br> -Die Blume riecht süß. <br>- Blasse, runde Blüten <br>- Die Blume blüht das ganze Jahr lang. <br> Die Blüten sind blau, rosa und lila.", "Nianna flower <br>- The flower smells sweet. <br>- Pale, round flowers <br>- The flower blooms all year round. <br> The flowers are blue, pink and purple.", true),
             new Script.Page("- Das Öl der Nianna Blume ist gelb und riecht sehr süß. <br>- Das Öl kann Änderungen im Verhalten und der Persönlichkeit hervorrufen", "- The oil of Nianna flower is yellow and smells very sweet. <br>- The oil can cause changes in behavior and personality", true),
@@ -608,15 +615,15 @@ var Script;
         dialogues = [
             this.talk,
             this.dialogue,
-            new Script.Answer("Kann ich dir bei etwas helfen Mykah?", "Can I help you with something Mykah?", "Wie kann ich dir helfen Mykah?", "How can I support you Mykah?"),
-            new Script.Dialogue("Ich suche Hinweise über eine Blume. <br>Kannst du mir helfen, sie zu finden?", "I am looking for some clues about a flower. <br> Can you help me to find them?"),
-            new Script.Answer("Natürlich. Ich helfe dir gerne.", "Of course. I will be happy to help you.", "Ja, ich kann dir helfen. Wo soll ich suchen?", "Yes, I can help you. Where should I look?"),
-            new Script.Dialogue("Danke. Du solltest als erstes im Büro suchen. <br> Dazu musst du durch die rechte Tür.", "Thank you. You should check the office first. <br> You have to go through the right door."),
+            new Script.Answer("Du:<br>Kann ich dir bei etwas helfen Mykah?", "You:<br>Can I help you with something Mykah?", "Du:<br>Wie kann ich dir helfen Mykah?", "You:<br>How can I support you Mykah?"),
+            new Script.Dialogue("Mykah:<br>Ich suche Hinweise über eine Blume. <br>Kannst du mir helfen, sie zu finden?", "Mykah:<br>I am looking for some clues about a flower. <br> Can you help me to find them?"),
+            new Script.Answer("Du:<br>Natürlich. Ich helfe dir gerne.", "You:<br>Of course. I will be happy to help you.", "Du:<br>Ja, ich kann dir helfen. Wo soll ich suchen?", "You:<br>Yes, I can help you. Where should I look?"),
+            new Script.Dialogue("Mykah:<br>Danke. Du solltest als erstes im Büro suchen. <br> Dazu musst du durch die rechte Tür.", "Mykah:<br>Thank you. You should check the office first. <br> You have to go through the right door."),
             new Script.Break("Pages"),
-            new Script.Dialogue("Danke! Kannst du mir ein paar Fragen beantworten?", "Thank you! Can you answer a few questions?"),
-            new Script.Dialogue("1. Wo wächst die Nianna Blume? <br> 2. Wie sieht die Nianna Blume aus? <br> 3. Wie wird die Nianna Blume verwendet?", "1. Where does the nianna flower grow? <br>2. What does the nianna flower look like? <br>3. How is the nianna flower used?"),
+            new Script.Dialogue("Mykah:<br>Danke! Kannst du mir ein paar Fragen beantworten?", "Mykah:<br>Thank you! Can you answer a few questions?"),
+            new Script.Dialogue("Mykah:<br>1. Wo wächst die Nianna Blume? <br> 2. Wie sieht die Nianna Blume aus? <br> 3. Wie wird die Nianna Blume verwendet?", "Mykah:<br>1. Where does the nianna flower grow? <br>2. What does the nianna flower look like? <br>3. How is the nianna flower used?"),
             new Script.Break("Noot"),
-            new Script.Dialogue("Hast du alles nachgeschaut? <br> Dann kannst du deine Ergebnisse hier Eintragen", "Did you look everything up? You can put in your results here"),
+            new Script.Dialogue("Mykah:<br>Hast du alles nachgeschaut? <br> Dann kannst du deine Ergebnisse hier Eintragen", "Mykah:<br>Did you look everything up? You can put in your results here"),
             this.formEle,
         ];
         dialogueBox;
@@ -737,20 +744,20 @@ var Script;
             let said = this.talk.whatWasSaid;
             switch (said) {
                 case "hallo":
-                    this.answertoSaid = "Hallo!";
-                    this.translateSaid = "Hello!";
+                    this.answertoSaid = "Mykah:<br> Hallo!";
+                    this.translateSaid = "Mykah:<br>Hello!";
                     break;
                 case "hey":
-                    this.answertoSaid = "Hey!";
-                    this.translateSaid = "Hey!";
+                    this.answertoSaid = "Mykah:<br>Hey!";
+                    this.translateSaid = "Mykah:<br>Hey!";
                     break;
                 case "guten tag":
-                    this.answertoSaid = "Guten Tag!";
-                    this.translateSaid = "Good Day!";
+                    this.answertoSaid = "Mykah:<br>Guten Tag!";
+                    this.translateSaid = "Mykah:<br>Good Day!";
                     break;
                 default:
-                    this.answertoSaid = "Schön dich zu sehen!";
-                    this.translateSaid = "Nice to see you!";
+                    this.answertoSaid = "Mykah:<br>Schön dich zu sehen!";
+                    this.translateSaid = "Mykah:<br>Nice to see you!";
                     break;
             }
             this.dialogue.setNewText(this.answertoSaid, this.translateSaid);

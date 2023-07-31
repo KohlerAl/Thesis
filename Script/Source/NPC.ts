@@ -15,15 +15,15 @@ namespace Script {
         public dialogues: (formTest | Dialogue | Answer | Break | talkyTalk)[] = [
             this.talk, 
             this.dialogue,
-            new Answer("Kann ich dir bei etwas helfen Mykah?", "Can I help you with something Mykah?", "Wie kann ich dir helfen Mykah?", "How can I support you Mykah?"),
-            new Dialogue("Ich suche Hinweise über eine Blume. <br>Kannst du mir helfen, sie zu finden?", "I am looking for some clues about a flower. <br> Can you help me to find them?"),
-            new Answer("Natürlich. Ich helfe dir gerne.", "Of course. I will be happy to help you.", "Ja, ich kann dir helfen. Wo soll ich suchen?", "Yes, I can help you. Where should I look?"),
-            new Dialogue("Danke. Du solltest als erstes im Büro suchen. <br> Dazu musst du durch die rechte Tür.", "Thank you. You should check the office first. <br> You have to go through the right door."),
+            new Answer("Du:<br>Kann ich dir bei etwas helfen Mykah?", "You:<br>Can I help you with something Mykah?", "Du:<br>Wie kann ich dir helfen Mykah?", "You:<br>How can I support you Mykah?"),
+            new Dialogue("Mykah:<br>Ich suche Hinweise über eine Blume. <br>Kannst du mir helfen, sie zu finden?", "Mykah:<br>I am looking for some clues about a flower. <br> Can you help me to find them?"),
+            new Answer("Du:<br>Natürlich. Ich helfe dir gerne.", "You:<br>Of course. I will be happy to help you.", "Du:<br>Ja, ich kann dir helfen. Wo soll ich suchen?", "You:<br>Yes, I can help you. Where should I look?"),
+            new Dialogue("Mykah:<br>Danke. Du solltest als erstes im Büro suchen. <br> Dazu musst du durch die rechte Tür.", "Mykah:<br>Thank you. You should check the office first. <br> You have to go through the right door."),
             new Break("Pages"),
-            new Dialogue("Danke! Kannst du mir ein paar Fragen beantworten?", "Thank you! Can you answer a few questions?"),
-            new Dialogue("1. Wo wächst die Nianna Blume? <br> 2. Wie sieht die Nianna Blume aus? <br> 3. Wie wird die Nianna Blume verwendet?", "1. Where does the nianna flower grow? <br>2. What does the nianna flower look like? <br>3. How is the nianna flower used?"),
+            new Dialogue("Mykah:<br>Danke! Kannst du mir ein paar Fragen beantworten?", "Mykah:<br>Thank you! Can you answer a few questions?"),
+            new Dialogue("Mykah:<br>1. Wo wächst die Nianna Blume? <br> 2. Wie sieht die Nianna Blume aus? <br> 3. Wie wird die Nianna Blume verwendet?", "Mykah:<br>1. Where does the nianna flower grow? <br>2. What does the nianna flower look like? <br>3. How is the nianna flower used?"),
             new Break("Noot"),
-            new Dialogue("Hast du alles nachgeschaut? <br> Dann kannst du deine Ergebnisse hier Eintragen", "Did you look everything up? You can put in your results here"),
+            new Dialogue("Mykah:<br>Hast du alles nachgeschaut? <br> Dann kannst du deine Ergebnisse hier Eintragen", "Mykah:<br>Did you look everything up? You can put in your results here"),
             this.formEle,
         ];
         public readonly dialogueBox: HTMLDivElement;
@@ -170,20 +170,20 @@ namespace Script {
             let said: string = this.talk.whatWasSaid;
             switch (said) {
                 case "hallo":
-                    this.answertoSaid = "Hallo!";
-                    this.translateSaid = "Hello!";
+                    this.answertoSaid = "Mykah:<br> Hallo!";
+                    this.translateSaid = "Mykah:<br>Hello!";
                     break;
                 case "hey":
-                    this.answertoSaid = "Hey!"
-                    this.translateSaid = "Hey!";
+                    this.answertoSaid = "Mykah:<br>Hey!"
+                    this.translateSaid = "Mykah:<br>Hey!";
                     break;
                 case "guten tag":
-                    this.answertoSaid = "Guten Tag!"
-                    this.translateSaid = "Good Day!";
+                    this.answertoSaid = "Mykah:<br>Guten Tag!"
+                    this.translateSaid = "Mykah:<br>Good Day!";
                     break;
                 default:
-                    this.answertoSaid = "Schön dich zu sehen!"
-                    this.translateSaid = "Nice to see you!";
+                    this.answertoSaid = "Mykah:<br>Schön dich zu sehen!"
+                    this.translateSaid = "Mykah:<br>Nice to see you!";
                     break;
             }
             this.dialogue.setNewText(this.answertoSaid, this.translateSaid);

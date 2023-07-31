@@ -7,6 +7,8 @@ namespace Script {
         // Register the script as component for use in the editor via drag&drop
         public static readonly iSubclass: number = ƒ.Component.registerSubclass(Board);
         // Properties may be mutated by users in the editor via the automatically created user interface
+
+        //The board manages the notes
         pages: Page[] =
             [
                 new Page("Nianna Blume <br> -Die Blume riecht süß. <br>- Blasse, runde Blüten <br>- Die Blume blüht das ganze Jahr lang. <br> Die Blüten sind blau, rosa und lila.",

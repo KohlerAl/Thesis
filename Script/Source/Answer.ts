@@ -1,5 +1,7 @@
 namespace Script {
     export class Answer {
+        //class for a dialogue when the player has the option to choose from different options
+        //both options are saved in english and german, so that they can be shown in both languages
         choiceAGerman: string; 
         choiceAEnglish: string; 
 

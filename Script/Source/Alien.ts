@@ -20,6 +20,7 @@ namespace Script {
 
         constructor() {
             super();
+            //get node and set state to stand (as the alien isn't moving in the beginning)
             this.alienNode = branch.getChildrenByName("Player")[0];
             this.animation = this.alienNode.getComponent(ƒ.ComponentAnimator);
             this.state = STATE.STAND;
@@ -33,6 +34,7 @@ namespace Script {
         }
 
         changeState(_new: ƒ.Node, _current: ƒ.Node) {
+            //depending on in which direction the alien is walking, the animation is adjusted
             if (_new.mtxLocal.translation.x < _current.mtxLocal.translation.x)
                 this.state = STATE.LEFT;
 
@@ -43,6 +45,7 @@ namespace Script {
         }
 
         changeAnimation(): void {
+            //switch the state
             switch (this.state) {
                 case STATE.LEFT:
                     this.animation.animation = this.animationLeft.animation;
@@ -75,6 +78,7 @@ namespace Script {
         }
 
         async setup() {
+            //get the animations
             this.animationLeft = branch.getChildrenByName("Animations")[0].getChildrenByName("AnimationLeft")[0].getComponent(ƒ.ComponentAnimator);
 
             this.animationRight = branch.getChildrenByName("Animations")[0].getChildrenByName("AnimationRight")[0].getComponent(ƒ.ComponentAnimator);
